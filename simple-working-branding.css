@@ -1,0 +1,54 @@
+/* Simple Working BHARAT Branding */
+
+/* Target the specific logo file that OpenSpecimen uses */
+img[src="/openspecimen/images/os_logo.a585165a.png"],
+img[src*="os_logo.a585165a.png"] {
+    content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+    height: 40px !important;
+    width: auto !important;
+    max-width: 200px !important;
+}
+
+/* Also target other potential logo sources */
+img[src*="os_logo"],
+img[src*="openspecimen"] {
+    content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+    height: 40px !important;
+    width: auto !important;
+}
+
+/* Navigation bar - use more specific selectors */
+nav.navbar,
+div.navbar,
+.navbar-default,
+.navbar-inverse {
+    background: #4169E1 !important;
+    background-image: linear-gradient(135deg, #4169E1 0%, #20B2AA 100%) !important;
+}
+
+/* Primary buttons */
+.btn-primary {
+    background-color: #4169E1 !important;
+    border-color: #4169E1 !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #20B2AA !important;
+    border-color: #20B2AA !important;
+}
+
+/* Links */
+a {
+    color: #4169E1 !important;
+}
+
+a:hover {
+    color: #20B2AA !important;
+}
+
+/* Page headers */
+h1, h2, h3 {
+    color: #4169E1 !important;
+}

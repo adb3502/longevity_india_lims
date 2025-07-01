@@ -1,0 +1,183 @@
+/* Aggressive BHARAT Branding - Targets All Possible Elements */
+
+/* Logo replacement - multiple approaches */
+img[src*="os_logo"],
+img[src*="logo"],
+.navbar-brand img,
+.os-navbar-brand img,
+.brand img,
+.logo img,
+nav img,
+header img {
+    content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+    height: 40px !important;
+    width: auto !important;
+    max-width: 200px !important;
+}
+
+/* Force logo replacement for any image in navigation */
+nav * img,
+.navbar * img,
+.header * img,
+.os-navbar * img {
+    content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+    height: 40px !important;
+    width: auto !important;
+}
+
+/* Navigation styling - target all possible navigation elements */
+.navbar,
+.os-navbar,
+nav,
+.nav,
+.navigation,
+.header,
+.app-header,
+.main-header,
+[class*="navbar"],
+[class*="nav-"],
+[class*="header"] {
+    background: linear-gradient(135deg, #4169E1 0%, #20B2AA 100%) !important;
+    background-color: #4169E1 !important;
+}
+
+/* Force primary color everywhere */
+:root {
+    --primary-color: #4169E1 !important;
+    --secondary-color: #20B2AA !important;
+    --accent-color: #00CED1 !important;
+}
+
+/* Button styling - target all button variations */
+.btn-primary,
+.os-btn-primary,
+.primary-btn,
+.btn.primary,
+button.primary,
+button[class*="primary"],
+.primary-button,
+input[type="submit"],
+button[type="submit"] {
+    background-color: #4169E1 !important;
+    border-color: #4169E1 !important;
+    color: white !important;
+}
+
+.btn-primary:hover,
+.os-btn-primary:hover,
+.primary-btn:hover,
+.btn.primary:hover,
+button.primary:hover,
+button[class*="primary"]:hover,
+.primary-button:hover {
+    background-color: #20B2AA !important;
+    border-color: #20B2AA !important;
+}
+
+/* Links */
+a {
+    color: #4169E1 !important;
+}
+
+a:hover {
+    color: #20B2AA !important;
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6,
+.header-text,
+.title,
+.section-title {
+    color: #4169E1 !important;
+}
+
+/* Force brand colors on common elements */
+.brand,
+.logo,
+.app-name,
+.site-name {
+    color: #4169E1 !important;
+}
+
+/* Sidebar and menu items */
+.sidebar,
+.side-menu,
+.nav-menu,
+.menu {
+    background-color: #f8f9fa !important;
+}
+
+.nav-item:hover,
+.menu-item:hover,
+.sidebar-item:hover,
+[class*="nav-"]:hover {
+    background-color: #20B2AA !important;
+    color: white !important;
+}
+
+/* Forms and inputs */
+.form-control:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #4169E1 !important;
+    box-shadow: 0 0 5px rgba(65, 105, 225, 0.3) !important;
+}
+
+/* Active/selected states */
+.active,
+.selected,
+.current {
+    background-color: #4169E1 !important;
+    color: white !important;
+}
+
+/* Override any white/default backgrounds on key elements */
+.navbar,
+nav,
+.header {
+    background-color: #4169E1 !important;
+    background: linear-gradient(135deg, #4169E1 0%, #20B2AA 100%) !important;
+}
+
+/* Ensure favicon shows up */
+link[rel="shortcut icon"],
+link[rel="icon"] {
+    href: '/openspecimen/images/longevity-india-favicon.ico' !important;
+}
+
+/* Title override */
+title {
+    display: block !important;
+}
+
+/* Force logo on any image that might be a logo */
+img[width="100"],
+img[height="40"],
+img[height="50"],
+img[height="30"] {
+    content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+    height: 40px !important;
+    width: auto !important;
+}
+
+/* Very aggressive logo replacement */
+img {
+    content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+    height: 40px !important;
+    width: auto !important;
+}
+
+/* But restore non-logo images */
+img[src*="icon"],
+img[src*="avatar"],
+img[src*="profile"],
+img[src*="chart"],
+img[src*="graph"],
+img[alt*="icon"],
+img[alt*="chart"] {
+    content: initial !important;
+    height: auto !important;
+    width: auto !important;
+}

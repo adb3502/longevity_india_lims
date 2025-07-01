@@ -1,0 +1,435 @@
+{
+  "bharatKitTracking": {
+    "name": "BHARAT Study Kit Tracking and Reagent Management",
+    "description": "Comprehensive inventory management for collection kits, reagents, and laboratory supplies",
+    "version": "1.0",
+    "dateCreated": "2025-01-24",
+    
+    "kitTypes": {
+      "collection_kits": {
+        "visit_collection_kit": {
+          "name": "BHARAT Visit Collection Kit",
+          "code": "BVCKIT",
+          "description": "Complete collection kit for participant visits",
+          "components": [
+            "blood_collection_tubes",
+            "saliva_collection_vials",
+            "hair_follicle_containers", 
+            "buccal_swab_kits",
+            "labels_and_barcodes",
+            "collection_forms",
+            "consent_documents",
+            "biohazard_bags",
+            "cold_packs"
+          ],
+          "shelfLife": 24,
+          "storageConditions": "Room temperature, dry",
+          "expiryAlert": 30,
+          "minimumStock": 50,
+          "reorderQuantity": 200
+        },
+        "dna_extraction_kit": {
+          "name": "DNA Extraction Kit",
+          "code": "DNAEXT",
+          "description": "Qiagen DNeasy Blood & Tissue Kit",
+          "components": [
+            "dneasy_mini_spin_columns",
+            "collection_tubes_2ml",
+            "buffer_atl",
+            "buffer_al",
+            "buffer_aw1",
+            "buffer_aw2",
+            "buffer_ae",
+            "proteinase_k"
+          ],
+          "shelfLife": 12,
+          "storageConditions": "Room temperature",
+          "expiryAlert": 60,
+          "minimumStock": 10,
+          "reorderQuantity": 50
+        },
+        "proteomics_kit": {
+          "name": "Proteomics Sample Prep Kit",
+          "code": "PROTKIT",
+          "description": "TMT labeling and mass spectrometry preparation",
+          "components": [
+            "tmt_labels",
+            "trypsin_digestion_reagents",
+            "c18_columns",
+            "formic_acid",
+            "acetonitrile",
+            "peptide_standards"
+          ],
+          "shelfLife": 6,
+          "storageConditions": "-20°C",
+          "expiryAlert": 45,
+          "minimumStock": 5,
+          "reorderQuantity": 20
+        },
+        "metabolomics_kit": {
+          "name": "Metabolomics Analysis Kit",
+          "code": "METAKIT",
+          "description": "LC-MS metabolomics sample preparation",
+          "components": [
+            "extraction_solvents",
+            "internal_standards",
+            "derivatization_reagents",
+            "sample_vials",
+            "filter_plates"
+          ],
+          "shelfLife": 12,
+          "storageConditions": "-20°C",
+          "expiryAlert": 60,
+          "minimumStock": 8,
+          "reorderQuantity": 25
+        }
+      },
+      "reagent_types": {
+        "buffers_and_solutions": {
+          "pbs_buffer": {
+            "name": "Phosphate Buffered Saline (PBS)",
+            "code": "PBS001",
+            "supplier": "Thermo Fisher Scientific",
+            "catalog_number": "10010023",
+            "shelfLife": 24,
+            "storageConditions": "4°C",
+            "expiryAlert": 90,
+            "minimumStock": 10,
+            "units": "Liters"
+          },
+          "tris_buffer": {
+            "name": "Tris-HCl Buffer pH 8.0",
+            "code": "TRIS001",
+            "supplier": "Sigma-Aldrich",
+            "catalog_number": "T2694",
+            "shelfLife": 36,
+            "storageConditions": "Room temperature",
+            "expiryAlert": 120,
+            "minimumStock": 5,
+            "units": "Liters"
+          }
+        },
+        "enzymes": {
+          "proteinase_k": {
+            "name": "Proteinase K",
+            "code": "PROK001",
+            "supplier": "Qiagen",
+            "catalog_number": "19131",
+            "shelfLife": 24,
+            "storageConditions": "-20°C",
+            "expiryAlert": 60,
+            "minimumStock": 5,
+            "units": "mg"
+          },
+          "trypsin": {
+            "name": "Trypsin Gold",
+            "code": "TRYP001",
+            "supplier": "Promega",
+            "catalog_number": "V5280",
+            "shelfLife": 12,
+            "storageConditions": "-80°C",
+            "expiryAlert": 30,
+            "minimumStock": 3,
+            "units": "mg"
+          }
+        },
+        "labware": {
+          "microcentrifuge_tubes": {
+            "name": "1.5ml Microcentrifuge Tubes",
+            "code": "TUBE001",
+            "supplier": "Eppendorf",
+            "catalog_number": "0030120086",
+            "shelfLife": 60,
+            "storageConditions": "Room temperature",
+            "expiryAlert": 180,
+            "minimumStock": 1000,
+            "units": "Pieces"
+          },
+          "pipette_tips": {
+            "name": "1000μl Pipette Tips",
+            "code": "TIP1000",
+            "supplier": "Rainin",
+            "catalog_number": "17014340",
+            "shelfLife": 60,
+            "storageConditions": "Room temperature",
+            "expiryAlert": 180,
+            "minimumStock": 500,
+            "units": "Pieces"
+          }
+        }
+      }
+    },
+    
+    "storageLocations": {
+      "main_laboratory": {
+        "name": "Main Laboratory",
+        "code": "MAINLAB",
+        "address": "IISc Bangalore Campus",
+        "contact": "lab-manager@longevityindia.org",
+        "storage_units": {
+          "freezer_minus80": {
+            "name": "-80°C Freezer",
+            "code": "F80C001",
+            "temperature": -80,
+            "capacity": "500 Liters",
+            "currentUtilization": 65,
+            "alertThreshold": 85
+          },
+          "freezer_minus20": {
+            "name": "-20°C Freezer",
+            "code": "F20C001", 
+            "temperature": -20,
+            "capacity": "300 Liters",
+            "currentUtilization": 45,
+            "alertThreshold": 80
+          },
+          "refrigerator_4c": {
+            "name": "4°C Refrigerator",
+            "code": "R4C001",
+            "temperature": 4,
+            "capacity": "200 Liters",
+            "currentUtilization": 60,
+            "alertThreshold": 85
+          },
+          "room_temperature": {
+            "name": "Room Temperature Storage",
+            "code": "RT001",
+            "temperature": 22,
+            "capacity": "50 Cubic Meters",
+            "currentUtilization": 30,
+            "alertThreshold": 75
+          }
+        }
+      },
+      "collection_sites": {
+        "ms_ramaiah_hospital": {
+          "name": "MS Ramaiah Memorial Hospital",
+          "code": "MSRMH",
+          "address": "Bangalore, Karnataka",
+          "contact": "site-coordinator@msrmh.com",
+          "storage_units": {
+            "collection_storage": {
+              "name": "Collection Kit Storage",
+              "code": "CKS001",
+              "temperature": 22,
+              "capacity": "10 Cubic Meters",
+              "currentUtilization": 40,
+              "alertThreshold": 80
+            }
+          }
+        },
+        "bmc_hospital": {
+          "name": "BMC Hospital",
+          "code": "BMC",
+          "address": "Bangalore, Karnataka", 
+          "contact": "site-coordinator@bmc.com",
+          "storage_units": {
+            "collection_storage": {
+              "name": "Collection Kit Storage",
+              "code": "CKS002",
+              "temperature": 22,
+              "capacity": "8 Cubic Meters",
+              "currentUtilization": 55,
+              "alertThreshold": 80
+            }
+          }
+        }
+      }
+    },
+    
+    "inventoryTracking": {
+      "batchTracking": {
+        "enabled": true,
+        "batchNumberFormat": "YYYY-MM-DD-{sequence}",
+        "lotNumberTracking": true,
+        "expiryDateTracking": true,
+        "temperatureLogging": true
+      },
+      "consumption": {
+        "trackUsage": true,
+        "usageReporting": "weekly",
+        "forecastDemand": true,
+        "seasonalAdjustments": true
+      },
+      "qualityControl": {
+        "receiptInspection": true,
+        "storageConditionMonitoring": true,
+        "periodicInventoryAudits": "monthly",
+        "damageTracking": true
+      }
+    },
+    
+    "alertSystem": {
+      "expiryAlerts": {
+        "criticalAlert": {
+          "threshold": 7,
+          "severity": "critical",
+          "recipients": ["lab-manager@longevityindia.org", "procurement@longevityindia.org"],
+          "message": "CRITICAL: {item_name} expires in {days_remaining} days. Immediate action required."
+        },
+        "warningAlert": {
+          "threshold": 30,
+          "severity": "warning", 
+          "recipients": ["lab-manager@longevityindia.org"],
+          "message": "WARNING: {item_name} expires in {days_remaining} days. Plan replacement."
+        },
+        "informationalAlert": {
+          "threshold": 90,
+          "severity": "info",
+          "recipients": ["procurement@longevityindia.org"],
+          "message": "INFO: {item_name} expires in {days_remaining} days. Consider reordering."
+        }
+      },
+      "stockAlerts": {
+        "lowStockAlert": {
+          "triggerPercentage": 20,
+          "severity": "warning",
+          "recipients": ["lab-manager@longevityindia.org", "procurement@longevityindia.org"],
+          "message": "LOW STOCK: {item_name} is below minimum threshold. Current: {current_stock}, Minimum: {minimum_stock}"
+        },
+        "outOfStockAlert": {
+          "triggerQuantity": 0,
+          "severity": "critical",
+          "recipients": ["lab-manager@longevityindia.org", "procurement@longevityindia.org", "study-coordinator@longevityindia.org"],
+          "message": "OUT OF STOCK: {item_name} is completely depleted. Operations may be affected."
+        }
+      },
+      "temperatureAlerts": {
+        "temperatureDeviationAlert": {
+          "tolerance": 2,
+          "severity": "warning",
+          "recipients": ["lab-manager@longevityindia.org"],
+          "message": "TEMPERATURE ALERT: {storage_unit} temperature outside acceptable range. Current: {current_temp}°C, Target: {target_temp}°C"
+        },
+        "powerFailureAlert": {
+          "severity": "critical",
+          "recipients": ["lab-manager@longevityindia.org", "facility-manager@longevityindia.org"],
+          "message": "POWER FAILURE: {storage_unit} power supply interrupted. Immediate intervention required."
+        }
+      }
+    },
+    
+    "procurementWorkflow": {
+      "requestProcess": {
+        "requester": ["lab_technician", "site_coordinator"],
+        "approver": ["lab_manager"],
+        "finalApprover": ["study_coordinator"],
+        "budgetThreshold": 50000,
+        "emergencyProcurement": true
+      },
+      "vendorManagement": {
+        "preferredVendors": [
+          {
+            "name": "Thermo Fisher Scientific India",
+            "contact": "orders.india@thermofisher.com",
+            "phone": "+91-80-6749-9000",
+            "categories": ["reagents", "labware", "instruments"],
+            "leadTime": 7,
+            "minimumOrder": 10000
+          },
+          {
+            "name": "Sigma-Aldrich India",
+            "contact": "customerservice.india@sial.com", 
+            "phone": "+91-80-6621-9400",
+            "categories": ["reagents", "chemicals"],
+            "leadTime": 10,
+            "minimumOrder": 5000
+          },
+          {
+            "name": "Qiagen India",
+            "contact": "orders.india@qiagen.com",
+            "phone": "+91-124-4345555",
+            "categories": ["kits", "reagents"],
+            "leadTime": 14,
+            "minimumOrder": 15000
+          }
+        ]
+      },
+      "qualityAssurance": {
+        "certificateOfAnalysis": true,
+        "materialSafetyDataSheet": true,
+        "temperatureDataLogger": true,
+        "receiptInspection": true
+      }
+    },
+    
+    "reporting": {
+      "inventoryReports": {
+        "daily": {
+          "stockLevels": true,
+          "expiringItems": true,
+          "temperatureLog": true,
+          "recipients": ["lab-manager@longevityindia.org"]
+        },
+        "weekly": {
+          "consumptionReport": true,
+          "reorderRecommendations": true,
+          "costAnalysis": true,
+          "recipients": ["lab-manager@longevityindia.org", "procurement@longevityindia.org"]
+        },
+        "monthly": {
+          "inventoryAudit": true,
+          "vendorPerformance": true,
+          "budgetUtilization": true,
+          "wasteReport": true,
+          "recipients": ["study-coordinator@longevityindia.org", "finance@longevityindia.org"]
+        }
+      },
+      "dashboards": {
+        "realTimeInventory": {
+          "url": "/bharat-inventory-dashboard.html",
+          "refreshInterval": "5_minutes",
+          "widgets": ["stock_levels", "expiry_calendar", "temperature_monitoring", "usage_trends"]
+        },
+        "procurementDashboard": {
+          "url": "/bharat-procurement-dashboard.html", 
+          "refreshInterval": "1_hour",
+          "widgets": ["pending_orders", "vendor_performance", "budget_tracking", "delivery_schedule"]
+        }
+      }
+    },
+    
+    "integration": {
+      "openspecimen": {
+        "sampleTracking": true,
+        "protocolAssociation": true,
+        "userPermissions": true,
+        "auditTrail": true
+      },
+      "lims": {
+        "enabled": false,
+        "vendor": "TBD",
+        "bidirectionalSync": false
+      },
+      "erp": {
+        "enabled": false,
+        "system": "TBD",
+        "purchaseOrders": false,
+        "accounting": false
+      }
+    },
+    
+    "compliance": {
+      "regulations": {
+        "iso15189": {
+          "applicable": true,
+          "requirements": ["traceability", "temperature_control", "expiry_management"]
+        },
+        "clia": {
+          "applicable": true,
+          "requirements": ["quality_control", "documentation", "calibration"]
+        },
+        "good_laboratory_practice": {
+          "applicable": true,
+          "requirements": ["sop_compliance", "training", "audit_trail"]
+        }
+      },
+      "documentation": {
+        "sopsRequired": true,
+        "trainingRecords": true,
+        "calibrationCertificates": true,
+        "auditTrails": true
+      }
+    }
+  }
+}

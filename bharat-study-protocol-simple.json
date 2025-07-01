@@ -1,0 +1,181 @@
+{
+  "title": "BHARAT Study - Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions",
+  "shortTitle": "BHARAT-STUDY",
+  "code": "BHARAT",
+  "startDate": 1704067200000,
+  "endDate": 1767225600000,
+  "principalInvestigator": {
+    "emailAddress": "admin@openspecimen.org",
+    "firstName": "BHARAT",
+    "lastName": "Study PI"
+  },
+  "coordinators": [
+    {
+      "emailAddress": "admin@openspecimen.org",
+      "firstName": "Study",
+      "lastName": "Coordinator"
+    }
+  ],
+  "anticipatedParticipantsCount": 630,
+  "ppidFmt": "BHARAT-%SYS_UID(4)%",
+  "manualPpidEnabled": true,
+  "specimenLabelFmt": "%PPI%-%VISIT_NAME%-%SP_TYPE_ABBR%%SYS_UID(2)%",
+  "aliquotLabelFmt": "%PARENT_SPMN_LABEL%-%SYS_UID(2)%",
+  "derivativeLabelFmt": "%PARENT_SPMN_LABEL%_D%SYS_UID(2)%",
+  "visitNameFmt": "V%SYS_UID(1)%",
+  "manualVisitNameEnabled": true,
+  "activityStatus": "Active",
+  "draftMode": false,
+  "barcodingEnabled": true,
+  "storeSpmnEnabled": true,
+  "extractSpRText": false,
+  "descriptionUrl": "",
+  "sopDocumentUrl": "",
+  "storePrimarySpecimen": "MANUAL",
+  "cpSites": [
+    {
+      "siteName": "Not Specified",
+      "code": "NS"
+    }
+  ],
+  "events": [
+    {
+      "eventLabel": "Baseline Visit",
+      "eventPoint": 0,
+      "defaultSite": "Not Specified",
+      "clinicalDiagnosis": "V0",
+      "clinicalStatus": "Not Specified",
+      "activityStatus": "Active",
+      "specimenRequirements": [
+        {
+          "name": "Blood",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Neoplastic",
+          "initialQty": 10.0,
+          "concentration": 1.0,
+          "collector": "Not Specified",
+          "collectionProcedure": "Venipuncture",
+          "collectionContainer": "EDTA Tube",
+          "labelFmt": "%PPI%-V0-BLD%SYS_UID(2)%",
+          "activityStatus": "Active"
+        },
+        {
+          "name": "Saliva",
+          "type": "Saliva",
+          "anatomicSite": "Mouth",
+          "laterality": "Not Specified", 
+          "pathology": "Non-Neoplastic",
+          "initialQty": 5.0,
+          "concentration": 1.0,
+          "collector": "Not Specified",
+          "collectionProcedure": "Expectoration",
+          "collectionContainer": "Saliva Collection Tube",
+          "labelFmt": "%PPI%-V0-SAL%SYS_UID(2)%",
+          "activityStatus": "Active"
+        },
+        {
+          "name": "Hair",
+          "type": "Hair",
+          "anatomicSite": "Scalp",
+          "laterality": "Not Specified",
+          "pathology": "Non-Neoplastic", 
+          "initialQty": 1.0,
+          "concentration": 1.0,
+          "collector": "Not Specified",
+          "collectionProcedure": "Mechanical Method",
+          "collectionContainer": "Hair Collection Envelope",
+          "labelFmt": "%PPI%-V0-HAR%SYS_UID(2)%",
+          "activityStatus": "Active"
+        }
+      ]
+    },
+    {
+      "eventLabel": "6 Month Follow-up",
+      "eventPoint": 182,
+      "defaultSite": "Not Specified",
+      "clinicalDiagnosis": "V1",
+      "clinicalStatus": "Not Specified",
+      "activityStatus": "Active",
+      "specimenRequirements": [
+        {
+          "name": "Blood",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Neoplastic",
+          "initialQty": 10.0,
+          "concentration": 1.0,
+          "collector": "Not Specified",
+          "collectionProcedure": "Venipuncture",
+          "collectionContainer": "EDTA Tube",
+          "labelFmt": "%PPI%-V1-BLD%SYS_UID(2)%",
+          "activityStatus": "Active"
+        },
+        {
+          "name": "Saliva",
+          "type": "Saliva",
+          "anatomicSite": "Mouth",
+          "laterality": "Not Specified",
+          "pathology": "Non-Neoplastic",
+          "initialQty": 5.0,
+          "concentration": 1.0,
+          "collector": "Not Specified", 
+          "collectionProcedure": "Expectoration",
+          "collectionContainer": "Saliva Collection Tube",
+          "labelFmt": "%PPI%-V1-SAL%SYS_UID(2)%",
+          "activityStatus": "Active"
+        }
+      ]
+    },
+    {
+      "eventLabel": "12 Month Follow-up",
+      "eventPoint": 365,
+      "defaultSite": "Not Specified",
+      "clinicalDiagnosis": "V2",
+      "clinicalStatus": "Not Specified",
+      "activityStatus": "Active",
+      "specimenRequirements": [
+        {
+          "name": "Blood",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Neoplastic",
+          "initialQty": 10.0,
+          "concentration": 1.0,
+          "collector": "Not Specified",
+          "collectionProcedure": "Venipuncture",
+          "collectionContainer": "EDTA Tube",
+          "labelFmt": "%PPI%-V2-BLD%SYS_UID(2)%",
+          "activityStatus": "Active"
+        }
+      ]
+    },
+    {
+      "eventLabel": "24 Month Follow-up",
+      "eventPoint": 730,
+      "defaultSite": "Not Specified",
+      "clinicalDiagnosis": "V3",
+      "clinicalStatus": "Not Specified",
+      "activityStatus": "Active",
+      "specimenRequirements": [
+        {
+          "name": "Blood",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Neoplastic",
+          "initialQty": 10.0,
+          "concentration": 1.0,
+          "collector": "Not Specified",
+          "collectionProcedure": "Venipuncture",
+          "collectionContainer": "EDTA Tube",
+          "labelFmt": "%PPI%-V3-BLD%SYS_UID(2)%",
+          "activityStatus": "Active"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHARAT Study - Inventory Management Dashboard</title>
+    <link rel="stylesheet" href="/longevity-india-theme.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .inventory-dashboard {
+            padding: 20px;
+            background-color: #FAFAFA;
+            min-height: 100vh;
+        }
+        
+        .inventory-header {
+            background: linear-gradient(135deg, #FF9800 0%, #F44336 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .inventory-widget {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid #FF9800;
+        }
+        
+        .critical-alert {
+            border-left-color: #F44336;
+            background: #FFEBEE;
+        }
+        
+        .warning-alert {
+            border-left-color: #FF9800;
+            background: #FFF3E0;
+        }
+        
+        .normal-status {
+            border-left-color: #4CAF50;
+        }
+        
+        .widget-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #212121;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .status-item {
+            text-align: center;
+            padding: 15px;
+            background: #F8F9FA;
+            border-radius: 8px;
+        }
+        
+        .status-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .status-label {
+            font-size: 0.875rem;
+            color: #757575;
+            font-weight: 500;
+        }
+        
+        .critical { color: #F44336; }
+        .warning { color: #FF9800; }
+        .normal { color: #4CAF50; }
+        
+        .expiry-list {
+            max-height: 300px;
+            overflow-y: auto;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+        }
+        
+        .expiry-item {
+            padding: 12px;
+            border-bottom: 1px solid #F5F5F5;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .expiry-item:last-child {
+            border-bottom: none;
+        }
+        
+        .expiry-item.critical {
+            background: #FFEBEE;
+        }
+        
+        .expiry-item.warning {
+            background: #FFF3E0;
+        }
+        
+        .item-name {
+            font-weight: 500;
+            color: #212121;
+        }
+        
+        .item-expiry {
+            font-size: 0.875rem;
+            color: #757575;
+        }
+        
+        .temperature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        
+        .temp-monitor {
+            text-align: center;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #E0E0E0;
+        }
+        
+        .temp-normal {
+            border-color: #4CAF50;
+            background: #E8F5E8;
+        }
+        
+        .temp-warning {
+            border-color: #FF9800;
+            background: #FFF3E0;
+        }
+        
+        .temp-critical {
+            border-color: #F44336;
+            background: #FFEBEE;
+        }
+        
+        .temp-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .temp-label {
+            font-size: 0.875rem;
+            color: #757575;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary { background: #4169E1; }
+        .btn-secondary { background: #20B2AA; }
+        .btn-warning { background: #FF9800; }
+        .btn-danger { background: #F44336; }
+        
+        .action-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+    <div class="inventory-dashboard">
+        <!-- Dashboard Header -->
+        <div class="inventory-header">
+            <h1>📦 BHARAT Study - Inventory Management</h1>
+            <p>Kit Tracking, Reagent Management & Storage Monitoring</p>
+            <div style="margin-top: 20px; font-size: 1rem;">
+                Last Updated: <span id="lastUpdated">2025-06-24 17:21:58</span>
+            </div>
+        </div>
+        
+        <!-- Alert Summary -->
+        <div class="inventory-widget critical-alert">
+            <div class="widget-title">🚨 Critical Alerts</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <div class="status-value critical">3</div>
+                    <div class="status-label">Items Expiring Soon</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value warning">7</div>
+                    <div class="status-label">Low Stock Items</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value critical">1</div>
+                    <div class="status-label">Temperature Alerts</div>
+                </div>
+                <div class="status-item">
+                    <div class="status-value warning">2</div>
+                    <div class="status-label">Pending Orders</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Dashboard Grid -->
+        <div class="inventory-grid">
+            <!-- Stock Levels Overview -->
+            <div class="inventory-widget normal-status">
+                <div class="widget-title">
+                    📊 Stock Levels Overview
+                    <button onclick="refreshStockLevels()" style="margin-left: auto; background: none; border: none; color: #212121; cursor: pointer;">🔄</button>
+                </div>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-value normal">156</div>
+                        <div class="status-label">Collection Kits</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-value warning">8</div>
+                        <div class="status-label">DNA Ext Kits</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-value normal">23</div>
+                        <div class="status-label">Proteomics Kits</div>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-value critical">4</div>
+                        <div class="status-label">Metabolomics Kits</div>
+                    </div>
+                </div>
+                <canvas id="stockLevelsChart" style="height: 200px; margin-top: 20px;"></canvas>
+            </div>
+            
+            <!-- Expiry Calendar -->
+            <div class="inventory-widget warning-alert">
+                <div class="widget-title">📅 Items Expiring Soon</div>
+                <div class="expiry-list">
+                    <div class="expiry-item critical">
+                        <div>
+                            <div class="item-name">Trypsin Gold (TRYP001)</div>
+                            <div class="item-expiry">Batch: TG-240115</div>
+                        </div>
+                        <div class="critical" style="font-weight: 600;">3 days</div>
+                    </div>
+                    <div class="expiry-item critical">
+                        <div>
+                            <div class="item-name">Proteinase K (PROK001)</div>
+                            <div class="item-expiry">Batch: PK-240205</div>
+                        </div>
+                        <div class="critical" style="font-weight: 600;">5 days</div>
+                    </div>
+                    <div class="expiry-item warning">
+                        <div>
+                            <div class="item-name">TMT Labels (TMT001)</div>
+                            <div class="item-expiry">Batch: TMT-240118</div>
+                        </div>
+                        <div class="warning" style="font-weight: 600;">15 days</div>
+                    </div>
+                    <div class="expiry-item warning">
+                        <div>
+                            <div class="item-name">LC-MS Solvents (SOL001)</div>
+                            <div class="item-expiry">Batch: MS-240110</div>
+                        </div>
+                        <div class="warning" style="font-weight: 600;">28 days</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Temperature Monitoring -->
+            <div class="inventory-widget">
+                <div class="widget-title">🌡️ Storage Temperature Monitoring</div>
+                <div class="temperature-grid">
+                    <div class="temp-monitor temp-normal">
+                        <div class="temp-value normal">-79.8°C</div>
+                        <div class="temp-label">-80°C Freezer</div>
+                    </div>
+                    <div class="temp-monitor temp-normal">
+                        <div class="temp-value normal">-19.5°C</div>
+                        <div class="temp-label">-20°C Freezer</div>
+                    </div>
+                    <div class="temp-monitor temp-warning">
+                        <div class="temp-value warning">6.2°C</div>
+                        <div class="temp-label">4°C Refrigerator</div>
+                    </div>
+                    <div class="temp-monitor temp-normal">
+                        <div class="temp-value normal">22.1°C</div>
+                        <div class="temp-label">Room Temperature</div>
+                    </div>
+                </div>
+                <canvas id="temperatureTrendsChart" style="height: 200px; margin-top: 20px;"></canvas>
+            </div>
+            
+            <!-- Usage Trends -->
+            <div class="inventory-widget">
+                <div class="widget-title">📈 Usage Trends (Last 30 Days)</div>
+                <canvas id="usageTrendsChart" style="height: 300px;"></canvas>
+            </div>
+        </div>
+        
+        <!-- Procurement Status -->
+        <div class="inventory-widget">
+            <div class="widget-title">🛒 Procurement Status</div>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: #F5F5F5;">
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #E0E0E0;">Item</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #E0E0E0;">Vendor</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #E0E0E0;">Order Date</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #E0E0E0;">Expected Delivery</th>
+                            <th style="padding: 12px; text-align: left; border-bottom: 2px solid #E0E0E0;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;">DNA Extraction Kits (50x)</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;">Qiagen</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;">2025-01-20</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;">2025-01-27</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;"><span style="background: #FF9800; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem;">In Transit</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;">Metabolomics Kits (20x)</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;">Thermo Fisher</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;">2025-01-22</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;">2025-01-29</td>
+                            <td style="padding: 12px; border-bottom: 1px solid #F5F5F5;"><span style="background: #2196F3; color: white; padding: 4px 8px; border-radius: 12px; font-size: 0.75rem;">Ordered</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="inventory-widget">
+            <div class="widget-title">⚡ Quick Actions</div>
+            <div class="action-buttons">
+                <button class="action-btn btn-primary" onclick="addNewInventory()">
+                    📦 Add New Inventory
+                </button>
+                <button class="action-btn btn-secondary" onclick="recordUsage()">
+                    📝 Record Usage
+                </button>
+                <button class="action-btn btn-warning" onclick="createPurchaseOrder()">
+                    🛒 Create Purchase Order
+                </button>
+                <button class="action-btn btn-danger" onclick="generateReport()">
+                    📊 Generate Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize charts and dashboard functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeInventoryCharts();
+            setInterval(updateDashboard, 300000); // Update every 5 minutes
+        });
+        
+        function initializeInventoryCharts() {
+            // Stock levels chart
+            const stockCtx = document.getElementById('stockLevelsChart').getContext('2d');
+            new Chart(stockCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Collection Kits', 'DNA Kits', 'Proteomics', 'Metabolomics'],
+                    datasets: [{
+                        label: 'Current Stock',
+                        data: [156, 8, 23, 4],
+                        backgroundColor: ['#4CAF50', '#FF9800', '#4CAF50', '#F44336']
+                    }, {
+                        label: 'Minimum Level',
+                        data: [50, 10, 5, 8],
+                        backgroundColor: 'rgba(33, 150, 243, 0.3)',
+                        type: 'line'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            
+            // Temperature trends chart
+            const tempCtx = document.getElementById('temperatureTrendsChart').getContext('2d');
+            new Chart(tempCtx, {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    datasets: [{
+                        label: '-80°C Freezer',
+                        data: [-79.8, -79.9, -79.7, -79.8, -79.6, -79.8],
+                        borderColor: '#2196F3',
+                        tension: 0.4
+                    }, {
+                        label: '4°C Refrigerator',
+                        data: [4.1, 4.2, 6.2, 5.8, 4.5, 4.3],
+                        borderColor: '#FF9800',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            
+            // Usage trends chart
+            const usageCtx = document.getElementById('usageTrendsChart').getContext('2d');
+            new Chart(usageCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                    datasets: [{
+                        label: 'Collection Kits',
+                        data: [45, 52, 48, 51],
+                        borderColor: '#4CAF50',
+                        tension: 0.4
+                    }, {
+                        label: 'Reagents',
+                        data: [23, 28, 25, 30],
+                        borderColor: '#9C27B0',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+        
+        // Action functions
+        function refreshStockLevels() {
+            console.log('Refreshing stock levels...');
+            // Simulate data refresh
+            alert('📊 Stock levels refreshed');
+        }
+        
+        function addNewInventory() {
+            alert('📦 Add New Inventory form would open here');
+        }
+        
+        function recordUsage() {
+            alert('📝 Record Usage form would open here');
+        }
+        
+        function createPurchaseOrder() {
+            alert('🛒 Purchase Order creation would open here');
+        }
+        
+        function generateReport() {
+            alert('📊 Inventory report generation would start here');
+        }
+        
+        function updateDashboard() {
+            console.log('Auto-updating inventory dashboard...');
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+        }
+    </script>
+</body>
+</html>

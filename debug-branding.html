@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug BHARAT Branding</title>
+    <style>
+        /* Test CSS to see what's working */
+        body { background-color: red !important; }
+        .test-class { color: blue !important; }
+        
+        /* Logo replacement attempts */
+        img[src*="os_logo"] {
+            content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+            height: 40px !important;
+            width: auto !important;
+            border: 3px solid yellow !important;
+        }
+        
+        /* Navigation styling */
+        .navbar,
+        nav {
+            background-color: #4169E1 !important;
+            border: 3px solid green !important;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSS Debug Test</h1>
+    <p class="test-class">This should be blue if CSS is working</p>
+    <img src="/openspecimen/images/os_logo.a585165a.png" alt="Test Logo">
+    <div class="navbar">This should have blue background</div>
+</body>
+</html>

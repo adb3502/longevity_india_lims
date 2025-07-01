@@ -1,0 +1,203 @@
+{
+  "labelingConfiguration": {
+    "name": "BHARAT Study Hierarchical Labeling System",
+    "description": "Implements the complete BHARAT Study specimen numbering hierarchy",
+    "version": "1.0",
+    "dateCreated": "2025-01-24",
+    
+    "collectionProtocolSettings": {
+      "code": "BHARAT",
+      "ppidFmt": "%CP_CODE%-%CUSTOM_FIELD(cpr,cohort)%-%SYS_UID(4)%",
+      "visitNameFmt": "%EVENT_CODE%",
+      "specimenLabelFmt": "%PPI%-%VISIT_NAME%-%SP_TYPE_ABBR%%SYS_UID(2)%",
+      "derivativeLabelFmt": "%PARENT_SPMN_LABEL%-%SP_TYPE_ABBR%-%SYS_UID(2)%",
+      "aliquotLabelFmt": "%PARENT_SPMN_LABEL%-%CUSTOM_FIELD(specimen,analysisType)%-%SYS_UID(2)%",
+      "labelSequenceKey": "BHARAT_STUDY_SEQUENCES"
+    },
+    
+    "customFields": {
+      "participant": [
+        {
+          "name": "cohort",
+          "caption": "Age Cohort",
+          "type": "dropdown",
+          "mandatory": true,
+          "values": [
+            {"value": "AG1", "description": "Age 20-30 years"},
+            {"value": "AG2", "description": "Age 31-40 years"},
+            {"value": "AG3", "description": "Age 41-50 years"},
+            {"value": "AG4", "description": "Age 51-60 years"},
+            {"value": "AG5", "description": "Age 61-70 years"}
+          ]
+        }
+      ],
+      "specimen": [
+        {
+          "name": "analysisType",
+          "caption": "Analysis Type",
+          "type": "dropdown",
+          "mandatory": false,
+          "values": [
+            {"value": "GEN", "description": "Genomics"},
+            {"value": "PROT", "description": "Proteomics"},
+            {"value": "META", "description": "Metabolomics"},
+            {"value": "EPI", "description": "Epigenomics"},
+            {"value": "CLIN", "description": "Clinical Chemistry"},
+            {"value": "FLOW", "description": "Flow Cytometry"},
+            {"value": "HIST", "description": "Histology"},
+            {"value": "DNA", "description": "DNA Extraction"},
+            {"value": "RNA", "description": "RNA Extraction"},
+            {"value": "PLEX", "description": "Multiplex Assay"}
+          ]
+        },
+        {
+          "name": "processingBatch",
+          "caption": "Processing Batch",
+          "type": "text",
+          "mandatory": false,
+          "maxLength": 20
+        },
+        {
+          "name": "freezeThawCycles",
+          "caption": "Freeze/Thaw Cycles",
+          "type": "integer",
+          "mandatory": false,
+          "defaultValue": 0
+        }
+      ]
+    },
+    
+    "specimenTypeAbbreviations": {
+      "Whole Blood": "BLD",
+      "Plasma": "PLA",
+      "Serum": "SER",
+      "Buffy Coat": "BC",
+      "Red Blood Cells": "RBC",
+      "Saliva": "SAL",
+      "Hair": "HAR",
+      "Buccal Cells": "CEL",
+      "DNA": "DNA",
+      "RNA": "RNA",
+      "Protein": "PRO",
+      "Metabolite Extract": "MET",
+      "Cell Pellet": "CP",
+      "Supernatant": "SUP",
+      "Tissue": "TIS",
+      "Frozen Tissue": "FT",
+      "FFPE Tissue": "FFPE"
+    },
+    
+    "visitCodes": {
+      "V0": {
+        "eventPoint": 0,
+        "eventLabel": "Baseline Visit",
+        "code": "V0"
+      },
+      "V1": {
+        "eventPoint": 180,
+        "eventLabel": "6 Month Follow-up",
+        "code": "V1"
+      },
+      "V2": {
+        "eventPoint": 365,
+        "eventLabel": "12 Month Follow-up", 
+        "code": "V2"
+      },
+      "V3": {
+        "eventPoint": 730,
+        "eventLabel": "24 Month Final Visit",
+        "code": "V3"
+      }
+    },
+    
+    "labelExamples": {
+      "participantId": {
+        "format": "%CP_CODE%-%CUSTOM_FIELD(cpr,cohort)%-%SYS_UID(4)%",
+        "examples": [
+          "BHARAT-AG1-P0001",
+          "BHARAT-AG3-P0234", 
+          "BHARAT-AG5-P0567"
+        ]
+      },
+      "primarySpecimen": {
+        "format": "%PPI%-%VISIT_NAME%-%SP_TYPE_ABBR%%SYS_UID(2)%",
+        "examples": [
+          "BHARAT-AG3-P0234-V0-BLD01",
+          "BHARAT-AG3-P0234-V1-SAL01",
+          "BHARAT-AG3-P0234-V2-HAR01"
+        ]
+      },
+      "derivatives": {
+        "format": "%PARENT_SPMN_LABEL%-%SP_TYPE_ABBR%-%SYS_UID(2)%",
+        "examples": [
+          "BHARAT-AG3-P0234-V0-BLD01-PLA-01",
+          "BHARAT-AG3-P0234-V0-BLD01-BC-01",
+          "BHARAT-AG3-P0234-V0-BLD01-RBC-01"
+        ]
+      },
+      "aliquots": {
+        "format": "%PARENT_SPMN_LABEL%-%CUSTOM_FIELD(specimen,analysisType)%-%SYS_UID(2)%",
+        "examples": [
+          "BHARAT-AG3-P0234-V0-BLD01-PROT-01",
+          "BHARAT-AG3-P0234-V0-BLD01-DNA-01",
+          "BHARAT-AG3-P0234-V1-SAL01-META-01"
+        ]
+      }
+    },
+    
+    "sequenceConfiguration": {
+      "participantSequence": {
+        "key": "BHARAT_PARTICIPANT_SEQ",
+        "format": "P%04d",
+        "startValue": 1,
+        "scope": "COLLECTION_PROTOCOL"
+      },
+      "specimenSequence": {
+        "key": "BHARAT_SPECIMEN_SEQ", 
+        "format": "%02d",
+        "startValue": 1,
+        "scope": "VISIT_AND_TYPE"
+      },
+      "aliquotSequence": {
+        "key": "BHARAT_ALIQUOT_SEQ",
+        "format": "%02d", 
+        "startValue": 1,
+        "scope": "PARENT_SPECIMEN"
+      }
+    },
+    
+    "validationRules": {
+      "participantId": {
+        "pattern": "^BHARAT-AG[1-5]-P\\d{4}$",
+        "description": "Must follow format BHARAT-AGx-Pxxxx where x is cohort 1-5 and xxxx is 4-digit number"
+      },
+      "specimenLabel": {
+        "pattern": "^BHARAT-AG[1-5]-P\\d{4}-V[0-3]-[A-Z]{2,4}\\d{2}$",
+        "description": "Must follow format BHARAT-AGx-Pxxxx-Vx-TYPExx"
+      },
+      "aliquotLabel": {
+        "pattern": "^BHARAT-AG[1-5]-P\\d{4}-V[0-3]-[A-Z]{2,4}\\d{2}-[A-Z]{2,5}-\\d{2}$",
+        "description": "Must follow format BHARAT-AGx-Pxxxx-Vx-TYPExx-ANALYSISxx-xx"
+      }
+    },
+    
+    "containerConfiguration": {
+      "boxLabeling": {
+        "format": "BHARAT-%SITE_CODE%-%FREEZER_CODE%-%RACK_CODE%-%BOX_UID(3)%",
+        "examples": [
+          "BHARAT-BLR-F01-R03-B045",
+          "BHARAT-MSR-F02-R01-B012"
+        ]
+      },
+      "siteCodes": {
+        "IISc Bangalore": "BLR",
+        "MS Ramaiah Hospital": "MSR", 
+        "Bangalore Medical College": "BMC",
+        "Mumbai Site": "MUM",
+        "Delhi Site": "DEL",
+        "Chennai Site": "CHE",
+        "Kolkata Site": "KOL"
+      }
+    }
+  }
+}

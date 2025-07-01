@@ -1,0 +1,495 @@
+{
+  "title": "BHARAT Study - Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions",
+  "shortTitle": "BHARAT-STUDY",
+  "code": "BHARAT",
+  "principalInvestigator": {
+    "loginName": "pi@longevityindia.org",
+    "firstName": "Principal",
+    "lastName": "Investigator",
+    "emailAddress": "pi@longevityindia.org",
+    "instituteName": "Indian Institute of Science",
+    "address": "Bangalore, Karnataka, India"
+  },
+  "coordinators": [
+    {
+      "loginName": "coordinator@longevityindia.org",
+      "firstName": "Study",
+      "lastName": "Coordinator",
+      "emailAddress": "coordinator@longevityindia.org"
+    }
+  ],
+  "startDate": "2025-01-01",
+  "endDate": "2027-12-31",
+  "irbId": "IISc-IRB-2024-BHARAT-001",
+  "specimenCentric": false,
+  "anticipatedParticipantsCount": 1000,
+  "ppidFmt": "BHARAT-%AG%-%PID%",
+  "visitNameFmt": "V%PVN%",
+  "specimenLabelFmt": "%PPI%-%VISIT%-%STYPE%",
+  "derivativeLabelFmt": "%PSPEC_LABEL%-%STYPE%-%UID%",
+  "aliquotLabelFmt": "%PSPEC_LABEL%-%SEQ%",
+  "manualPpidEnabled": true,
+  "manualVisitNameEnabled": false,
+  "manualSpecLabelEnabled": false,
+  "activityStatus": "Active",
+  "cpSites": [
+    {
+      "siteName": "IISc Bangalore",
+      "code": "BLR"
+    },
+    {
+      "siteName": "MS Ramaiah Hospital",
+      "code": "MSR"
+    },
+    {
+      "siteName": "Bangalore Medical College",
+      "code": "BMC"
+    }
+  ],
+  "events": [
+    {
+      "eventLabel": "Baseline Visit",
+      "eventPoint": 0,
+      "eventPointUnit": "DAYS",
+      "code": "V0",
+      "clinicalDiagnosis": "Healthy",
+      "clinicalStatus": "Pre-Clinical",
+      "defaultSite": "IISc Bangalore",
+      "activityStatus": "Active",
+      "specimenRequirements": [
+        {
+          "name": "Blood - EDTA Tube 1",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V0-BLD01"
+        },
+        {
+          "name": "Blood - EDTA Tube 2",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V0-BLD02"
+        },
+        {
+          "name": "Blood - EDTA Tube 3",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V0-BLD03"
+        },
+        {
+          "name": "Blood - EDTA Tube 4",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V0-BLD04"
+        },
+        {
+          "name": "Saliva Sample",
+          "type": "Saliva",
+          "anatomicSite": "Mouth",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Self-Collection",
+          "collectionContainer": "Saliva Collection Tube",
+          "collectionProcedure": "Expectoration",
+          "labelFmt": "%PPI%-V0-SAL01"
+        },
+        {
+          "name": "Hair Sample",
+          "type": "Hair",
+          "anatomicSite": "Scalp",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 50,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Collection Envelope",
+          "collectionProcedure": "Manual Collection",
+          "labelFmt": "%PPI%-V0-HAR01"
+        },
+        {
+          "name": "Buccal Cells - Swab 1",
+          "type": "Buccal Cells",
+          "anatomicSite": "Cheek",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 1,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Buccal Swab",
+          "collectionProcedure": "Swabbing",
+          "labelFmt": "%PPI%-V0-CEL01"
+        },
+        {
+          "name": "Buccal Cells - Swab 2",
+          "type": "Buccal Cells",
+          "anatomicSite": "Cheek",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 1,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Buccal Swab",
+          "collectionProcedure": "Swabbing",
+          "labelFmt": "%PPI%-V0-CEL02"
+        }
+      ]
+    },
+    {
+      "eventLabel": "6 Month Follow-up",
+      "eventPoint": 180,
+      "eventPointUnit": "DAYS",
+      "code": "V1",
+      "clinicalDiagnosis": "Healthy",
+      "clinicalStatus": "Pre-Clinical",
+      "defaultSite": "IISc Bangalore",
+      "activityStatus": "Active",
+      "specimenRequirements": [
+        {
+          "name": "Blood - EDTA Tube 1",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V1-BLD01"
+        },
+        {
+          "name": "Blood - EDTA Tube 2",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V1-BLD02"
+        },
+        {
+          "name": "Saliva Sample",
+          "type": "Saliva",
+          "anatomicSite": "Mouth",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Self-Collection",
+          "collectionContainer": "Saliva Collection Tube",
+          "collectionProcedure": "Expectoration",
+          "labelFmt": "%PPI%-V1-SAL01"
+        }
+      ]
+    },
+    {
+      "eventLabel": "12 Month Follow-up",
+      "eventPoint": 365,
+      "eventPointUnit": "DAYS",
+      "code": "V2",
+      "clinicalDiagnosis": "Healthy",
+      "clinicalStatus": "Pre-Clinical",
+      "defaultSite": "IISc Bangalore",
+      "activityStatus": "Active",
+      "specimenRequirements": [
+        {
+          "name": "Blood - EDTA Tube 1",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V2-BLD01"
+        },
+        {
+          "name": "Blood - EDTA Tube 2",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V2-BLD02"
+        },
+        {
+          "name": "Blood - EDTA Tube 3",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V2-BLD03"
+        },
+        {
+          "name": "Blood - EDTA Tube 4",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V2-BLD04"
+        },
+        {
+          "name": "Saliva Sample",
+          "type": "Saliva",
+          "anatomicSite": "Mouth",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Self-Collection",
+          "collectionContainer": "Saliva Collection Tube",
+          "collectionProcedure": "Expectoration",
+          "labelFmt": "%PPI%-V2-SAL01"
+        },
+        {
+          "name": "Hair Sample",
+          "type": "Hair",
+          "anatomicSite": "Scalp",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 50,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Collection Envelope",
+          "collectionProcedure": "Manual Collection",
+          "labelFmt": "%PPI%-V2-HAR01"
+        },
+        {
+          "name": "Buccal Cells - Swab 1",
+          "type": "Buccal Cells",
+          "anatomicSite": "Cheek",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 1,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Buccal Swab",
+          "collectionProcedure": "Swabbing",
+          "labelFmt": "%PPI%-V2-CEL01"
+        },
+        {
+          "name": "Buccal Cells - Swab 2",
+          "type": "Buccal Cells",
+          "anatomicSite": "Cheek",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 1,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Buccal Swab",
+          "collectionProcedure": "Swabbing",
+          "labelFmt": "%PPI%-V2-CEL02"
+        }
+      ]
+    },
+    {
+      "eventLabel": "24 Month Final Visit",
+      "eventPoint": 730,
+      "eventPointUnit": "DAYS",
+      "code": "V3",
+      "clinicalDiagnosis": "Healthy",
+      "clinicalStatus": "Pre-Clinical",
+      "defaultSite": "IISc Bangalore",
+      "activityStatus": "Active",
+      "specimenRequirements": [
+        {
+          "name": "Blood - EDTA Tube 1",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V3-BLD01"
+        },
+        {
+          "name": "Blood - EDTA Tube 2",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V3-BLD02"
+        },
+        {
+          "name": "Blood - EDTA Tube 3",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V3-BLD03"
+        },
+        {
+          "name": "Blood - EDTA Tube 4",
+          "type": "Whole Blood",
+          "anatomicSite": "Arm",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Phlebotomist",
+          "collectionContainer": "EDTA Tube",
+          "collectionProcedure": "Venipuncture",
+          "labelFmt": "%PPI%-V3-BLD04"
+        },
+        {
+          "name": "Saliva Sample",
+          "type": "Saliva",
+          "anatomicSite": "Mouth",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Fresh",
+          "initialQty": 5,
+          "concentration": null,
+          "collector": "Self-Collection",
+          "collectionContainer": "Saliva Collection Tube",
+          "collectionProcedure": "Expectoration",
+          "labelFmt": "%PPI%-V3-SAL01"
+        },
+        {
+          "name": "Hair Sample",
+          "type": "Hair",
+          "anatomicSite": "Scalp",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 50,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Collection Envelope",
+          "collectionProcedure": "Manual Collection",
+          "labelFmt": "%PPI%-V3-HAR01"
+        },
+        {
+          "name": "Buccal Cells - Swab 1",
+          "type": "Buccal Cells",
+          "anatomicSite": "Cheek",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 1,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Buccal Swab",
+          "collectionProcedure": "Swabbing",
+          "labelFmt": "%PPI%-V3-CEL01"
+        },
+        {
+          "name": "Buccal Cells - Swab 2",
+          "type": "Buccal Cells",
+          "anatomicSite": "Cheek",
+          "laterality": "Not Specified",
+          "pathology": "Non-Malignant",
+          "storageType": "Room Temperature",
+          "initialQty": 1,
+          "concentration": null,
+          "collector": "Research Staff",
+          "collectionContainer": "Buccal Swab",
+          "collectionProcedure": "Swabbing",
+          "labelFmt": "%PPI%-V3-CEL02"
+        }
+      ]
+    }
+  ],
+  "consentTiers": [
+    {
+      "statement": "I consent to participate in the BHARAT Study and allow collection of biological samples.",
+      "activityStatus": "Active"
+    },
+    {
+      "statement": "I consent to genetic analysis of my samples including whole genome sequencing.",
+      "activityStatus": "Active"
+    },
+    {
+      "statement": "I consent to sharing of de-identified data with approved researchers.",
+      "activityStatus": "Active"
+    },
+    {
+      "statement": "I consent to be contacted for future related research studies.",
+      "activityStatus": "Active"
+    }
+  ]
+}

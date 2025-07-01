@@ -1,0 +1,337 @@
+/* Longevity India - BHARAT Study Custom Theme */
+/* Generated on 2025-06-24 17:04:31 */
+
+:root {
+  /* Primary Colors - Blue Theme from Logo */
+  --li-primary-main: #4169E1;
+  --li-primary-light: #6B8BF5;
+  --li-primary-dark: #2E4BC7;
+  
+  /* Secondary Colors - Teal Theme from Logo */
+  --li-secondary-main: #20B2AA;
+  --li-secondary-light: #4DD4CC;
+  --li-secondary-dark: #178B85;
+  
+  /* Accent Colors - Turquoise */
+  --li-accent-main: #00CED1;
+  --li-accent-light: #33D9DC;
+  --li-accent-dark: #00A5A8;
+  
+  /* Neutral Colors */
+  --li-bg-main: #FAFAFA;
+  --li-surface: #FFFFFF;
+  --li-text: #212121;
+  --li-text-secondary: #757575;
+  --li-border: #E0E0E0;
+  
+  /* Semantic Colors */
+  --li-success: #4CAF50;
+  --li-warning: #FF9800;
+  --li-error: #F44336;
+  --li-info: #2196F3;
+  
+  /* Age Group Colors */
+  --li-ag1-color: #4CAF50;
+  --li-ag2-color: #8BC34A;
+  --li-ag3-color: #FF9800;
+  --li-ag4-color: #FF5722;
+  --li-ag5-color: #9C27B0;
+  
+  /* Typography */
+  --li-font-primary: Inter, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --li-font-heading: Poppins, 'Inter', sans-serif;
+  --li-font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+}
+
+/* Global Overrides */
+body {
+  font-family: var(--li-font-primary);
+  background-color: var(--li-bg-main);
+  color: var(--li-text);
+}
+
+/* Header Customization */
+.os-header,
+.navbar-header {
+  background-color: var(--li-primary-main) !important;
+  border-bottom: 3px solid var(--li-primary-dark);
+  height: 64px;
+  padding: 12px 24px;
+}
+
+.os-header .navbar-brand,
+.navbar-brand {
+  color: #FFFFFF !important;
+  font-family: var(--li-font-heading);
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+
+.os-header .navbar-brand:hover {
+  color: #6B8BF5 !important;
+}
+
+/* Logo Styling */
+.os-logo,
+.navbar-brand img {
+  height: 40px;
+  max-height: 40px;
+}
+
+/* Sidebar Customization */
+.os-left-nav,
+.sidebar {
+  background-color: #FAFAFA;
+  border-right: 1px solid #E0E0E0;
+  width: 280px;
+}
+
+.os-left-nav .nav > li > a,
+.sidebar .nav > li > a {
+  color: var(--li-text);
+  font-family: var(--li-font-primary);
+  font-weight: 500;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+}
+
+.os-left-nav .nav > li > a:hover,
+.sidebar .nav > li > a:hover,
+.os-left-nav .nav > li.active > a,
+.sidebar .nav > li.active > a {
+  background-color: var(--li-primary-main);
+  color: white;
+  border-left: 4px solid var(--li-primary-dark);
+}
+
+/* Button Customization */
+.btn-primary,
+.btn-primary:not(:disabled):not(.disabled) {
+  background-color: var(--li-primary-main);
+  border-color: var(--li-primary-main);
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.btn-primary:hover,
+.btn-primary:not(:disabled):not(.disabled):hover {
+  background-color: var(--li-primary-dark);
+  border-color: var(--li-primary-dark);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--li-primary-main);
+  border: 2px solid var(--li-primary-main);
+  font-weight: 500;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.btn-secondary:hover {
+  background-color: var(--li-primary-main);
+  color: white;
+}
+
+.btn-success {
+  background-color: var(--li-success);
+  border-color: var(--li-success);
+}
+
+/* Card Customization */
+.card,
+.panel {
+  background-color: var(--li-surface);
+  border: 1px solid #E0E0E0;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-highlighted,
+.panel-highlighted {
+  border: 2px solid var(--li-primary-main);
+  box-shadow: 0 6px 20px rgba(65, 105, 225, 0.15);
+}
+
+/* Form Customization */
+.form-control {
+  border: 1px solid #E0E0E0;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 0.875rem;
+}
+
+.form-control:focus {
+  border-color: var(--li-primary-main);
+  box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1);
+}
+
+.control-label,
+.form-label {
+  color: #212121;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+/* Table Customization */
+.table thead th {
+  background-color: #F5F5F5;
+  color: #212121;
+  font-weight: 600;
+  padding: 12px 16px;
+  border-bottom: 2px solid #E0E0E0;
+}
+
+.table tbody tr {
+  border-bottom: 1px solid #E0E0E0;
+}
+
+.table tbody tr:hover {
+  background-color: #FAFAFA;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #F9F9F9;
+}
+
+/* BHARAT Study Specific Styles */
+.bharat-dashboard-hero {
+  background: linear-gradient(135deg, #4169E1 0%, #20B2AA 100%);
+  color: #FFFFFF;
+  padding: 40px 20px;
+  text-align: center;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+.bharat-dashboard-hero h1 {
+  font-family: var(--li-font-heading);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.bharat-dashboard-hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* Age Group Badges */
+.age-group-ag1 { background-color: var(--li-ag1-color); color: white; }
+.age-group-ag2 { background-color: var(--li-ag2-color); color: white; }
+.age-group-ag3 { background-color: var(--li-ag3-color); color: white; }
+.age-group-ag4 { background-color: var(--li-ag4-color); color: white; }
+.age-group-ag5 { background-color: var(--li-ag5-color); color: white; }
+
+.age-group-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* Visit Stage Indicators */
+.visit-v0 { color: #4CAF50; }
+.visit-v1 { color: #FF9800; }
+.visit-v2 { color: #FF5722; }
+.visit-v3 { color: #9C27B0; }
+
+/* Biomarker Category Colors */
+.biomarker-genomics { color: #2196F3; }
+.biomarker-proteomics { color: #9C27B0; }
+.biomarker-metabolomics { color: #FF9800; }
+.biomarker-epigenomics { color: #4CAF50; }
+.biomarker-inflammation { color: #F44336; }
+.biomarker-clinical { color: #607D8B; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .os-header,
+  .navbar-header {
+    padding: 8px 16px;
+  }
+  
+  .bharat-dashboard-hero h1 {
+    font-size: 2rem;
+  }
+  
+  .os-left-nav,
+  .sidebar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: -100%;
+    height: 100vh;
+    z-index: 1000;
+    transition: left 0.3s ease;
+  }
+  
+  .os-left-nav.show,
+  .sidebar.show {
+    left: 0;
+  }
+}
+
+/* Accessibility Enhancements */
+.btn:focus,
+.form-control:focus,
+a:focus {
+  outline: 3px solid var(--li-primary-main);
+  outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+  * {
+    color: black !important;
+    background: white !important;
+  }
+  
+  .os-header,
+  .navbar-header,
+  .os-left-nav,
+  .sidebar {
+    display: none !important;
+  }
+  
+  .page-break {
+    page-break-before: always;
+  }
+}
+
+/* Animation and Transitions */
+.card,
+.btn,
+.form-control {
+  transition: all 0.3s ease;
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FAFAFA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--li-primary-main);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--li-primary-dark);
+}

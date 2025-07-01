@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BHARAT Study Portal - Longevity India</title>
+    <link rel="icon" href="/images/longevity-india-favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="longevity-india-theme.css">
+    <style>
+        .login-container {
+            background: linear-gradient(135deg, #4169E1 0%, #20B2AA 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .login-overlay {
+            background: rgba(65, 105, 225, 0.8);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+        
+        .login-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .login-logo img {
+            height: 120px;
+            max-height: 120px;
+            max-width: 100%;
+            object-fit: contain;
+        }
+        
+        .login-title {
+            font-family: Poppins, 'Inter', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #4169E1;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .login-subtitle {
+            font-size: 1rem;
+            color: #757575;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .study-info {
+            background: #FAFAFA;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #4169E1;
+        }
+        
+        .study-info h4 {
+            color: #4169E1;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .study-info p {
+            font-size: 0.9rem;
+            color: #757575;
+            margin: 0;
+        }
+        
+        .login-form {
+            margin: 20px 0;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            color: #212121;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 0.875rem;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            border-color: #4169E1;
+            box-shadow: 0 0 0 3px rgba(65, 105, 225, 0.1);
+            outline: none;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background-color: #4169E1;
+            color: #FFFFFF;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            background-color: #2E4BC7;
+        }
+        
+        .forgot-password {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .forgot-password a {
+            color: #4169E1;
+            text-decoration: none;
+            font-size: 0.875rem;
+        }
+        
+        .forgot-password a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+            
+            .login-logo img {
+                height: 100px;
+                max-height: 100px;
+            }
+            
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-overlay"></div>
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="/images/longevity-india-logo.png" alt="Longevity India" />
+            </div>
+            
+            <h1 class="login-title">Welcome to BHARAT Study Portal</h1>
+            <p class="login-subtitle">Advancing Aging Research in India</p>
+            
+            <!-- Login Form -->
+            <form class="login-form" id="loginForm" action="/openspecimen/rest/ng/sessions" method="POST">
+                <div class="form-group">
+                    <label for="username">Username / Email</label>
+                    <input type="text" id="username" name="loginName" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">Sign In</button>
+                
+                <div class="forgot-password">
+                    <a href="/openspecimen/#/forgot-password">Forgot your password?</a>
+                </div>
+            </form>
+            
+            <div class="study-info">
+                <h4>BHARAT Study</h4>
+                <p>Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions - A comprehensive longitudinal study investigating aging biomarkers in the Indian population.</p>
+            </div>
+            
+            <div class="study-info" style="margin-top: 15px; border-left-color: #20B2AA;">
+                <h4 style="color: #20B2AA;">Study Features</h4>
+                <p>• Multi-omics analysis (genomics, proteomics, metabolomics)<br>
+                • Longitudinal design with 4 visits over 24 months<br>
+                • Age cohorts from 20-70 years<br>
+                • Indian population-specific demographics</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const loginData = {
+                loginName: formData.get('loginName'),
+                password: formData.get('password'),
+                domainName: 'openspecimen'
+            };
+            
+            fetch('/openspecimen/rest/ng/sessions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(loginData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Login failed');
+            })
+            .then(data => {
+                // Store authentication token
+                localStorage.setItem('osAuthToken', data.token);
+                // Redirect to main application
+                window.location.href = '/openspecimen/';
+            })
+            .catch(error => {
+                alert('Login failed. Please check your credentials and try again.');
+                console.error('Login error:', error);
+            });
+        });
+        
+        // Add loading animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginCard = document.querySelector('.login-card');
+            loginCard.style.opacity = '0';
+            loginCard.style.transform = 'translateY(20px)';
+            
+            setTimeout(() => {
+                loginCard.style.transition = 'all 0.5s ease';
+                loginCard.style.opacity = '1';
+                loginCard.style.transform = 'translateY(0)';
+            }, 100);
+        });
+    </script>
+</body>
+</html>

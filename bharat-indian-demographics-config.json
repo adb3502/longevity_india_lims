@@ -1,0 +1,628 @@
+{
+  "indianDemographics": {
+    "name": "BHARAT Study Indian Population Demographics",
+    "description": "Comprehensive demographic data collection tailored for Indian population in aging research",
+    "version": "1.0",
+    "dateCreated": "2025-01-24",
+    
+    "participantDemographics": {
+      "basicInformation": [
+        {
+          "name": "firstName",
+          "caption": "First Name",
+          "type": "STRING",
+          "mandatory": true,
+          "maxLength": 50,
+          "note": "Legal first name as per government ID"
+        },
+        {
+          "name": "middleName",
+          "caption": "Middle Name / Father's Name",
+          "type": "STRING",
+          "mandatory": false,
+          "maxLength": 50,
+          "note": "Middle name or father's name if applicable"
+        },
+        {
+          "name": "lastName",
+          "caption": "Last Name / Surname",
+          "type": "STRING",
+          "mandatory": true,
+          "maxLength": 50,
+          "note": "Family name or surname"
+        },
+        {
+          "name": "localName",
+          "caption": "Name in Local Language",
+          "type": "STRING",
+          "mandatory": false,
+          "maxLength": 100,
+          "note": "Name written in local script (Devanagari, Tamil, etc.)"
+        },
+        {
+          "name": "gender",
+          "caption": "Gender",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Male", "conceptCode": "MALE"},
+            {"value": "Female", "conceptCode": "FEMALE"},
+            {"value": "Other", "conceptCode": "OTHER"},
+            {"value": "Prefer not to say", "conceptCode": "PREFER_NOT_SAY"}
+          ]
+        },
+        {
+          "name": "dateOfBirth",
+          "caption": "Date of Birth",
+          "type": "DATE",
+          "mandatory": true,
+          "maxDate": "current_date",
+          "note": "Must be between 20-70 years for BHARAT Study"
+        }
+      ],
+      
+      "geographicInformation": [
+        {
+          "name": "birthState",
+          "caption": "State of Birth",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Andhra Pradesh", "conceptCode": "AP"},
+            {"value": "Arunachal Pradesh", "conceptCode": "AR"},
+            {"value": "Assam", "conceptCode": "AS"},
+            {"value": "Bihar", "conceptCode": "BR"},
+            {"value": "Chhattisgarh", "conceptCode": "CG"},
+            {"value": "Goa", "conceptCode": "GA"},
+            {"value": "Gujarat", "conceptCode": "GJ"},
+            {"value": "Haryana", "conceptCode": "HR"},
+            {"value": "Himachal Pradesh", "conceptCode": "HP"},
+            {"value": "Jharkhand", "conceptCode": "JH"},
+            {"value": "Karnataka", "conceptCode": "KA"},
+            {"value": "Kerala", "conceptCode": "KL"},
+            {"value": "Madhya Pradesh", "conceptCode": "MP"},
+            {"value": "Maharashtra", "conceptCode": "MH"},
+            {"value": "Manipur", "conceptCode": "MN"},
+            {"value": "Meghalaya", "conceptCode": "ML"},
+            {"value": "Mizoram", "conceptCode": "MZ"},
+            {"value": "Nagaland", "conceptCode": "NL"},
+            {"value": "Odisha", "conceptCode": "OR"},
+            {"value": "Punjab", "conceptCode": "PB"},
+            {"value": "Rajasthan", "conceptCode": "RJ"},
+            {"value": "Sikkim", "conceptCode": "SK"},
+            {"value": "Tamil Nadu", "conceptCode": "TN"},
+            {"value": "Telangana", "conceptCode": "TS"},
+            {"value": "Tripura", "conceptCode": "TR"},
+            {"value": "Uttar Pradesh", "conceptCode": "UP"},
+            {"value": "Uttarakhand", "conceptCode": "UK"},
+            {"value": "West Bengal", "conceptCode": "WB"},
+            {"value": "Andaman and Nicobar Islands", "conceptCode": "AN"},
+            {"value": "Chandigarh", "conceptCode": "CH"},
+            {"value": "Dadra and Nagar Haveli and Daman and Diu", "conceptCode": "DH"},
+            {"value": "Delhi", "conceptCode": "DL"},
+            {"value": "Jammu and Kashmir", "conceptCode": "JK"},
+            {"value": "Ladakh", "conceptCode": "LA"},
+            {"value": "Lakshadweep", "conceptCode": "LD"},
+            {"value": "Puducherry", "conceptCode": "PY"},
+            {"value": "Outside India", "conceptCode": "FOREIGN"}
+          ]
+        },
+        {
+          "name": "currentState",
+          "caption": "Current State of Residence",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": "same_as_birthState"
+        },
+        {
+          "name": "currentDistrict",
+          "caption": "Current District",
+          "type": "STRING",
+          "mandatory": true,
+          "maxLength": 50,
+          "note": "District of current residence"
+        },
+        {
+          "name": "currentCity",
+          "caption": "Current City/Town/Village",
+          "type": "STRING",
+          "mandatory": true,
+          "maxLength": 50
+        },
+        {
+          "name": "pinCode",
+          "caption": "PIN Code",
+          "type": "STRING",
+          "mandatory": true,
+          "pattern": "^[1-9][0-9]{5}$",
+          "note": "6-digit Indian postal code"
+        },
+        {
+          "name": "residenceType",
+          "caption": "Type of Residence",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Urban", "conceptCode": "URBAN"},
+            {"value": "Semi-Urban", "conceptCode": "SEMI_URBAN"},
+            {"value": "Rural", "conceptCode": "RURAL"}
+          ]
+        },
+        {
+          "name": "yearsInCurrentLocation",
+          "caption": "Years in Current Location",
+          "type": "INTEGER",
+          "mandatory": false,
+          "minValue": 0,
+          "maxValue": 100,
+          "note": "Number of years living in current location"
+        }
+      ],
+      
+      "culturalBackground": [
+        {
+          "name": "religion",
+          "caption": "Religion",
+          "type": "DROPDOWN",
+          "mandatory": false,
+          "permissibleValues": [
+            {"value": "Hinduism", "conceptCode": "HINDU"},
+            {"value": "Islam", "conceptCode": "ISLAM"},
+            {"value": "Christianity", "conceptCode": "CHRISTIAN"},
+            {"value": "Sikhism", "conceptCode": "SIKH"},
+            {"value": "Buddhism", "conceptCode": "BUDDHIST"},
+            {"value": "Jainism", "conceptCode": "JAIN"},
+            {"value": "Judaism", "conceptCode": "JEWISH"},
+            {"value": "Zoroastrianism", "conceptCode": "ZOROASTRIAN"},
+            {"value": "Other", "conceptCode": "OTHER_RELIGION"},
+            {"value": "No Religion", "conceptCode": "NO_RELIGION"},
+            {"value": "Prefer not to say", "conceptCode": "PREFER_NOT_SAY"}
+          ]
+        },
+        {
+          "name": "caste",
+          "caption": "Caste/Community (Optional)",
+          "type": "DROPDOWN",
+          "mandatory": false,
+          "permissibleValues": [
+            {"value": "General", "conceptCode": "GENERAL"},
+            {"value": "Other Backward Class (OBC)", "conceptCode": "OBC"},
+            {"value": "Scheduled Caste (SC)", "conceptCode": "SC"},
+            {"value": "Scheduled Tribe (ST)", "conceptCode": "ST"},
+            {"value": "Prefer not to say", "conceptCode": "PREFER_NOT_SAY"}
+          ],
+          "note": "Optional field for research purposes only"
+        },
+        {
+          "name": "motherTongue",
+          "caption": "Mother Tongue",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Hindi", "conceptCode": "HI"},
+            {"value": "Bengali", "conceptCode": "BN"},
+            {"value": "Telugu", "conceptCode": "TE"},
+            {"value": "Marathi", "conceptCode": "MR"},
+            {"value": "Tamil", "conceptCode": "TA"},
+            {"value": "Gujarati", "conceptCode": "GU"},
+            {"value": "Urdu", "conceptCode": "UR"},
+            {"value": "Kannada", "conceptCode": "KN"},
+            {"value": "Odia", "conceptCode": "OR"},
+            {"value": "Malayalam", "conceptCode": "ML"},
+            {"value": "Punjabi", "conceptCode": "PA"},
+            {"value": "Assamese", "conceptCode": "AS"},
+            {"value": "Maithili", "conceptCode": "MAI"},
+            {"value": "Sanskrit", "conceptCode": "SA"},
+            {"value": "Nepali", "conceptCode": "NE"},
+            {"value": "Konkani", "conceptCode": "KOK"},
+            {"value": "Sindhi", "conceptCode": "SD"},
+            {"value": "Dogri", "conceptCode": "DOI"},
+            {"value": "Kashmiri", "conceptCode": "KS"},
+            {"value": "Manipuri", "conceptCode": "MNI"},
+            {"value": "Bodo", "conceptCode": "BRX"},
+            {"value": "Santali", "conceptCode": "SAT"},
+            {"value": "English", "conceptCode": "EN"},
+            {"value": "Other", "conceptCode": "OTHER_LANG"}
+          ]
+        },
+        {
+          "name": "languagesSpoken",
+          "caption": "Languages Spoken (Select all that apply)",
+          "type": "MULTISELECT",
+          "mandatory": true,
+          "permissibleValues": "same_as_motherTongue",
+          "note": "All languages the participant can speak fluently"
+        },
+        {
+          "name": "dietaryPattern",
+          "caption": "Dietary Pattern",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Vegetarian (Lacto-vegetarian)", "conceptCode": "LACTO_VEG"},
+            {"value": "Vegetarian (Vegan)", "conceptCode": "VEGAN"},
+            {"value": "Vegetarian (Jain)", "conceptCode": "JAIN_VEG"},
+            {"value": "Non-vegetarian", "conceptCode": "NON_VEG"},
+            {"value": "Pescatarian", "conceptCode": "PESCATARIAN"},
+            {"value": "Eggetarian", "conceptCode": "EGGETARIAN"},
+            {"value": "Flexitarian", "conceptCode": "FLEXITARIAN"}
+          ]
+        }
+      ],
+      
+      "socioeconomicFactors": [
+        {
+          "name": "education",
+          "caption": "Highest Level of Education",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "No formal education", "conceptCode": "NO_EDUCATION"},
+            {"value": "Primary (1st-5th grade)", "conceptCode": "PRIMARY"},
+            {"value": "Middle School (6th-8th grade)", "conceptCode": "MIDDLE"},
+            {"value": "Secondary (9th-10th grade)", "conceptCode": "SECONDARY"},
+            {"value": "Higher Secondary (11th-12th grade)", "conceptCode": "HIGHER_SEC"},
+            {"value": "Diploma/Certificate", "conceptCode": "DIPLOMA"},
+            {"value": "Graduate (Bachelor's degree)", "conceptCode": "GRADUATE"},
+            {"value": "Post-graduate (Master's degree)", "conceptCode": "POST_GRAD"},
+            {"value": "Professional degree (M.D., J.D., etc.)", "conceptCode": "PROFESSIONAL"},
+            {"value": "Doctoral degree (Ph.D.)", "conceptCode": "DOCTORAL"}
+          ]
+        },
+        {
+          "name": "occupation",
+          "caption": "Current Occupation",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Student", "conceptCode": "STUDENT"},
+            {"value": "Government Employee", "conceptCode": "GOVT_EMP"},
+            {"value": "Private Employee", "conceptCode": "PRIVATE_EMP"},
+            {"value": "Self-employed/Business", "conceptCode": "SELF_EMP"},
+            {"value": "Farmer", "conceptCode": "FARMER"},
+            {"value": "Agricultural Laborer", "conceptCode": "AGRI_LABOR"},
+            {"value": "Daily wage laborer", "conceptCode": "DAILY_WAGE"},
+            {"value": "Domestic worker", "conceptCode": "DOMESTIC"},
+            {"value": "Homemaker", "conceptCode": "HOMEMAKER"},
+            {"value": "Retired", "conceptCode": "RETIRED"},
+            {"value": "Unemployed", "conceptCode": "UNEMPLOYED"},
+            {"value": "Other", "conceptCode": "OTHER_OCC"}
+          ]
+        },
+        {
+          "name": "monthlyIncome",
+          "caption": "Monthly Household Income (INR)",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Below ₹10,000", "conceptCode": "INCOME_1"},
+            {"value": "₹10,000 - ₹25,000", "conceptCode": "INCOME_2"},
+            {"value": "₹25,001 - ₹50,000", "conceptCode": "INCOME_3"},
+            {"value": "₹50,001 - ₹1,00,000", "conceptCode": "INCOME_4"},
+            {"value": "₹1,00,001 - ₹2,00,000", "conceptCode": "INCOME_5"},
+            {"value": "₹2,00,001 - ₹5,00,000", "conceptCode": "INCOME_6"},
+            {"value": "Above ₹5,00,000", "conceptCode": "INCOME_7"},
+            {"value": "Prefer not to say", "conceptCode": "PREFER_NOT_SAY"}
+          ]
+        },
+        {
+          "name": "familySize",
+          "caption": "Number of Family Members in Household",
+          "type": "INTEGER",
+          "mandatory": true,
+          "minValue": 1,
+          "maxValue": 20,
+          "note": "Total number of people living in the same household"
+        },
+        {
+          "name": "maritalStatus",
+          "caption": "Marital Status",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Single/Never married", "conceptCode": "SINGLE"},
+            {"value": "Married", "conceptCode": "MARRIED"},
+            {"value": "Divorced", "conceptCode": "DIVORCED"},
+            {"value": "Separated", "conceptCode": "SEPARATED"},
+            {"value": "Widowed", "conceptCode": "WIDOWED"},
+            {"value": "Prefer not to say", "conceptCode": "PREFER_NOT_SAY"}
+          ]
+        },
+        {
+          "name": "healthInsurance",
+          "caption": "Health Insurance Coverage",
+          "type": "MULTISELECT",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Ayushman Bharat/PM-JAY", "conceptCode": "AYUSHMAN"},
+            {"value": "ESIC", "conceptCode": "ESIC"},
+            {"value": "CGHS", "conceptCode": "CGHS"},
+            {"value": "Private Health Insurance", "conceptCode": "PRIVATE_INS"},
+            {"value": "Employer Health Insurance", "conceptCode": "EMPLOYER_INS"},
+            {"value": "State Government Health Insurance", "conceptCode": "STATE_INS"},
+            {"value": "No Health Insurance", "conceptCode": "NO_INSURANCE"}
+          ]
+        }
+      ],
+      
+      "lifestyleFactors": [
+        {
+          "name": "smokingStatus",
+          "caption": "Smoking Status",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Never smoked", "conceptCode": "NEVER"},
+            {"value": "Former smoker", "conceptCode": "FORMER"},
+            {"value": "Current smoker", "conceptCode": "CURRENT"},
+            {"value": "Occasional smoker", "conceptCode": "OCCASIONAL"}
+          ]
+        },
+        {
+          "name": "tobaccoUse",
+          "caption": "Tobacco Use (Other than smoking)",
+          "type": "MULTISELECT",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Gutka/Pan masala", "conceptCode": "GUTKA"},
+            {"value": "Betel nut (Supari)", "conceptCode": "BETEL_NUT"},
+            {"value": "Paan with tobacco", "conceptCode": "PAAN_TOBACCO"},
+            {"value": "Khaini", "conceptCode": "KHAINI"},
+            {"value": "Zarda", "conceptCode": "ZARDA"},
+            {"value": "Snuff", "conceptCode": "SNUFF"},
+            {"value": "E-cigarettes/Vaping", "conceptCode": "E_CIGARETTE"},
+            {"value": "None", "conceptCode": "NONE"}
+          ]
+        },
+        {
+          "name": "alcoholConsumption",
+          "caption": "Alcohol Consumption",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Never consumed", "conceptCode": "NEVER"},
+            {"value": "Former drinker", "conceptCode": "FORMER"},
+            {"value": "Occasional (less than once a week)", "conceptCode": "OCCASIONAL"},
+            {"value": "Regular (1-3 times per week)", "conceptCode": "REGULAR"},
+            {"value": "Daily", "conceptCode": "DAILY"}
+          ]
+        },
+        {
+          "name": "physicalActivity",
+          "caption": "Physical Activity Level",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Sedentary (little to no exercise)", "conceptCode": "SEDENTARY"},
+            {"value": "Light activity (1-2 days/week)", "conceptCode": "LIGHT"},
+            {"value": "Moderate activity (3-4 days/week)", "conceptCode": "MODERATE"},
+            {"value": "High activity (5-6 days/week)", "conceptCode": "HIGH"},
+            {"value": "Very high activity (daily)", "conceptCode": "VERY_HIGH"}
+          ]
+        },
+        {
+          "name": "yogaMeditation",
+          "caption": "Yoga/Meditation Practice",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Never", "conceptCode": "NEVER"},
+            {"value": "Rarely (less than once a month)", "conceptCode": "RARELY"},
+            {"value": "Sometimes (few times a month)", "conceptCode": "SOMETIMES"},
+            {"value": "Regular (weekly)", "conceptCode": "WEEKLY"},
+            {"value": "Daily", "conceptCode": "DAILY"}
+          ]
+        },
+        {
+          "name": "sleepDuration",
+          "caption": "Average Sleep Duration (hours per night)",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Less than 5 hours", "conceptCode": "SLEEP_LT5"},
+            {"value": "5-6 hours", "conceptCode": "SLEEP_5_6"},
+            {"value": "6-7 hours", "conceptCode": "SLEEP_6_7"},
+            {"value": "7-8 hours", "conceptCode": "SLEEP_7_8"},
+            {"value": "8-9 hours", "conceptCode": "SLEEP_8_9"},
+            {"value": "More than 9 hours", "conceptCode": "SLEEP_GT9"}
+          ]
+        }
+      ],
+      
+      "medicalHistory": [
+        {
+          "name": "chronicConditions",
+          "caption": "Chronic Medical Conditions",
+          "type": "MULTISELECT",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Diabetes (Type 1)", "conceptCode": "DIABETES_T1"},
+            {"value": "Diabetes (Type 2)", "conceptCode": "DIABETES_T2"},
+            {"value": "Hypertension", "conceptCode": "HYPERTENSION"},
+            {"value": "Heart disease", "conceptCode": "HEART_DISEASE"},
+            {"value": "Stroke", "conceptCode": "STROKE"},
+            {"value": "Kidney disease", "conceptCode": "KIDNEY_DISEASE"},
+            {"value": "Liver disease", "conceptCode": "LIVER_DISEASE"},
+            {"value": "Cancer", "conceptCode": "CANCER"},
+            {"value": "Arthritis", "conceptCode": "ARTHRITIS"},
+            {"value": "Osteoporosis", "conceptCode": "OSTEOPOROSIS"},
+            {"value": "Thyroid disorders", "conceptCode": "THYROID"},
+            {"value": "Depression", "conceptCode": "DEPRESSION"},
+            {"value": "Anxiety", "conceptCode": "ANXIETY"},
+            {"value": "Asthma", "conceptCode": "ASTHMA"},
+            {"value": "COPD", "conceptCode": "COPD"},
+            {"value": "None", "conceptCode": "NONE"}
+          ]
+        },
+        {
+          "name": "familyHistory",
+          "caption": "Family History of Diseases",
+          "type": "MULTISELECT",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Diabetes", "conceptCode": "FAM_DIABETES"},
+            {"value": "Heart disease", "conceptCode": "FAM_HEART"},
+            {"value": "Cancer", "conceptCode": "FAM_CANCER"},
+            {"value": "Stroke", "conceptCode": "FAM_STROKE"},
+            {"value": "Hypertension", "conceptCode": "FAM_HTN"},
+            {"value": "Alzheimer's/Dementia", "conceptCode": "FAM_ALZHEIMER"},
+            {"value": "Mental health disorders", "conceptCode": "FAM_MENTAL"},
+            {"value": "Kidney disease", "conceptCode": "FAM_KIDNEY"},
+            {"value": "Liver disease", "conceptCode": "FAM_LIVER"},
+            {"value": "Thyroid disorders", "conceptCode": "FAM_THYROID"},
+            {"value": "None known", "conceptCode": "NONE_KNOWN"},
+            {"value": "Unknown/Don't know", "conceptCode": "UNKNOWN"}
+          ]
+        },
+        {
+          "name": "medications",
+          "caption": "Current Regular Medications",
+          "type": "TEXT",
+          "mandatory": false,
+          "maxLength": 500,
+          "note": "List all regular medications including Ayurvedic/herbal supplements"
+        },
+        {
+          "name": "ayurvedicMedicine",
+          "caption": "Use of Ayurvedic/Traditional Medicine",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Never", "conceptCode": "NEVER"},
+            {"value": "Rarely", "conceptCode": "RARELY"},
+            {"value": "Sometimes", "conceptCode": "SOMETIMES"},
+            {"value": "Regular use", "conceptCode": "REGULAR"},
+            {"value": "Primary healthcare approach", "conceptCode": "PRIMARY"}
+          ]
+        }
+      ],
+      
+      "contactInformation": [
+        {
+          "name": "primaryPhone",
+          "caption": "Primary Phone Number",
+          "type": "STRING",
+          "mandatory": true,
+          "pattern": "^[6-9][0-9]{9}$",
+          "note": "10-digit Indian mobile number starting with 6, 7, 8, or 9"
+        },
+        {
+          "name": "alternatePhone",
+          "caption": "Alternate Phone Number",
+          "type": "STRING",
+          "mandatory": false,
+          "pattern": "^[6-9][0-9]{9}$"
+        },
+        {
+          "name": "emailAddress",
+          "caption": "Email Address",
+          "type": "STRING",
+          "mandatory": false,
+          "pattern": "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
+        },
+        {
+          "name": "preferredContactMethod",
+          "caption": "Preferred Contact Method",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": [
+            {"value": "Phone call", "conceptCode": "PHONE"},
+            {"value": "SMS", "conceptCode": "SMS"},
+            {"value": "WhatsApp", "conceptCode": "WHATSAPP"},
+            {"value": "Email", "conceptCode": "EMAIL"},
+            {"value": "Postal mail", "conceptCode": "POSTAL"}
+          ]
+        },
+        {
+          "name": "preferredLanguage",
+          "caption": "Preferred Language for Communication",
+          "type": "DROPDOWN",
+          "mandatory": true,
+          "permissibleValues": "same_as_motherTongue"
+        }
+      ]
+    },
+    
+    "validationRules": {
+      "ageValidation": {
+        "minAge": 20,
+        "maxAge": 70,
+        "description": "Participants must be between 20-70 years for BHARAT Study"
+      },
+      "phoneValidation": {
+        "pattern": "^[6-9][0-9]{9}$",
+        "description": "Valid Indian mobile number"
+      },
+      "pinCodeValidation": {
+        "pattern": "^[1-9][0-9]{5}$",
+        "description": "Valid Indian PIN code"
+      },
+      "cohortAssignment": {
+        "AG1": {"minAge": 20, "maxAge": 30},
+        "AG2": {"minAge": 31, "maxAge": 40},
+        "AG3": {"minAge": 41, "maxAge": 50},
+        "AG4": {"minAge": 51, "maxAge": 60},
+        "AG5": {"minAge": 61, "maxAge": 70}
+      }
+    },
+    
+    "dataPrivacy": {
+      "sensitiveFields": [
+        "religion",
+        "caste",
+        "monthlyIncome",
+        "primaryPhone",
+        "alternatePhone",
+        "emailAddress"
+      ],
+      "optionalFields": [
+        "middleName",
+        "localName",
+        "religion",
+        "caste",
+        "yearsInCurrentLocation",
+        "alternatePhone",
+        "emailAddress",
+        "medications"
+      ],
+      "encryptionRequired": [
+        "primaryPhone",
+        "alternatePhone",
+        "emailAddress",
+        "pinCode"
+      ]
+    },
+    
+    "reportingCategories": {
+      "demographic": [
+        "age",
+        "gender",
+        "birthState",
+        "currentState",
+        "residenceType"
+      ],
+      "socioeconomic": [
+        "education",
+        "occupation",
+        "monthlyIncome",
+        "healthInsurance"
+      ],
+      "cultural": [
+        "religion",
+        "motherTongue",
+        "dietaryPattern"
+      ],
+      "lifestyle": [
+        "smokingStatus",
+        "alcoholConsumption",
+        "physicalActivity",
+        "sleepDuration"
+      ],
+      "health": [
+        "chronicConditions",
+        "familyHistory",
+        "ayurvedicMedicine"
+      ]
+    }
+  }
+}

@@ -1,0 +1,333 @@
+{
+  "longevityIndiaBranding": {
+    "name": "Longevity India - BHARAT Study Branding Configuration",
+    "description": "Custom branding and visual identity for Longevity India and BHARAT Study",
+    "version": "1.0",
+    "dateCreated": "2025-01-24",
+    
+    "brandIdentity": {
+      "organizationName": "Longevity India",
+      "studyName": "BHARAT Study",
+      "fullStudyName": "Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions",
+      "tagline": "Advancing Aging Research in India",
+      "logoPath": "/images/Longevity horizontal logo main.png",
+      "iconPath": "/images/longevity-india-icon.png",
+      "faviconPath": "/images/longevity-india-favicon.ico"
+    },
+    
+    "colorPalette": {
+      "primary": {
+        "main": "#4169E1",
+        "light": "#6B8BF5",
+        "dark": "#2E4BC7",
+        "description": "Royal blue representing innovation and trust"
+      },
+      "secondary": {
+        "main": "#20B2AA",
+        "light": "#4DD4CC",
+        "dark": "#178B85",
+        "description": "Light sea green representing growth and vitality"
+      },
+      "accent": {
+        "main": "#00CED1",
+        "light": "#33D9DC",
+        "dark": "#00A5A8",
+        "description": "Dark turquoise representing clarity and precision"
+      },
+      "neutral": {
+        "background": "#FAFAFA",
+        "surface": "#FFFFFF",
+        "text": "#212121",
+        "textSecondary": "#757575",
+        "border": "#E0E0E0",
+        "disabled": "#BDBDBD"
+      },
+      "semantic": {
+        "success": "#4CAF50",
+        "warning": "#FF9800",
+        "error": "#F44336",
+        "info": "#2196F3"
+      },
+      "aging": {
+        "young": "#4CAF50",
+        "middleAge": "#FF9800",
+        "senior": "#9C27B0",
+        "gradient": "linear-gradient(135deg, #4CAF50 0%, #FF9800 50%, #9C27B0 100%)"
+      }
+    },
+    
+    "typography": {
+      "primary": {
+        "fontFamily": "Inter, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+        "weights": ["300", "400", "500", "600", "700"],
+        "description": "Modern, clean font for body text and UI elements"
+      },
+      "heading": {
+        "fontFamily": "Poppins, 'Inter', sans-serif",
+        "weights": ["400", "500", "600", "700"],
+        "description": "Professional font for headings and titles"
+      },
+      "monospace": {
+        "fontFamily": "'JetBrains Mono', 'Fira Code', 'Courier New', monospace",
+        "weights": ["400", "500"],
+        "description": "Code and data display font"
+      },
+      "sizes": {
+        "h1": "2.5rem",
+        "h2": "2rem",
+        "h3": "1.75rem",
+        "h4": "1.5rem",
+        "h5": "1.25rem",
+        "h6": "1rem",
+        "body": "0.875rem",
+        "caption": "0.75rem",
+        "small": "0.625rem"
+      }
+    },
+    
+    "layout": {
+      "header": {
+        "height": "64px",
+        "backgroundColor": "#4169E1",
+        "textColor": "#FFFFFF",
+        "logoHeight": "40px",
+        "padding": "12px 24px"
+      },
+      "sidebar": {
+        "width": "280px",
+        "backgroundColor": "#FAFAFA",
+        "borderColor": "#E0E0E0",
+        "activeItemColor": "#4169E1"
+      },
+      "content": {
+        "backgroundColor": "#FFFFFF",
+        "padding": "24px",
+        "borderRadius": "8px",
+        "boxShadow": "0 2px 8px rgba(0, 0, 0, 0.1)"
+      },
+      "footer": {
+        "height": "48px",
+        "backgroundColor": "#F5F5F5",
+        "textColor": "#757575",
+        "padding": "12px 24px"
+      }
+    },
+    
+    "components": {
+      "buttons": {
+        "primary": {
+          "backgroundColor": "#4169E1",
+          "color": "#FFFFFF",
+          "borderRadius": "6px",
+          "padding": "8px 16px",
+          "fontWeight": "500",
+          "hover": {
+            "backgroundColor": "#2E4BC7"
+          }
+        },
+        "secondary": {
+          "backgroundColor": "transparent",
+          "color": "#4169E1",
+          "border": "2px solid #4169E1",
+          "borderRadius": "6px",
+          "padding": "8px 16px",
+          "fontWeight": "500",
+          "hover": {
+            "backgroundColor": "#4169E1",
+            "color": "#FFFFFF"
+          }
+        },
+        "success": {
+          "backgroundColor": "#4CAF50",
+          "color": "#FFFFFF",
+          "borderRadius": "6px",
+          "padding": "8px 16px"
+        }
+      },
+      "cards": {
+        "default": {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": "12px",
+          "boxShadow": "0 4px 12px rgba(0, 0, 0, 0.1)",
+          "padding": "20px",
+          "border": "1px solid #E0E0E0"
+        },
+        "highlighted": {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": "12px",
+          "boxShadow": "0 6px 20px rgba(65, 105, 225, 0.15)",
+          "padding": "20px",
+          "border": "2px solid #4169E1"
+        }
+      },
+      "forms": {
+        "input": {
+          "borderColor": "#E0E0E0",
+          "borderRadius": "6px",
+          "padding": "10px 12px",
+          "fontSize": "0.875rem",
+          "focus": {
+            "borderColor": "#4169E1",
+            "boxShadow": "0 0 0 3px rgba(65, 105, 225, 0.1)"
+          }
+        },
+        "label": {
+          "color": "#212121",
+          "fontSize": "0.875rem",
+          "fontWeight": "500",
+          "marginBottom": "6px"
+        }
+      },
+      "tables": {
+        "header": {
+          "backgroundColor": "#F5F5F5",
+          "color": "#212121",
+          "fontWeight": "600",
+          "padding": "12px 16px",
+          "borderBottom": "2px solid #E0E0E0"
+        },
+        "row": {
+          "padding": "12px 16px",
+          "borderBottom": "1px solid #E0E0E0",
+          "hover": {
+            "backgroundColor": "#FAFAFA"
+          }
+        },
+        "alternate": {
+          "backgroundColor": "#F9F9F9"
+        }
+      }
+    },
+    
+    "agingResearchTheme": {
+      "ageGroupColors": {
+        "AG1": "#4CAF50",
+        "AG2": "#8BC34A", 
+        "AG3": "#FF9800",
+        "AG4": "#FF5722",
+        "AG5": "#9C27B0"
+      },
+      "biomarkerCategories": {
+        "genomics": "#2196F3",
+        "proteomics": "#9C27B0",
+        "metabolomics": "#FF9800",
+        "epigenomics": "#4CAF50",
+        "inflammation": "#F44336",
+        "clinical": "#607D8B"
+      },
+      "visitStages": {
+        "V0": "#4CAF50",
+        "V1": "#FF9800",
+        "V2": "#FF5722",
+        "V3": "#9C27B0"
+      }
+    },
+    
+    "customizations": {
+      "loginPage": {
+        "backgroundImage": "/images/longevity-india-login-bg.jpg",
+        "overlayColor": "rgba(65, 105, 225, 0.8)",
+        "logoSize": "120px",
+        "welcomeText": "Welcome to BHARAT Study Portal",
+        "subtitle": "Advancing Aging Research in India"
+      },
+      "dashboard": {
+        "heroSection": {
+          "title": "BHARAT Study Dashboard",
+          "subtitle": "Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions",
+          "backgroundGradient": "linear-gradient(135deg, #4169E1 0%, #20B2AA 100%)",
+          "textColor": "#FFFFFF"
+        },
+        "quickStats": {
+          "backgroundColor": "#FFFFFF",
+          "borderRadius": "12px",
+          "iconColors": {
+            "participants": "#4CAF50",
+            "samples": "#2196F3",
+            "analyses": "#FF9800",
+            "visits": "#9C27B0"
+          }
+        }
+      },
+      "navigation": {
+        "menuItems": [
+          {
+            "label": "BHARAT Dashboard",
+            "icon": "dashboard",
+            "color": "#4169E1"
+          },
+          {
+            "label": "Participant Management",
+            "icon": "people",
+            "color": "#20B2AA"
+          },
+          {
+            "label": "Sample Tracking",
+            "icon": "biotech",
+            "color": "#00CED1"
+          },
+          {
+            "label": "Multi-Omics Analysis",
+            "icon": "science",
+            "color": "#9C27B0"
+          },
+          {
+            "label": "Reports & Analytics",
+            "icon": "analytics",
+            "color": "#2196F3"
+          }
+        ]
+      }
+    },
+    
+    "responsiveDesign": {
+      "breakpoints": {
+        "mobile": "768px",
+        "tablet": "1024px",
+        "desktop": "1200px",
+        "widescreen": "1400px"
+      },
+      "mobileBehavior": {
+        "sidebarCollapsible": true,
+        "headerSticky": true,
+        "touchOptimized": true,
+        "minimumButtonSize": "44px"
+      }
+    },
+    
+    "accessibility": {
+      "colorContrast": {
+        "minimumRatio": "4.5:1",
+        "preferredRatio": "7:1",
+        "validatedCombinations": [
+          {"background": "#4169E1", "text": "#FFFFFF", "ratio": "7.8:1"},
+          {"background": "#FFFFFF", "text": "#212121", "ratio": "12.6:1"},
+          {"background": "#F5F5F5", "text": "#212121", "ratio": "11.8:1"}
+        ]
+      },
+      "focusIndicators": {
+        "color": "#4169E1",
+        "width": "3px",
+        "style": "solid",
+        "offset": "2px"
+      },
+      "textSizing": {
+        "scalable": true,
+        "minimumSize": "16px",
+        "maximumScale": "200%"
+      }
+    },
+    
+    "printStyles": {
+      "colors": {
+        "convertToGrayscale": true,
+        "preserveLogos": true
+      },
+      "layout": {
+        "removeBackgrounds": true,
+        "optimizeForPrint": true,
+        "pageBreaks": "avoid-inside"
+      }
+    }
+  }
+}

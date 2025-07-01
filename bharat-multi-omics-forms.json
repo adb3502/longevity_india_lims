@@ -1,0 +1,680 @@
+{
+  "multiOmicsForms": {
+    "name": "BHARAT Study Multi-Omics Analysis Forms",
+    "description": "Comprehensive forms for tracking genomics, proteomics, metabolomics, and epigenomics analysis in the BHARAT Study",
+    "version": "1.0",
+    "dateCreated": "2025-01-24",
+    
+    "forms": [
+      {
+        "name": "BHARAT_DNA_Extraction",
+        "caption": "BHARAT Study DNA Extraction",
+        "entityType": "SpecimenEvent",
+        "multiRecord": true,
+        "fields": [
+          {
+            "name": "sampleId",
+            "caption": "Sample ID",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 50,
+            "pattern": "^BHARAT-AG[1-5]-P\\d{4}-V[0-3]-[A-Z]{2,4}\\d{2}$"
+          },
+          {
+            "name": "extractionDate",
+            "caption": "Extraction Date",
+            "type": "DATE",
+            "mandatory": true,
+            "maxDate": "current_date"
+          },
+          {
+            "name": "extractionMethod",
+            "caption": "Extraction Method",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Qiagen DNeasy Blood & Tissue Kit", "conceptCode": "QIAGEN_DNEASY"},
+              {"value": "Promega Wizard Genomic DNA Purification Kit", "conceptCode": "PROMEGA_WIZARD"},
+              {"value": "ThermoFisher PureLink Genomic DNA Kit", "conceptCode": "THERMO_PURELINK"},
+              {"value": "Manual Phenol-Chloroform", "conceptCode": "PHENOL_CHLOROFORM"},
+              {"value": "Other", "conceptCode": "OTHER"}
+            ]
+          },
+          {
+            "name": "kitLotNumber",
+            "caption": "Kit Lot Number",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 20,
+            "pattern": "^[A-Z0-9-]+$"
+          },
+          {
+            "name": "technicianId",
+            "caption": "Technician",
+            "type": "USER",
+            "mandatory": true,
+            "excludeType": "CONTACT"
+          },
+          {
+            "name": "dnaYield",
+            "caption": "DNA Yield (ng/μl)",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 0,
+            "maxValue": 5000
+          },
+          {
+            "name": "extractedVolume",
+            "caption": "Extracted Volume (μl)",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 0,
+            "maxValue": 200
+          },
+          {
+            "name": "ratio260280",
+            "caption": "260/280 Ratio",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 1.6,
+            "maxValue": 2.1
+          },
+          {
+            "name": "ratio260230",
+            "caption": "260/230 Ratio",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 1.8,
+            "maxValue": 2.4
+          },
+          {
+            "name": "qcStatus",
+            "caption": "QC Status",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Pass", "conceptCode": "PASS"},
+              {"value": "Fail", "conceptCode": "FAIL"},
+              {"value": "Repeat", "conceptCode": "REPEAT"}
+            ]
+          },
+          {
+            "name": "storageLocation",
+            "caption": "Storage Location",
+            "type": "STRING",
+            "mandatory": false,
+            "maxLength": 100
+          },
+          {
+            "name": "notes",
+            "caption": "Notes",
+            "type": "TEXT",
+            "mandatory": false,
+            "maxLength": 500
+          }
+        ]
+      },
+      
+      {
+        "name": "BHARAT_Genomics_Analysis",
+        "caption": "BHARAT Study Genomics Analysis",
+        "entityType": "SpecimenEvent",
+        "multiRecord": true,
+        "fields": [
+          {
+            "name": "sampleId",
+            "caption": "Sample ID",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 50
+          },
+          {
+            "name": "analysisDate",
+            "caption": "Analysis Date",
+            "type": "DATE",
+            "mandatory": true
+          },
+          {
+            "name": "sequencingPlatform",
+            "caption": "Sequencing Platform",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Illumina NovaSeq 6000", "conceptCode": "ILLUMINA_NOVASEQ"},
+              {"value": "Illumina HiSeq X Ten", "conceptCode": "ILLUMINA_HISEQ"},
+              {"value": "PacBio Sequel II", "conceptCode": "PACBIO_SEQUEL"},
+              {"value": "Oxford Nanopore MinION", "conceptCode": "ONT_MINION"},
+              {"value": "Oxford Nanopore PromethION", "conceptCode": "ONT_PROMETHION"}
+            ]
+          },
+          {
+            "name": "libraryPrepMethod",
+            "caption": "Library Preparation Method",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "TruSeq DNA PCR-Free", "conceptCode": "TRUSEQ_PCRFREE"},
+              {"value": "TruSeq DNA Nano", "conceptCode": "TRUSEQ_NANO"},
+              {"value": "Nextera DNA Flex", "conceptCode": "NEXTERA_FLEX"},
+              {"value": "SMRTbell Template Prep", "conceptCode": "SMRTBELL"},
+              {"value": "Oxford Nanopore Ligation", "conceptCode": "ONT_LIGATION"}
+            ]
+          },
+          {
+            "name": "sequencingDepth",
+            "caption": "Sequencing Depth (X coverage)",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 1,
+            "maxValue": 100
+          },
+          {
+            "name": "readLength",
+            "caption": "Read Length (bp)",
+            "type": "INTEGER",
+            "mandatory": true,
+            "minValue": 50,
+            "maxValue": 500
+          },
+          {
+            "name": "q30Percentage",
+            "caption": "Q30% Quality Score",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 70,
+            "maxValue": 100
+          },
+          {
+            "name": "totalReads",
+            "caption": "Total Reads Generated (millions)",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 1,
+            "maxValue": 10000
+          },
+          {
+            "name": "fastqFilePath",
+            "caption": "FASTQ File Path",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 500
+          },
+          {
+            "name": "bamFilePath",
+            "caption": "BAM File Path",
+            "type": "STRING",
+            "mandatory": false,
+            "maxLength": 500
+          },
+          {
+            "name": "analysisPipelineVersion",
+            "caption": "Analysis Pipeline Version",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 50
+          },
+          {
+            "name": "referenceGenome",
+            "caption": "Reference Genome",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "GRCh38/hg38", "conceptCode": "GRCH38"},
+              {"value": "GRCh37/hg19", "conceptCode": "GRCH37"},
+              {"value": "T2T-CHM13", "conceptCode": "T2T_CHM13"}
+            ]
+          }
+        ]
+      },
+      
+      {
+        "name": "BHARAT_Proteomics_Analysis",
+        "caption": "BHARAT Study Proteomics Analysis",
+        "entityType": "SpecimenEvent",
+        "multiRecord": true,
+        "fields": [
+          {
+            "name": "sampleId",
+            "caption": "Sample ID",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 50
+          },
+          {
+            "name": "analysisDate",
+            "caption": "Analysis Date",
+            "type": "DATE",
+            "mandatory": true
+          },
+          {
+            "name": "msPlatform",
+            "caption": "MS Platform",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Thermo Orbitrap Fusion Lumos", "conceptCode": "THERMO_FUSION"},
+              {"value": "Waters Synapt G2-Si", "conceptCode": "WATERS_SYNAPT"},
+              {"value": "Agilent 6550 Q-TOF", "conceptCode": "AGILENT_QTOF"},
+              {"value": "Bruker timsTOF Pro", "conceptCode": "BRUKER_TIMSTOF"},
+              {"value": "Sciex TripleTOF 6600", "conceptCode": "SCIEX_TRIPLETOF"}
+            ]
+          },
+          {
+            "name": "samplePrepMethod",
+            "caption": "Sample Preparation Method",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "In-solution trypsin digestion", "conceptCode": "INSOL_TRYPSIN"},
+              {"value": "Filter-aided sample preparation (FASP)", "conceptCode": "FASP"},
+              {"value": "Single-pot solid-phase-enhanced sample preparation (SP3)", "conceptCode": "SP3"},
+              {"value": "Suspension trapping (S-Trap)", "conceptCode": "STRAP"},
+              {"value": "TMT labeling", "conceptCode": "TMT"}
+            ]
+          },
+          {
+            "name": "proteinConcentration",
+            "caption": "Protein Concentration (μg/μl)",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 0.1,
+            "maxValue": 100
+          },
+          {
+            "name": "proteinsIdentified",
+            "caption": "Number of Proteins Identified",
+            "type": "INTEGER",
+            "mandatory": true,
+            "minValue": 100,
+            "maxValue": 20000
+          },
+          {
+            "name": "uniquePeptides",
+            "caption": "Unique Peptides Count",
+            "type": "INTEGER",
+            "mandatory": true,
+            "minValue": 500,
+            "maxValue": 100000
+          },
+          {
+            "name": "searchDatabase",
+            "caption": "Search Database",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "UniProt Human (SwissProt)", "conceptCode": "UNIPROT_SWISS"},
+              {"value": "UniProt Human (TrEMBL)", "conceptCode": "UNIPROT_TREMBL"},
+              {"value": "NCBI RefSeq Human", "conceptCode": "NCBI_REFSEQ"},
+              {"value": "Ensembl Human", "conceptCode": "ENSEMBL"}
+            ]
+          },
+          {
+            "name": "fdrThreshold",
+            "caption": "FDR Threshold (%)",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 0.1,
+            "maxValue": 5.0,
+            "defaultValue": 1.0
+          },
+          {
+            "name": "rawFileLocation",
+            "caption": "Raw File Location",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 500
+          },
+          {
+            "name": "searchEngine",
+            "caption": "Search Engine",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "MaxQuant", "conceptCode": "MAXQUANT"},
+              {"value": "Proteome Discoverer", "conceptCode": "PD"},
+              {"value": "Sequest", "conceptCode": "SEQUEST"},
+              {"value": "Mascot", "conceptCode": "MASCOT"},
+              {"value": "X!Tandem", "conceptCode": "XTANDEM"}
+            ]
+          }
+        ]
+      },
+      
+      {
+        "name": "BHARAT_Metabolomics_Analysis",
+        "caption": "BHARAT Study Metabolomics Analysis",
+        "entityType": "SpecimenEvent",
+        "multiRecord": true,
+        "fields": [
+          {
+            "name": "sampleId",
+            "caption": "Sample ID",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 50
+          },
+          {
+            "name": "analysisDate",
+            "caption": "Analysis Date",
+            "type": "DATE",
+            "mandatory": true
+          },
+          {
+            "name": "analysisType",
+            "caption": "Analysis Type",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Targeted", "conceptCode": "TARGETED"},
+              {"value": "Untargeted", "conceptCode": "UNTARGETED"},
+              {"value": "Semi-targeted", "conceptCode": "SEMI_TARGETED"}
+            ]
+          },
+          {
+            "name": "lcmsMethod",
+            "caption": "LC-MS Method",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "HILIC positive mode", "conceptCode": "HILIC_POS"},
+              {"value": "HILIC negative mode", "conceptCode": "HILIC_NEG"},
+              {"value": "C18 positive mode", "conceptCode": "C18_POS"},
+              {"value": "C18 negative mode", "conceptCode": "C18_NEG"},
+              {"value": "Lipidyzer", "conceptCode": "LIPIDYZER"}
+            ]
+          },
+          {
+            "name": "instrumentPlatform",
+            "caption": "Instrument Platform",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Thermo Q Exactive HF-X", "conceptCode": "THERMO_QE_HFX"},
+              {"value": "Waters Acquity UPLC-MS/MS", "conceptCode": "WATERS_ACQUITY"},
+              {"value": "Agilent 6470 Triple Quad", "conceptCode": "AGILENT_6470"},
+              {"value": "Sciex QTRAP 6500+", "conceptCode": "SCIEX_QTRAP"},
+              {"value": "Bruker Impact II", "conceptCode": "BRUKER_IMPACT"}
+            ]
+          },
+          {
+            "name": "metabolitesDetected",
+            "caption": "Number of Metabolites Detected",
+            "type": "INTEGER",
+            "mandatory": true,
+            "minValue": 50,
+            "maxValue": 5000
+          },
+          {
+            "name": "internalStandards",
+            "caption": "Internal Standards Used",
+            "type": "MULTISELECT",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "13C6-Glucose", "conceptCode": "C13_GLUCOSE"},
+              {"value": "15N-Amino acid mix", "conceptCode": "N15_AMINO"},
+              {"value": "Deuterated fatty acids", "conceptCode": "D_FATTY_ACIDS"},
+              {"value": "13C-Lactate", "conceptCode": "C13_LACTATE"},
+              {"value": "Stable isotope dilution mix", "conceptCode": "SID_MIX"}
+            ]
+          },
+          {
+            "name": "batchInformation",
+            "caption": "Batch Information",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 50
+          },
+          {
+            "name": "qcSamplePerformance",
+            "caption": "QC Sample Performance (%CV)",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 5,
+            "maxValue": 30
+          },
+          {
+            "name": "peakQualityScore",
+            "caption": "Peak Quality Score (1-10)",
+            "type": "FLOAT",
+            "mandatory": true,
+            "minValue": 1,
+            "maxValue": 10
+          },
+          {
+            "name": "dataProcessingSoftware",
+            "caption": "Data Processing Software",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Compound Discoverer", "conceptCode": "COMP_DISC"},
+              {"value": "MassHunter", "conceptCode": "MASSHUNTER"},
+              {"value": "XCMS", "conceptCode": "XCMS"},
+              {"value": "MetaboAnalyst", "conceptCode": "METABOANALYST"},
+              {"value": "MZmine", "conceptCode": "MZMINE"}
+            ]
+          }
+        ]
+      },
+      
+      {
+        "name": "BHARAT_Epigenomics_Analysis",
+        "caption": "BHARAT Study Epigenomics Analysis",
+        "entityType": "SpecimenEvent",
+        "multiRecord": true,
+        "fields": [
+          {
+            "name": "sampleId",
+            "caption": "Sample ID",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 50
+          },
+          {
+            "name": "analysisDate",
+            "caption": "Analysis Date",
+            "type": "DATE",
+            "mandatory": true
+          },
+          {
+            "name": "analysisType",
+            "caption": "Epigenomics Analysis Type",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "DNA Methylation (WGBS)", "conceptCode": "WGBS"},
+              {"value": "DNA Methylation (RRBS)", "conceptCode": "RRBS"},
+              {"value": "DNA Methylation Array (850K)", "conceptCode": "METHYL_850K"},
+              {"value": "ChIP-seq (Histone marks)", "conceptCode": "CHIP_HISTONE"},
+              {"value": "ATAC-seq", "conceptCode": "ATAC_SEQ"},
+              {"value": "Epigenetic Clock", "conceptCode": "EPI_CLOCK"}
+            ]
+          },
+          {
+            "name": "platform",
+            "caption": "Platform/Array",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Illumina EPIC 850K", "conceptCode": "EPIC_850K"},
+              {"value": "Illumina 450K", "conceptCode": "METHYL_450K"},
+              {"value": "Illumina NovaSeq (WGBS)", "conceptCode": "NOVASEQ_WGBS"},
+              {"value": "Custom Aging Clock Panel", "conceptCode": "AGING_PANEL"}
+            ]
+          },
+          {
+            "name": "bisulfiteConversionEfficiency",
+            "caption": "Bisulfite Conversion Efficiency (%)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 95,
+            "maxValue": 100
+          },
+          {
+            "name": "cpgSitesCovered",
+            "caption": "CpG Sites Covered",
+            "type": "INTEGER",
+            "mandatory": true,
+            "minValue": 100000,
+            "maxValue": 30000000
+          },
+          {
+            "name": "meanCoverage",
+            "caption": "Mean Coverage (X)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 5,
+            "maxValue": 100
+          },
+          {
+            "name": "epigeneticAge",
+            "caption": "Epigenetic Age (years)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 15,
+            "maxValue": 120
+          },
+          {
+            "name": "ageAcceleration",
+            "caption": "Age Acceleration (years)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": -20,
+            "maxValue": 20
+          },
+          {
+            "name": "clockType",
+            "caption": "Epigenetic Clock Type",
+            "type": "DROPDOWN",
+            "mandatory": false,
+            "permissibleValues": [
+              {"value": "Horvath Clock", "conceptCode": "HORVATH"},
+              {"value": "Hannum Clock", "conceptCode": "HANNUM"},
+              {"value": "PhenoAge", "conceptCode": "PHENOAGE"},
+              {"value": "GrimAge", "conceptCode": "GRIMAGE"},
+              {"value": "DunedinPACE", "conceptCode": "DUNEDIN_PACE"}
+            ]
+          }
+        ]
+      },
+      
+      {
+        "name": "BHARAT_Biomarker_Panel",
+        "caption": "BHARAT Study Biomarker Panel Results",
+        "entityType": "SpecimenEvent",
+        "multiRecord": true,
+        "fields": [
+          {
+            "name": "sampleId",
+            "caption": "Sample ID",
+            "type": "STRING",
+            "mandatory": true,
+            "maxLength": 50
+          },
+          {
+            "name": "analysisDate",
+            "caption": "Analysis Date",
+            "type": "DATE",
+            "mandatory": true
+          },
+          {
+            "name": "panelType",
+            "caption": "Biomarker Panel Type",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Inflammation Panel", "conceptCode": "INFLAMMATION"},
+              {"value": "Metabolic Health Panel", "conceptCode": "METABOLIC"},
+              {"value": "Aging Biomarkers Panel", "conceptCode": "AGING"},
+              {"value": "Organ Function Panel", "conceptCode": "ORGAN_FUNCTION"},
+              {"value": "Custom Panel", "conceptCode": "CUSTOM"}
+            ]
+          },
+          {
+            "name": "crpLevel",
+            "caption": "C-Reactive Protein (mg/L)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 0,
+            "maxValue": 10,
+            "referenceRange": "0-3"
+          },
+          {
+            "name": "il6Level",
+            "caption": "Interleukin-6 (pg/ml)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 0,
+            "maxValue": 10,
+            "referenceRange": "0-5"
+          },
+          {
+            "name": "tnfAlphaLevel",
+            "caption": "TNF-α (pg/ml)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 0,
+            "maxValue": 20,
+            "referenceRange": "0-8"
+          },
+          {
+            "name": "fastingGlucose",
+            "caption": "Fasting Glucose (mg/dl)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 50,
+            "maxValue": 200,
+            "referenceRange": "70-100"
+          },
+          {
+            "name": "hba1c",
+            "caption": "HbA1c (%)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 3,
+            "maxValue": 15,
+            "referenceRange": "4-6"
+          },
+          {
+            "name": "insulinLevel",
+            "caption": "Insulin (μIU/ml)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 0,
+            "maxValue": 100,
+            "referenceRange": "2-25"
+          },
+          {
+            "name": "telomereLength",
+            "caption": "Telomere Length (T/S ratio)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 0.5,
+            "maxValue": 3.0
+          },
+          {
+            "name": "gdf15Level",
+            "caption": "GDF15 (pg/ml)",
+            "type": "FLOAT",
+            "mandatory": false,
+            "minValue": 100,
+            "maxValue": 2000,
+            "referenceRange": "200-1800"
+          },
+          {
+            "name": "assayPlatform",
+            "caption": "Assay Platform",
+            "type": "DROPDOWN",
+            "mandatory": true,
+            "permissibleValues": [
+              {"value": "Luminex Multiplex", "conceptCode": "LUMINEX"},
+              {"value": "ELISA", "conceptCode": "ELISA"},
+              {"value": "Electrochemiluminescence", "conceptCode": "ECL"},
+              {"value": "Flow Cytometry", "conceptCode": "FLOW_CYTO"},
+              {"value": "qPCR", "conceptCode": "QPCR"}
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+/* LIIMS Safe Branding - CSS Only (No JavaScript) */
+
+/* Logo replacement using CSS only */
+img[src*="os_logo"] {
+    content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+    height: 40px !important;
+    width: auto !important;
+    max-width: 200px !important;
+}
+
+.navbar-brand img,
+.os-navbar-brand img {
+    content: url('/openspecimen/images/longevity-india-logo-web.png') !important;
+    height: 40px !important;
+    width: auto !important;
+}
+
+/* Navigation styling */
+.navbar,
+.os-navbar,
+nav[role="navigation"],
+.nav-header,
+.app-header {
+    background-color: #4169E1 !important;
+}
+
+/* Button styling */
+.btn-primary,
+.os-btn-primary {
+    background-color: #4169E1 !important;
+    border-color: #4169E1 !important;
+}
+
+.btn-primary:hover,
+.os-btn-primary:hover {
+    background-color: #20B2AA !important;
+    border-color: #20B2AA !important;
+}
+
+/* Links */
+a {
+    color: #4169E1 !important;
+}
+
+a:hover {
+    color: #20B2AA !important;
+}
+
+/* Headers */
+h1, h2, h3, h4, h5, h6 {
+    color: #4169E1 !important;
+}
+
+/* Sidebar styling */
+.os-nav-item:hover {
+    background-color: #20B2AA !important;
+}
+
+/* Text replacement using CSS pseudo-elements (safer than JavaScript) */
+*[title*="OpenSpecimen"] {
+    visibility: hidden;
+    position: relative;
+}
+
+*[title*="OpenSpecimen"]:after {
+    content: attr(title);
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    content: "LIIMS";
+}
+
+/* Page title override */
+title {
+    display: none;
+}
+
+title:after {
+    content: "LIIMS - Longevity India Information Management System";
+}

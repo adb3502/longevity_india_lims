@@ -1,0 +1,557 @@
+{
+  "bharatAgingDashboards": {
+    "name": "BHARAT Study Aging Research Dashboards",
+    "description": "Comprehensive analytics and visualizations for biomarkers of healthy aging, resilience, adversity, and transitions",
+    "version": "1.0",
+    "dateCreated": "2025-01-24",
+    
+    "dashboardCategories": {
+      "studyOverview": {
+        "name": "Study Overview Dashboard",
+        "description": "High-level metrics and enrollment progress",
+        "priority": "high",
+        "widgets": [
+          "enrollment_progress",
+          "age_group_distribution", 
+          "visit_completion_rates",
+          "geographic_distribution",
+          "demographic_summary"
+        ]
+      },
+      "biomarkerAnalytics": {
+        "name": "Biomarker Analytics Dashboard", 
+        "description": "Multi-omics analysis results and aging biomarkers",
+        "priority": "high",
+        "widgets": [
+          "epigenetic_age_distribution",
+          "biomarker_correlations",
+          "aging_trajectories",
+          "multi_omics_heatmap",
+          "inflammaging_markers"
+        ]
+      },
+      "collectionMetrics": {
+        "name": "Collection Metrics Dashboard",
+        "description": "Sample collection efficiency and laboratory metrics",
+        "priority": "medium",
+        "widgets": [
+          "collection_volume_trends",
+          "sample_quality_metrics",
+          "processing_turnaround_times",
+          "laboratory_efficiency",
+          "storage_utilization"
+        ]
+      },
+      "longitudinalAnalysis": {
+        "name": "Longitudinal Analysis Dashboard",
+        "description": "Change over time and visit comparisons",
+        "priority": "medium", 
+        "widgets": [
+          "visit_progression_analysis",
+          "biomarker_change_tracking",
+          "participant_retention",
+          "age_acceleration_trends",
+          "health_span_indicators"
+        ]
+      },
+      "qualityControl": {
+        "name": "Quality Control Dashboard",
+        "description": "Data quality monitoring and laboratory QC",
+        "priority": "medium",
+        "widgets": [
+          "data_completeness_metrics",
+          "laboratory_qc_trends",
+          "outlier_detection",
+          "batch_effect_monitoring",
+          "protocol_compliance"
+        ]
+      }
+    },
+    
+    "widgets": {
+      "enrollment_progress": {
+        "name": "Enrollment Progress",
+        "type": "gauge_chart",
+        "description": "Current enrollment vs target by age group",
+        "dataSource": "participant_count",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "gauge",
+          "colorScheme": ["#4CAF50", "#FF9800", "#F44336"],
+          "targets": {
+            "AG1": 126,
+            "AG2": 126,
+            "AG3": 126,
+            "AG4": 126,
+            "AG5": 126
+          },
+          "totalTarget": 630
+        }
+      },
+      "age_group_distribution": {
+        "name": "Age Group Distribution",
+        "type": "donut_chart",
+        "description": "Participant distribution across age cohorts",
+        "dataSource": "demographics",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "donut",
+          "colorScheme": ["#4CAF50", "#8BC34A", "#FF9800", "#FF5722", "#9C27B0"],
+          "labels": ["AG1 (20-30)", "AG2 (31-40)", "AG3 (41-50)", "AG4 (51-60)", "AG5 (61-70)"]
+        }
+      },
+      "visit_completion_rates": {
+        "name": "Visit Completion Rates",
+        "type": "bar_chart",
+        "description": "Completion percentage for each study visit",
+        "dataSource": "visit_status",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "bar",
+          "colorScheme": ["#4CAF50", "#FF9800", "#FF5722", "#9C27B0"],
+          "labels": ["V0 (Baseline)", "V1 (6mo)", "V2 (12mo)", "V3 (24mo)"],
+          "yAxisMax": 100,
+          "showPercentage": true
+        }
+      },
+      "geographic_distribution": {
+        "name": "Geographic Distribution",
+        "type": "map_chart",
+        "description": "Participant distribution across Indian states",
+        "dataSource": "participant_location",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "choropleth_map",
+          "mapRegion": "india",
+          "colorScheme": ["#E3F2FD", "#2196F3"],
+          "showStateLabels": true
+        }
+      },
+      "demographic_summary": {
+        "name": "Demographic Summary",
+        "type": "summary_table",
+        "description": "Key demographic statistics",
+        "dataSource": "demographics_summary",
+        "refreshInterval": "daily",
+        "visualization": {
+          "tableType": "summary",
+          "columns": ["Metric", "Count", "Percentage"],
+          "highlights": ["gender_distribution", "education_levels", "urban_rural"]
+        }
+      },
+      "epigenetic_age_distribution": {
+        "name": "Epigenetic Age Distribution",
+        "type": "histogram",
+        "description": "Distribution of epigenetic vs chronological age",
+        "dataSource": "epigenetic_age_data",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "histogram",
+          "bins": 20,
+          "overlayType": "density",
+          "colorScheme": ["#4169E1", "#20B2AA"],
+          "showMean": true,
+          "showMedian": true
+        }
+      },
+      "biomarker_correlations": {
+        "name": "Biomarker Correlations",
+        "type": "correlation_matrix",
+        "description": "Correlation matrix of key aging biomarkers",
+        "dataSource": "biomarker_data",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "heatmap",
+          "colorScheme": ["#FF5722", "#FFFFFF", "#4169E1"],
+          "showValues": true,
+          "clusterRows": true,
+          "clusterCols": true
+        }
+      },
+      "aging_trajectories": {
+        "name": "Aging Trajectories",
+        "type": "line_chart",
+        "description": "Aging biomarker trajectories by age group",
+        "dataSource": "longitudinal_biomarkers",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "line",
+          "groupBy": "age_group",
+          "colorScheme": ["#4CAF50", "#8BC34A", "#FF9800", "#FF5722", "#9C27B0"],
+          "showTrendlines": true,
+          "confidenceIntervals": true
+        }
+      },
+      "multi_omics_heatmap": {
+        "name": "Multi-Omics Heatmap",
+        "type": "clustered_heatmap",
+        "description": "Integrated view of genomics, proteomics, and metabolomics data",
+        "dataSource": "multi_omics_integrated",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "clustered_heatmap",
+          "clustering": "hierarchical",
+          "colorScheme": ["#2196F3", "#FFFFFF", "#FF9800"],
+          "annotationColors": {
+            "genomics": "#2196F3",
+            "proteomics": "#9C27B0", 
+            "metabolomics": "#FF9800"
+          }
+        }
+      },
+      "inflammaging_markers": {
+        "name": "Inflammaging Markers",
+        "type": "radar_chart",
+        "description": "Inflammatory aging markers by age group",
+        "dataSource": "inflammation_panel",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "radar",
+          "metrics": ["CRP", "IL6", "TNF_alpha", "IL1_beta", "IL10"],
+          "groupBy": "age_group",
+          "colorScheme": ["#4CAF50", "#8BC34A", "#FF9800", "#FF5722", "#9C27B0"]
+        }
+      },
+      "collection_volume_trends": {
+        "name": "Collection Volume Trends",
+        "type": "time_series",
+        "description": "Sample collection volumes over time",
+        "dataSource": "collection_metrics",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "line",
+          "timeRange": "3_months",
+          "aggregation": "daily",
+          "colorScheme": ["#4169E1"],
+          "showMovingAverage": true
+        }
+      },
+      "sample_quality_metrics": {
+        "name": "Sample Quality Metrics",
+        "type": "quality_dashboard",
+        "description": "DNA/RNA quality and concentration metrics",
+        "dataSource": "laboratory_qc",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "multi_gauge",
+          "metrics": ["dna_concentration", "dna_purity_260_280", "dna_purity_260_230"],
+          "thresholds": {
+            "good": [">10 ng/μl", "1.8-2.0", "2.0-2.2"],
+            "acceptable": [">5 ng/μl", "1.7-2.1", "1.8-2.4"],
+            "poor": ["<5 ng/μl", "<1.7 or >2.1", "<1.8 or >2.4"]
+          }
+        }
+      },
+      "processing_turnaround_times": {
+        "name": "Processing Turnaround Times",
+        "type": "box_plot",
+        "description": "Time from collection to analysis completion",
+        "dataSource": "processing_times",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "box_plot",
+          "groupBy": "analysis_type",
+          "colorScheme": ["#2196F3", "#9C27B0", "#FF9800", "#4CAF50"],
+          "showOutliers": true,
+          "targetLines": {
+            "genomics": 14,
+            "proteomics": 7,
+            "metabolomics": 5,
+            "clinical": 2
+          }
+        }
+      },
+      "laboratory_efficiency": {
+        "name": "Laboratory Efficiency",
+        "type": "efficiency_metrics",
+        "description": "Laboratory throughput and capacity utilization",
+        "dataSource": "lab_efficiency",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "gauge_grid",
+          "metrics": ["daily_throughput", "capacity_utilization", "error_rate", "repeat_rate"],
+          "targets": [80, 85, 5, 10],
+          "units": ["samples/day", "%", "%", "%"]
+        }
+      },
+      "storage_utilization": {
+        "name": "Storage Utilization",
+        "type": "storage_overview",
+        "description": "Freezer and storage capacity monitoring",
+        "dataSource": "storage_metrics",
+        "refreshInterval": "hourly",
+        "visualization": {
+          "chartType": "storage_grid",
+          "storageTypes": ["minus_80", "minus_20", "liquid_nitrogen", "room_temp"],
+          "alertThresholds": [85, 90, 95],
+          "colorScheme": ["#4CAF50", "#FF9800", "#F44336"]
+        }
+      },
+      "visit_progression_analysis": {
+        "name": "Visit Progression Analysis",
+        "type": "sankey_diagram",
+        "description": "Participant flow through study visits",
+        "dataSource": "visit_progression",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "sankey",
+          "nodes": ["Enrolled", "V0", "V1", "V2", "V3", "Completed", "Withdrawn"],
+          "colorScheme": ["#4CAF50", "#FF9800", "#F44336"]
+        }
+      },
+      "biomarker_change_tracking": {
+        "name": "Biomarker Change Tracking",
+        "type": "slope_graph",
+        "description": "Individual biomarker changes between visits",
+        "dataSource": "longitudinal_changes",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "slope_graph",
+          "visits": ["V0", "V1", "V2", "V3"],
+          "biomarkers": ["epigenetic_age", "telomere_length", "crp", "glucose"],
+          "colorBy": "age_group"
+        }
+      },
+      "participant_retention": {
+        "name": "Participant Retention",
+        "type": "survival_curve",
+        "description": "Study retention rates over time",
+        "dataSource": "retention_data",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "kaplan_meier",
+          "groupBy": "age_group",
+          "timeUnit": "months",
+          "colorScheme": ["#4CAF50", "#8BC34A", "#FF9800", "#FF5722", "#9C27B0"]
+        }
+      },
+      "age_acceleration_trends": {
+        "name": "Age Acceleration Trends",
+        "type": "scatter_plot",
+        "description": "Epigenetic age acceleration vs chronological age",
+        "dataSource": "age_acceleration",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "scatter",
+          "xAxis": "chronological_age",
+          "yAxis": "age_acceleration",
+          "colorBy": "age_group",
+          "showTrendline": true,
+          "regressionType": "linear"
+        }
+      },
+      "health_span_indicators": {
+        "name": "Health Span Indicators",
+        "type": "composite_score",
+        "description": "Composite health span scoring across age groups",
+        "dataSource": "health_span_data",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "radar_comparison",
+          "domains": ["physical", "cognitive", "metabolic", "inflammatory", "epigenetic"],
+          "groupBy": "age_group",
+          "normalization": "z_score"
+        }
+      },
+      "data_completeness_metrics": {
+        "name": "Data Completeness",
+        "type": "completeness_matrix",
+        "description": "Data completeness across forms and visits",
+        "dataSource": "data_completeness",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "heatmap_matrix",
+          "rows": ["demographics", "clinical", "genomics", "proteomics", "metabolomics"],
+          "columns": ["V0", "V1", "V2", "V3"],
+          "colorScheme": ["#F44336", "#FF9800", "#4CAF50"]
+        }
+      },
+      "laboratory_qc_trends": {
+        "name": "Laboratory QC Trends",
+        "type": "control_chart",
+        "description": "Quality control metrics over time",
+        "dataSource": "qc_measurements",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "control_chart",
+          "metrics": ["blank_contamination", "standard_recovery", "cv_replicate"],
+          "controlLimits": "3_sigma",
+          "alertRules": "westgard"
+        }
+      },
+      "outlier_detection": {
+        "name": "Outlier Detection",
+        "type": "outlier_dashboard",
+        "description": "Statistical outliers in biomarker measurements",
+        "dataSource": "outlier_analysis",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "outlier_plots",
+          "methods": ["iqr", "z_score", "isolation_forest"],
+          "displayTop": 20,
+          "colorByMethod": true
+        }
+      },
+      "batch_effect_monitoring": {
+        "name": "Batch Effect Monitoring",
+        "type": "batch_analysis",
+        "description": "Detection and monitoring of batch effects",
+        "dataSource": "batch_effects",
+        "refreshInterval": "weekly",
+        "visualization": {
+          "chartType": "pca_plot",
+          "colorBy": "batch",
+          "shapeBy": "visit",
+          "showEllipses": true,
+          "varianceExplained": true
+        }
+      },
+      "protocol_compliance": {
+        "name": "Protocol Compliance",
+        "type": "compliance_tracker",
+        "description": "Adherence to study protocols and SOPs",
+        "dataSource": "protocol_adherence",
+        "refreshInterval": "daily",
+        "visualization": {
+          "chartType": "compliance_grid",
+          "protocols": ["collection", "processing", "storage", "analysis"],
+          "complianceThreshold": 95,
+          "alertLevel": 90
+        }
+      }
+    },
+    
+    "dataSources": {
+      "participant_count": {
+        "query": "SELECT age_group, COUNT(*) as count FROM participants WHERE status='Active' GROUP BY age_group",
+        "database": "openspecimen",
+        "refreshRate": "1_hour"
+      },
+      "demographics": {
+        "query": "SELECT age_group, gender, education, location FROM participant_demographics",
+        "database": "openspecimen", 
+        "refreshRate": "6_hours"
+      },
+      "visit_status": {
+        "query": "SELECT visit_name, COUNT(*) as completed, age_group FROM specimen_collections sc JOIN participants p ON sc.participant_id = p.id WHERE sc.status='Complete' GROUP BY visit_name, age_group",
+        "database": "openspecimen",
+        "refreshRate": "1_hour"
+      },
+      "biomarker_data": {
+        "query": "SELECT participant_id, visit, biomarker_name, value, unit FROM biomarker_results WHERE status='Validated'",
+        "database": "openspecimen",
+        "refreshRate": "4_hours"
+      },
+      "epigenetic_age_data": {
+        "query": "SELECT participant_id, chronological_age, epigenetic_age, age_acceleration FROM epigenetics_results WHERE qc_status='Pass'",
+        "database": "openspecimen",
+        "refreshRate": "6_hours"
+      },
+      "collection_metrics": {
+        "query": "SELECT collection_date, COUNT(*) as samples_collected, sample_type FROM specimens WHERE collection_status='Complete' GROUP BY collection_date, sample_type",
+        "database": "openspecimen",
+        "refreshRate": "1_hour"
+      },
+      "laboratory_qc": {
+        "query": "SELECT analysis_date, concentration, purity_260_280, purity_260_230, qc_status FROM dna_extraction_results",
+        "database": "openspecimen",
+        "refreshRate": "2_hours"
+      }
+    },
+    
+    "dashboardLayouts": {
+      "studyOverview": {
+        "layout": "grid",
+        "columns": 3,
+        "widgets": [
+          {"widget": "enrollment_progress", "span": {"cols": 1, "rows": 2}},
+          {"widget": "age_group_distribution", "span": {"cols": 1, "rows": 2}},
+          {"widget": "visit_completion_rates", "span": {"cols": 1, "rows": 2}},
+          {"widget": "geographic_distribution", "span": {"cols": 2, "rows": 3}},
+          {"widget": "demographic_summary", "span": {"cols": 1, "rows": 3}}
+        ]
+      },
+      "biomarkerAnalytics": {
+        "layout": "grid",
+        "columns": 2,
+        "widgets": [
+          {"widget": "epigenetic_age_distribution", "span": {"cols": 1, "rows": 2}},
+          {"widget": "biomarker_correlations", "span": {"cols": 1, "rows": 2}},
+          {"widget": "aging_trajectories", "span": {"cols": 2, "rows": 2}},
+          {"widget": "multi_omics_heatmap", "span": {"cols": 1, "rows": 3}},
+          {"widget": "inflammaging_markers", "span": {"cols": 1, "rows": 3}}
+        ]
+      }
+    },
+    
+    "alerting": {
+      "enrollmentAlerts": {
+        "lowEnrollment": {
+          "threshold": 80,
+          "message": "Enrollment below 80% of target for age group {age_group}",
+          "severity": "warning"
+        },
+        "missedTarget": {
+          "threshold": 90, 
+          "timeframe": "monthly",
+          "message": "Monthly enrollment target missed",
+          "severity": "error"
+        }
+      },
+      "qualityAlerts": {
+        "lowDnaQuality": {
+          "threshold": 10,
+          "metric": "dna_concentration",
+          "message": "DNA concentration below 10 ng/μl for {sample_count} samples",
+          "severity": "warning"
+        },
+        "highFailureRate": {
+          "threshold": 10,
+          "timeframe": "daily",
+          "message": "QC failure rate above 10% today",
+          "severity": "error"
+        }
+      },
+      "retentionAlerts": {
+        "highDropout": {
+          "threshold": 15,
+          "timeframe": "monthly", 
+          "message": "Participant dropout rate above 15% this month",
+          "severity": "warning"
+        }
+      }
+    },
+    
+    "userRoles": {
+      "study_coordinator": {
+        "dashboards": ["studyOverview", "collectionMetrics"],
+        "permissions": ["view", "export"]
+      },
+      "principal_investigator": {
+        "dashboards": ["studyOverview", "biomarkerAnalytics", "longitudinalAnalysis"],
+        "permissions": ["view", "export", "configure"]
+      },
+      "laboratory_manager": {
+        "dashboards": ["collectionMetrics", "qualityControl"],
+        "permissions": ["view", "export", "alert_management"]
+      },
+      "data_analyst": {
+        "dashboards": ["biomarkerAnalytics", "longitudinalAnalysis", "qualityControl"],
+        "permissions": ["view", "export", "advanced_analytics"]
+      },
+      "site_coordinator": {
+        "dashboards": ["studyOverview"],
+        "permissions": ["view"]
+      }
+    },
+    
+    "exportFormats": {
+      "supported": ["PDF", "PNG", "SVG", "CSV", "Excel"],
+      "scheduling": {
+        "daily": ["studyOverview", "collectionMetrics"],
+        "weekly": ["biomarkerAnalytics", "qualityControl"],
+        "monthly": ["longitudinalAnalysis"]
+      }
+    }
+  }
+}
