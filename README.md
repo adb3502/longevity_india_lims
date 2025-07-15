@@ -1,61 +1,67 @@
-OpenSpecimen
-============
+LIIMS - Longevity India Information Management System
+====================================================
 
-An Open Source Biobanking Informatics Platform 
-Developed by Krishagni Solutions (India)
+A Custom Biobanking Informatics Platform for Longevity Research in India
+Developed by Longevity India Initiative at Indian Institute of Science (IISc)
+Based on OpenSpecimen by Krishagni Solutions
 
 
 Introduction
 ------------
-OpenSpecimen (formerly known as caTissue Plus) is a Free & Open Source biobank/biospecimen management software. At the heart of OpenSpecimen is that “biospecimens without high quality data is of no value”. OpenSpecimen is used across the globe in some of the most respected biobanks of various sizes and diseases. OpenSpecimen streamlines management of biospecimens across collection, consent, QC, request and distribution. Finally, OpenSpecimen is highly configurable and customizable. E.g., adding a custom field or form can be done in minutes by a non-IT person. 
+LIIMS (Longevity India Information Management System) is a specialized biobank information management system designed for the Longevity India Initiative at IISc. Built on the robust OpenSpecimen platform, LIIMS is customized to support the unique requirements of aging research in the Indian context, particularly the BHARAT Study (Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions).
 
-Krishagni Solutions (India) actively develops newer versions of OpenSpecimen as well provides professional support. Support includes phone/email, data migration, customizations, integrations, training, and so forth. 
-
-For more details visit: www.openspecimen.org
+At the heart of LIIMS is that "biospecimens without high quality data is of no value". LIIMS streamlines management of biospecimens and associated data across collection, consent, QC, analysis, and distribution for longevity research. The system is highly configurable and customizable to meet the specific needs of aging research studies.
 
 Features
----------
- * Planned and unplanned biospecimen collections
- * Storage and Inventory management
- * Role based user authentication and authorization
- * Participants and informed consents
- * Path reports
- * Clinical and pathology annotations
- * Specimen request and distribution 
- * Shipping and tracking
- * Track specimen lifecycle events
- * Reports: Data query, Pivot table, Export as CSV, Scheduled reports
- * Custom fields and forms
- * Complete audit trial
- * Bulk Operation to upload CSV data
- * Token based specimen label generation
- * Barcode printing
- * REST APIs
- * Integration with clinical databases
- * Integration with instruments
- * Real time notifications
- 
- Upcoming features
- ------------------
- * Patient family relationships (family pedigree)
- * Invoicing
- * Tissue Microarray
- * Highly configurable user interface
- * Mobile and tablet apps
- 
+--------
+ * Longitudinal biospecimen collections for aging studies
+ * Comprehensive participant tracking with demographic and health data
+ * Biomarker data management (genomic, proteomic, metabolomic)
+ * Storage and inventory management for diverse specimen types
+ * Role-based user authentication and authorization
+ * Comprehensive consent management system
+ * Clinical and phenotypic data annotations
+ * Study-specific data collection forms
+ * Specimen request and distribution workflows
+ * Shipping and tracking capabilities
+ * Complete specimen lifecycle tracking
+ * Advanced reporting and analytics
+ * Custom fields and forms for BHARAT Study requirements
+ * Complete audit trail for regulatory compliance
+ * Bulk operations for efficient data management
+ * Integration with laboratory instruments and systems
+ * REST APIs for external system integration
+
+BHARAT Study Features
+--------------------
+ * India-specific biomarker tracking
+ * Aging-related data collection forms
+ * Longitudinal follow-up management
+ * Multi-site data coordination
+ * Genomic data integration
+ * Proteomics and metabolomics support
+ * Environmental and lifestyle factor tracking
+ * AI/ML integration for pattern analysis
+
 Online Resources
 ----------------
-Website: http://www.openspecimen.org
-Forums: http://forums.openspecimen.org
-Help: http://help.openspecimen.org
-Email: mailto:contact@openspecimen.org
+Project: https://www.longevity.iisc.ac.in
+Institution: https://iisc.ac.in
+Base Platform: https://www.openspecimen.org
+Documentation: https://openspecimen.atlassian.net/wiki/spaces/CAT/overview
 
 License
 --------
-OpenSpecimen is released under BSD 3 Style license. 
+LIIMS is based on OpenSpecimen which is released under BSD 3 Style license.
 https://github.com/krishagni/openspecimen/blob/trunk/LICENSE.md
 
 Contact Information
 -------------------
-Project Lead: Srikanth Adiga
-Email: srikanth.adiga@openspecimen.org
+Project Lead: Longevity India Initiative
+Institution: Indian Institute of Science (IISc), Bangalore
+Email: admin@longevity.iisc.ac.in
+Website: https://www.longevity.iisc.ac.in
+
+Original OpenSpecimen Development: Krishagni Solutions
+Email: contact@openspecimen.org
+Website: https://www.openspecimen.org

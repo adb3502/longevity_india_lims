@@ -4,7 +4,7 @@ module.exports = {
     : '/',
 
   devServer: {
-    proxy: 'http://localhost:8080/openspecimen/'
+    proxy: 'http://localhost:8080/liims/'
   },
 
   chainWebpack: config => {

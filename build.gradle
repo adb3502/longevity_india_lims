@@ -7,7 +7,7 @@ apply plugin: 'war'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
 
-archivesBaseName = 'openspecimen'
+archivesBaseName = 'liims'
 
 Properties props = new Properties()
 props.load(new FileInputStream("build.properties"))

@@ -1,7 +1,7 @@
 {
-  "name": "OpenSpecimen",
+  "name": "LIIMS",
   "version": "2.0.0",
-  "description": "OpenSpecimen",
+  "description": "Longevity India Information Management System (LIIMS)",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,14 +11,14 @@
     "url": "https://github.com/krishagni/openspecimen.git"
   },
   "keywords": [
-    "OpenSpecimen",
-    "caTissue",
-    "Plus",
+    "LIIMS",
+    "Longevity India",
     "Biobank",
-    "NCI",
-    "Krishagni"
+    "IISc",
+    "BHARAT Study",
+    "Aging Research"
   ],
-  "author": "Team Krishagni (support@catissueplus.org)",
+  "author": "Longevity India Initiative - IISc",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/krishagni/openspecimen/issues"

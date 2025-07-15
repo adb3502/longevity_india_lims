@@ -83,7 +83,7 @@
       <template #footer>
         <div class="help-footer">
           <span>
-            <a href="https://www.openspecimen.org" target="_blank" rel="noopener">OpenSpecimen</a>
+            <a href="https://www.longevity.iisc.ac.in" target="_blank" rel="noopener">LIIMS</a>
           </span>
           <span>
             <span> - powered by </span>
