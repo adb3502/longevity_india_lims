@@ -9,9 +9,6 @@
         <a class="deploy-logo" :href="deploySiteUrl" v-if="deploySiteLogo" target="_blank" rel="noopener">
           <img :src="deploySiteLogo">
         </a>
-        <div class="deploy-env">
-          <span>{{deployEnv}}</span>
-        </div>
       </div>
 
       <div class="search" v-if="!minimalLogin">
@@ -19,15 +16,8 @@
       </div>
 
       <div class="buttons">
-        <os-add-to-favorites v-if="!minimalLogin" />
-
-        <os-new-stuff  v-if="!minimalLogin" />
-
-        <os-user-feedback v-if="!minimalLogin" />
-
         <os-about />
 
-        <os-notifs-overlay v-if="!minimalLogin" />
 
         <div class="user-profile" v-os-tooltip.bottom="$t('common.user_profile')" v-if="authenticated">
           <button @click="toggleProfileMenu">
@@ -68,22 +58,14 @@ import http from '@/common/services/HttpClient.js';
 import loginSvc from '@/common/services/Login.js';
 import routerSvc from '@/common/services/Router.js';
 
-import About          from '@/common/components/About';
-import AddToFavorites from '@/common/components/AddToFavorites.vue';
-import Feedback       from '@/common/components/Feedback';
-import NewStuff       from '@/common/components/NewStuff';
-import NotifsOverlay  from '@/common/components/NotifsOverlay';
-import Search         from '@/common/components/Search';
+import About   from '@/common/components/About';
+import Search  from '@/common/components/Search';
 
 export default {
   props: ['noLogin', 'hideButtons'],
 
   components: {
     'os-about': About,
-    'os-add-to-favorites': AddToFavorites,
-    'os-user-feedback': Feedback,
-    'os-new-stuff': NewStuff,
-    'os-notifs-overlay': NotifsOverlay,
     'os-search': Search
   },
 

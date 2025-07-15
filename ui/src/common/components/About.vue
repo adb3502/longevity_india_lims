@@ -1,27 +1,14 @@
 <template>
-  <div class="os-help" v-os-tooltip.bottom="$t('common.about.online_help')">
+  <div class="os-help" v-os-tooltip.bottom="'About LIIMS'">
     <button @click="toggleHelpMenu">
-      <os-icon name="question-circle" />
+      <os-icon name="info-circle" />
     </button>
 
     <os-overlay ref="helpMenu" @click="toggleHelpMenu">
       <ul class="help-options">
         <li>
-          <a href="https://help.openspecimen.org" target="_blank" rel="noopener">
-            <span v-t="'common.about.online_help'">Online Help</span>
-          </a>
-        </li>
-        <li>
-          <a href="https://forums.openspecimen.org" target="_blank" rel="noopener">
-            <span v-t="'common.about.qna_forums'">Q & A Forums</span>
-          </a>
-        </li>
-        <li class="divider">
-          <os-divider />
-        </li>
-        <li>
           <a @click="showAboutDialog()">
-            <span v-t="'common.about.openspecimen'">About OpenSpecimen</span>
+            <span>About LIIMS</span>
           </a>
         </li>
       </ul>
@@ -29,7 +16,7 @@
 
     <os-dialog ref="aboutDialog">
       <template #header>
-        <span v-t="'common.about.openspecimen'">About OpenSpecimen</span>
+        <span>About LIIMS</span>
       </template>
       <template #content>
         <os-tabs>
@@ -86,8 +73,8 @@
             <a href="https://www.longevity.iisc.ac.in" target="_blank" rel="noopener">LIIMS</a>
           </span>
           <span>
-            <span> - powered by </span>
-            <a href="https://www.krishagni.com" target="_blank" rel="noopener">Krishagni</a>
+            <span> - maintained by </span>
+            <a href="https://github.com/adb3502" target="_blank" rel="noopener">adb3502</a>
           </span>
         </div>
       </template>
