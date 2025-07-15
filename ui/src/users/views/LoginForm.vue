@@ -1,7 +1,7 @@
 <template>
   <FormCard ref="loginForm" :schema="loginSchema" :data="ctx" :logo="osLogo" @keydown.enter.prevent="login">
     <template #title v-if="showHeader">
-      <h3 class="header">Sign in to continue to LIIMS</h3>
+      <h3 class="header">Welcome to LIIMS<br><span style="font-size: 18px; font-weight: 400;">(Longevity India Information Management System)</span></h3>
     </template>
 
     <template #primary-action>
@@ -42,10 +42,8 @@ export default {
 
       ctx: {
         loginDetail: {
-          domainName: appProps.default_domain
+          domainName: 'openspecimen'
         },
-
-        getDomains: async () => this.domains,
 
         otpAuthEnabled: false,
 
@@ -57,13 +55,6 @@ export default {
   },
 
   mounted() {
-    this._getDomains().then(
-      domains => {
-        this.domains = domains.filter(domain => domain.allowLogins);
-        this._toggleSamlDomainSelected();
-      }
-    );
-
     if (this.$osSvc.userOtpSvc) {
       this.$osSvc.userOtpSvc.isFeatureEnabled().then(status => this.ctx.otpAuthEnabled = status);
     }
@@ -73,22 +64,11 @@ export default {
   },
 
   watch: {
-    'ctx.loginDetail.domainName': function() {
-      this._toggleSamlDomainSelected();
-      if (this.ctx.samlDomainSelected) {
-        loginSvc.gotoIdp();
-      }
-    }
   },
 
   methods: {
     login: function() {
       if (!this.$refs.loginForm.validate()) {
-        return;
-      }
-
-      if (this.ctx.samlDomainSelected) {
-        loginSvc.gotoIdp();
         return;
       }
 
@@ -110,16 +90,6 @@ export default {
 
     gotoResetOtpSecret: function() {
       routerSvc.goto('UserResetOtpSecretCode');
-    },
-
-    _toggleSamlDomainSelected: function() {
-      const {loginDetail: {domainName}} = this.ctx;
-      const domain = (this.domains || []).find(d => d.name == domainName);
-      this.ctx.samlDomainSelected = (domain && domain.type == 'saml') || false;
-    },
-
-    _getDomains: function() {
-      return loginSvc.getAuthDomains();
     }
   }
 }

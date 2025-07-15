@@ -5,27 +5,6 @@ export default {
       {
         fields: [
           {
-            type: 'dropdown',
-            name: 'loginDetail.domainName',
-            listSource: {
-              selectProp: 'name',
-              displayProp: 'name',
-              loadFn: ({context}) => context.formData.getDomains(),
-              initUsingSelectProp: true
-            },
-            'md-type': true,
-            placeholder: 'Domain Name',
-            validations: {
-              required: {
-                message: 'Domain Name is mandatory'
-              }
-            }
-          }
-        ]
-      },
-      {
-        fields: [
-          {
             type: 'text',
             name: 'loginDetail.loginName',
             'md-type': true,
@@ -34,8 +13,7 @@ export default {
               required: {
                 message: 'Login Name is mandatory'
               }
-            },
-            showWhen: '!!loginDetail.domainName && !samlDomainSelected'
+            }
           }
         ]
       },
@@ -50,8 +28,7 @@ export default {
               required: {
                 message: 'Password is mandatory'
               }
-            },
-            showWhen: '!!loginDetail.domainName && !samlDomainSelected'
+            }
           }
         ]
       },
@@ -67,7 +44,7 @@ export default {
                 message: 'OTP is mandatory'
               }
             },
-            showWhen: '!!loginDetail.domainName && otpAuthEnabled && !samlDomainSelected'
+            showWhen: 'otpAuthEnabled'
           }
         ]
       },
