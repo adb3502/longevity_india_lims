@@ -2,406 +2,728 @@
   <os-page>
     <os-page-head>
       <span>
-        <h3 v-t="'common.home.home'">Home</h3>
+        <h3>Projects Dashboard</h3>
+        <p style="margin: 0.5rem 0 0 0; color: #666; font-size: 0.9rem;">Select a project to access its data and analytics</p>
       </span>
 
       <template #right>
-        <os-button style="margin-top: -0.5rem;" left-icon="cog"
-          :label="$t('common.home.widgets_button')" @click="showWidgetsDialog" />
+        <os-button style="margin-top: -0.5rem;" left-icon="plus"
+          label="New Project" @click="showNewProjectDialog" />
       </template>
     </os-page-head>
 
     <os-page-body>
-      <os-grid>
-        <os-grid-column :width="9" style="overflow-y: auto;">
-          <os-card class="os-widgets-info" v-if="ctx.widgets.length == 0">
-            <template #body>
-              <span class="message">
-                <span class="question" v-t="'common.home.did_you_know'">Did you know you can configure the homepage to display the modules you frequently use?</span>
-                <span class="help" v-t="'common.home.click_widgets_button'">Click on the "Widgets" button on the top right corner of this page</span>
-              </span>
-            </template>
-          </os-card>
-          <div class="os-widgets" v-else>
-            <div :class="['widget', 'widget-' + (widget.width || 2)]" v-for="widget of widgets" :key="widget.name">
-              <component :is="'os-home-' + widget.name" :widget="widget" />
+      <div class="projects-container">
+        <!-- Project Cards Grid -->
+        <div class="projects-grid">
+          <!-- BHARAT Study Project -->
+          <div class="project-card" @click="navigateToProject('bharat-study')">
+            <div class="project-card-header bharat-theme">
+              <div class="project-icon">
+                <os-icon name="dna" />
+              </div>
+              <div class="project-status active">
+                <span class="status-dot"></span>
+                Active
+              </div>
+            </div>
+            <div class="project-card-body">
+              <h3>BHARAT Study</h3>
+              <p>Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions</p>
+              <div class="project-stats">
+                <div class="stat">
+                  <span class="stat-value">1,247</span>
+                  <span class="stat-label">Participants</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">3,891</span>
+                  <span class="stat-label">Samples</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">156</span>
+                  <span class="stat-label">Active Boxes</span>
+                </div>
+              </div>
+              <div class="project-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: 73%"></div>
+                </div>
+                <span class="progress-text">73% Complete</span>
+              </div>
+            </div>
+            <div class="project-card-footer">
+              <div class="last-activity">
+                <os-icon name="clock" />
+                Last updated 2 hours ago
+              </div>
+              <div class="project-lead">
+                <os-icon name="user" />
+                Dr. Ravi Kumar
+              </div>
             </div>
           </div>
-        </os-grid-column>
 
-        <os-grid-column :width="3" style="overflow-y: auto;">
-          <div class="os-widgets">
-            <div class="widget widget-6" v-if="ctx.favorites && ctx.favorites.length > 0">
-              <os-home-list-card class="os-favorite-links" :icon="'heart'" :title="$t('common.home.favorites')"
-                :show-star="false" :list="ctx.favorites" :hide-search="true">
-                <template #actions="slotProps">
-                  <os-button size="small" left-icon="trash" @click="confirmRemoveFavorite(slotProps.item)" />
-                </template>
-              </os-home-list-card>
+          <!-- Organ Aging Project -->
+          <div class="project-card" @click="navigateToProject('organ-aging')">
+            <div class="project-card-header organ-theme">
+              <div class="project-icon">
+                <os-icon name="heart" />
+              </div>
+              <div class="project-status active">
+                <span class="status-dot"></span>
+                Active
+              </div>
             </div>
-
-            <div class="widget widget-6" style="padding-bottom: 0px;" v-else>
-              <os-card class="os-quick-links">
-                <template #body>
-                  <span v-t="'common.home.no_favorites'">No favorite links</span>
-                </template>
-              </os-card>
+            <div class="project-card-body">
+              <h3>Organ Aging Project</h3>
+              <p>Comprehensive study of organ-specific aging biomarkers and interventions</p>
+              <div class="project-stats">
+                <div class="stat">
+                  <span class="stat-value">892</span>
+                  <span class="stat-label">Participants</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">2,347</span>
+                  <span class="stat-label">Samples</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">89</span>
+                  <span class="stat-label">Active Boxes</span>
+                </div>
+              </div>
+              <div class="project-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill organ-progress" style="width: 45%"></div>
+                </div>
+                <span class="progress-text">45% Complete</span>
+              </div>
             </div>
-
-            <div class="widget widget-6" style="padding-bottom: 0px;">
-              <os-card class="os-quick-links">
-                <template #header>
-                  <span class="title" v-t="'common.home.useful_links'">Useful Links</span>
-                </template>
-                <template #body>
-                  <ul>
-                    <li>
-                      <a href="https://openspecimen.atlassian.net/l/cp/ExVdshgT" target="_blank">
-                        <span v-t="'common.home.user_manual'">User Manual</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://forums.openspecimen.org" target="_blank">
-                        <span v-t="'common.home.online_forums'">Online Forums</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.youtube.com/channel/UCWRN3KN0G5k9WmTiQIwuA8g" target="_blank">
-                        <span v-t="'common.home.youtube'">YouTube</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="https://www.openspecimen.org/webinars/" target="_blank">
-                        <span v-t="'common.home.past_webinars'">Past Webinars</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a :href="ctx.trainingUrl" target="_blank">
-                        <span v-t="'common.home.training'">Training</span>
-                      </a>
-                    </li>
-                  </ul>
-                </template>
-              </os-card>
+            <div class="project-card-footer">
+              <div class="last-activity">
+                <os-icon name="clock" />
+                Last updated 1 day ago
+              </div>
+              <div class="project-lead">
+                <os-icon name="user" />
+                Dr. Priya Sharma
+              </div>
             </div>
           </div>
-        </os-grid-column>
-      </os-grid>
+
+          <!-- Cognitive Health Study -->
+          <div class="project-card" @click="navigateToProject('cognitive-health')">
+            <div class="project-card-header cognitive-theme">
+              <div class="project-icon">
+                <os-icon name="brain" />
+              </div>
+              <div class="project-status planning">
+                <span class="status-dot"></span>
+                Planning
+              </div>
+            </div>
+            <div class="project-card-body">
+              <h3>Cognitive Health Study</h3>
+              <p>Longitudinal study of cognitive aging and neurodegeneration biomarkers</p>
+              <div class="project-stats">
+                <div class="stat">
+                  <span class="stat-value">0</span>
+                  <span class="stat-label">Participants</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">0</span>
+                  <span class="stat-label">Samples</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-value">0</span>
+                  <span class="stat-label">Active Boxes</span>
+                </div>
+              </div>
+              <div class="project-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill cognitive-progress" style="width: 15%"></div>
+                </div>
+                <span class="progress-text">15% Setup Complete</span>
+              </div>
+            </div>
+            <div class="project-card-footer">
+              <div class="last-activity">
+                <os-icon name="clock" />
+                Created 1 week ago
+              </div>
+              <div class="project-lead">
+                <os-icon name="user" />
+                Dr. Anil Reddy
+              </div>
+            </div>
+          </div>
+
+          <!-- Add New Project Card -->
+          <div class="project-card add-project-card" @click="showNewProjectDialog">
+            <div class="add-project-content">
+              <div class="add-project-icon">
+                <os-icon name="plus" />
+              </div>
+              <h3>Create New Project</h3>
+              <p>Set up a new research project with sample collection protocols</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions Panel -->
+        <div class="quick-actions-panel">
+          <h4>Quick Actions</h4>
+          <div class="quick-actions-grid">
+            <div class="quick-action-item" @click="quickAction('add-participant')">
+              <os-icon name="user-plus" />
+              <span>Add Participant</span>
+            </div>
+            <div class="quick-action-item" @click="quickAction('sample-collection')">
+              <os-icon name="vial" />
+              <span>Collect Sample</span>
+            </div>
+            <div class="quick-action-item" @click="quickAction('storage-management')">
+              <os-icon name="box" />
+              <span>Manage Storage</span>
+            </div>
+            <div class="quick-action-item" @click="quickAction('generate-report')">
+              <os-icon name="chart" />
+              <span>Generate Report</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="recent-activity-panel">
+          <h4>Recent Activity</h4>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="activity-icon bharat-bg">
+                <os-icon name="vial" />
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Blood sample collected - BHARAT-001234</div>
+                <div class="activity-meta">BHARAT Study • 2 hours ago • Dr. Kumar</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon organ-bg">
+                <os-icon name="user-plus" />
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">New participant enrolled - OAP-000567</div>
+                <div class="activity-meta">Organ Aging Project • 5 hours ago • Dr. Sharma</div>
+              </div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-icon bharat-bg">
+                <os-icon name="box" />
+              </div>
+              <div class="activity-content">
+                <div class="activity-title">Storage box B-156 moved to Freezer-A</div>
+                <div class="activity-meta">BHARAT Study • 1 day ago • Lab Tech</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </os-page-body>
 
-    <os-dialog ref="widgetsDialog">
+    <!-- New Project Dialog -->
+    <os-dialog ref="newProjectDialog">
       <template #header>
-        <span v-t="'common.home.select_widgets'">Select Widgets</span>
+        <span>Create New Project</span>
       </template>
       <template #content>
-        <table class="os-table">
-          <thead class="os-table-head">
-            <tr>
-              <th>&nbsp;</th>
-              <th v-t="'common.home.widget'">Widget</th>
-              <th v-t="'common.home.widget_width'">Width</th>
-            </tr>
-          </thead>
-          <draggable v-model="ctx.availableWidgets" tag="tbody" handle=".os-widget-row-grip" class="os-table-body">
-            <tr class="row os-widget-row-grip" v-for="widget of ctx.availableWidgets" :key="widget.name">
-              <td class="col os-widget-selector">
-                <os-boolean-checkbox v-model="widget.selected" />
-              </td>
-              <td class="col">
-                <span>{{widget.displayLabel}}</span>
-              </td>
-              <td class="col">
-                <os-dropdown v-model="widget.width" :md-type="true" :optional="false"
-                  :list-source="{
-                    'displayProp': 'value',
-                    'selectProp': 'value',
-                    'options': [{'value': 1}, {'value': 2}, {'value': 3}, {'value': 4}, {'value': 5}, {'value': 6}]
-                  }"
-                />
-              </td>
-            </tr>
-          </draggable>
-        </table>
+        <os-form ref="newProjectForm" :schema="newProjectSchema" :data="newProjectData" />
       </template>
       <template #footer>
-        <os-button text :label="$t('common.buttons.cancel')" @click="closeWidgetsDialog" />
-        <os-button primary :label="$t('common.buttons.save')" @click="saveWidgets" />
+        <os-button text label="Cancel" @click="closeNewProjectDialog" />
+        <os-button primary label="Create Project" @click="createProject" />
       </template>
     </os-dialog>
-
-    <os-confirm-delete ref="deleteFavoriteConfirm" :captcha="false" :collect-reason="false">
-      <template #message>
-        <span v-t="'common.home.rm_from_favorites'"></span>
-      </template>
-    </os-confirm-delete>
   </os-page>
 </template>
 
 <script>
-
-import { VueDraggableNext } from "vue-draggable-next";
-
-import homePageSvc from '@/common/services/HomePageService.js';
-import i18n from '@/common/services/I18n.js';
 import routerSvc from '@/common/services/Router.js';
-import settingSvc from '@/common/services/Setting.js';
+
+import http from '@/common/services/HttpClient.js';
 
 export default {
   name: 'HomePage',
 
-  components: {
-    draggable: VueDraggableNext
-  },
-
   data() {
     return {
-      ctx: {
-        widgets: [],
-
-        favorites: [],
-
-        trainingUrl: ''
-      }
-    }
-  },
-
-  created() {
-    if (localStorage.osReqState) {
-      try {
-        const state = JSON.parse(localStorage.osReqState);
-        if (state.view != 'vue') {
-          routerSvc.ngGoto('resolve-req-state');
-        } else {
-          routerSvc.goto(state.name, state.params, state.query);
-          delete localStorage.osReqState;
+      newProjectData: {
+        name: '',
+        description: '',
+        type: '',
+        lead: '',
+        startDate: new Date()
+      },
+      
+      newProjectSchema: {
+        layout: {
+          rows: [
+            {
+              fields: [
+                {
+                  type: 'text',
+                  name: 'name',
+                  placeholder: 'Project Name',
+                  validations: { required: { message: 'Project name is required' } }
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  type: 'textarea',
+                  name: 'description',
+                  placeholder: 'Project Description',
+                  rows: 3
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  type: 'dropdown',
+                  name: 'type',
+                  placeholder: 'Project Type',
+                  listSource: {
+                    options: [
+                      { value: 'aging', label: 'Aging Research' },
+                      { value: 'biomarker', label: 'Biomarker Discovery' },
+                      { value: 'clinical', label: 'Clinical Study' },
+                      { value: 'longitudinal', label: 'Longitudinal Study' }
+                    ],
+                    displayProp: 'label',
+                    selectProp: 'value'
+                  }
+                }
+              ]
+            },
+            {
+              fields: [
+                {
+                  type: 'text',
+                  name: 'lead',
+                  placeholder: 'Principal Investigator'
+                }
+              ]
+            }
+          ]
         }
-        return;
-      } catch (e) {
-        console.log('Error processing the req state: ' + localStorage.osReqState);
-        console.error(e);
-        delete localStorage.osReqState;
       }
     }
-
-    const {widgets} = this.$ui.global.state || {widgets: []};
-    this.ctx.widgets = widgets || [];
-    this._loadFavorites();
-    homePageSvc.registerFavoritesListener(() => this._loadFavorites());
-
-    settingSvc.getSetting('training', 'training_url').then(
-      ([setting]) => {
-        this.ctx.trainingUrl = setting.value || 'http://training.openspecimen.org';
-      }
-    );
   },
 
-  watch: {
-  },
-
-  computed: {
-    widgets: function() {
-      const accessible = homePageSvc.getWidgets();
-      return this.ctx.widgets.filter(({name}) => accessible.indexOf(name) != -1);
-    }
+  async created() {
+    // Load real statistics from API
+    await this.loadEnrollmentStats();
+    await this.loadInventoryStats();
   },
 
   methods: {
-    showWidgetsDialog: function() {
-      this.$refs.widgetsDialog.open();
-
-      const selectedList = [];
-      const allWidgets = homePageSvc.getAllWidgets()
-        .map(name => ({name, displayLabel: i18n.msg('common.home.widgets.' + name), width: 2}));
-      for (let selectedWidget of (this.ctx.widgets || [])) {
-        for (let widget of allWidgets) {
-          if (widget.name == selectedWidget.name) {
-            widget.selected = true;
-            widget.width = selectedWidget.width;
-            selectedList.push(widget);
-            allWidgets.splice(allWidgets.indexOf(widget), 1);
-            break;
+    async loadEnrollmentStats() {
+      try {
+        const stats = await http.get('bharat/stats/enrollment');
+        // Update project stats based on API response
+        if (stats && stats.total) {
+          // Update BHARAT Study stats
+          const bharatProject = this.projects.find(p => p.id === 'bharat-study');
+          if (bharatProject) {
+            bharatProject.stats.participants = stats.total;
+            // Update age group stats if available
+            if (stats.byAgeGroup) {
+              bharatProject.stats.byAgeGroup = stats.byAgeGroup;
+            }
           }
         }
+      } catch (error) {
+        console.error('Failed to load enrollment stats:', error);
       }
-
-      this.ctx.availableWidgets = selectedList.concat(allWidgets);
     },
 
-    closeWidgetsDialog: function() {
-      this.$refs.widgetsDialog.close();
-    },
-
-    saveWidgets: function() {
-      const selectedWidgets = this.ctx.availableWidgets.filter(widget => widget.selected);
-      const toSave = selectedWidgets.map(({name, width}) => ({name, width}));
-      homePageSvc.saveUserWidgets(toSave).then(
-        (state) => {
-          this.$ui.global.state = state;
-          this.ctx.widgets = state.widgets || [];
-          this.closeWidgetsDialog();
-        }
-      );
-    },
-
-    confirmRemoveFavorite: function(favorite) {
-      this.$refs.deleteFavoriteConfirm.open().then(
-        async (resp) => {
-          if (resp != 'proceed') {
-            return;
+    async loadInventoryStats() {
+      try {
+        const stats = await http.get('bharat/stats/inventory');
+        // Update inventory stats
+        if (stats && stats.byType) {
+          const bharatProject = this.projects.find(p => p.id === 'bharat-study');
+          if (bharatProject && stats.byType['Blood EDTA']) {
+            bharatProject.stats.samples = Object.values(stats.byType).reduce((sum, count) => sum + count, 0);
+            bharatProject.stats.boxes = Math.ceil(bharatProject.stats.samples / 100); // Estimate boxes
           }
-
-          homePageSvc.deleteFavorite(favorite.id);
         }
-      );
+      } catch (error) {
+        console.error('Failed to load inventory stats:', error);
+      }
+    },
+    navigateToProject(projectId) {
+      // Navigate to project-specific dashboard
+      routerSvc.goto('ProjectDashboard', { projectId });
     },
 
-    _loadFavorites: function() {
-      homePageSvc.getFavorites().then(
-        favorites => {
-          this.ctx.favorites = favorites.map(
-            favorite => (
-              {
-                id: favorite.id,
-                displayName: favorite.title,
-                url: favorite.viewUrl,
-                title: favorite.title
-              }
-            )
-          );
-        }
-      );
+    showNewProjectDialog() {
+      this.$refs.newProjectDialog.open();
+    },
+
+    closeNewProjectDialog() {
+      this.$refs.newProjectDialog.close();
+    },
+
+    createProject() {
+      if (!this.$refs.newProjectForm.validate()) {
+        return;
+      }
+      
+      // TODO: Implement project creation logic
+      console.log('Creating project:', this.newProjectData);
+      this.closeNewProjectDialog();
+      
+      // Reset form
+      this.newProjectData = {
+        name: '',
+        description: '',
+        type: '',
+        lead: '',
+        startDate: new Date()
+      };
+    },
+
+    quickAction(action) {
+      switch(action) {
+        case 'add-participant':
+          routerSvc.goto('ParticipantRegistration');
+          break;
+        case 'sample-collection':
+          routerSvc.goto('SampleCollection');
+          break;
+        case 'storage-management':
+          routerSvc.goto('StorageManagement');
+          break;
+        case 'generate-report':
+          routerSvc.goto('ReportsGeneration');
+          break;
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-.os-widgets-info {
+.projects-container {
+  padding: 1rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 2rem;
 }
 
-.os-widgets-info .message {
-  padding: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.os-widgets-info .message .question {
-  font-size: 1.25rem;
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
   margin-bottom: 1rem;
 }
 
-.os-widgets-info .message .help {
-  font-size: 1rem;
-  font-style: italic;
+.project-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 1px solid #e0e0e0;
 }
 
-.os-quick-links {
-  min-width: 200px;
-  margin-bottom: 1.25rem;
+.project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
 
-.os-quick-links ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.os-quick-links ul li {
-  padding: 0.25rem 0;
-}
-
-.os-widgets {
+.project-card-header {
+  padding: 1rem;
   display: flex;
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.os-widgets .widget {
-  flex-shrink: 0;
-  padding-right: 1rem;
-  padding-bottom: 1rem;
-  min-width: 350px;
-}
-
-.os-widgets .widget :deep(.os-card .body) {
-  height: 340px;
-  overflow-y: auto;
-}
-
-.os-widgets .widget .os-quick-links :deep(.body) {
-  height: auto;
-}
-
-.os-widgets .widget .os-favorite-links :deep(.body) {
-  height: auto;
-  max-height: 340px;
-}
-
-.os-favorite-links :deep(.title .os-icon-wrapper) {
-  color: orangered;
-}
-
-.os-favorite-links :deep(tr button.btn.btn-xs) {
-  display: none;
-  height: 1rem;
-  width: 1rem;
-  font-size: 0.75rem;
-  padding: 0;
-  border: 0;
-}
-
-.os-favorite-links :deep(tr:hover button.btn.btn-xs) {
-  display: inline-block;
-}
-
-.os-widgets .widget-1 {
-  width: 16.66%;
-}
-
-.os-widgets .widget-2 {
-  width: 33.33%;
-}
-
-.os-widgets .widget-3 {
-  width: 50%;
-}
-
-.os-widgets .widget-4 {
-  width: 66.66%;
-}
-
-.os-widgets .widget-5 {
-  width: 83.33%;
-}
-
-.os-widgets .widget-6 {
-  width: 100%;
-}
-
-td.os-widget-selector {
-  width: 50px;
-}
-
-.os-widget-row-grip {
+  justify-content: space-between;
+  align-items: center;
+  color: white;
   position: relative;
 }
 
-.os-widget-row-grip:after {
-  content: '::::';
-  position: absolute;
-  left: 50%;
-  top: 0;
-  cursor: grab;
-  font-weight: 700;
-  display: none;
+.bharat-theme {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
 
-.os-widget-row-grip:hover:after {
-  display: initial;
+.organ-theme {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.cognitive-theme {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.project-icon {
+  font-size: 2rem;
+  opacity: 0.9;
+}
+
+.project-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+}
+
+.project-status.planning .status-dot {
+  background: #fbbf24;
+}
+
+.project-card-body {
+  padding: 1.5rem;
+}
+
+.project-card-body h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.project-card-body p {
+  margin: 0 0 1.5rem 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.project-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.project-progress {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #667eea;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.organ-progress {
+  background: #f5576c;
+}
+
+.cognitive-progress {
+  background: #4facfe;
+}
+
+.progress-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.project-card-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f3f4f6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.last-activity, .project-lead {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.add-project-card {
+  border: 2px dashed #d1d5db;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-project-card:hover {
+  border-color: #667eea;
+  background: #f0f4ff;
+}
+
+.add-project-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.add-project-icon {
+  font-size: 3rem;
+  color: #9ca3af;
+  margin-bottom: 1rem;
+}
+
+.add-project-card:hover .add-project-icon {
+  color: #667eea;
+}
+
+.add-project-content h3 {
+  margin: 0 0 0.5rem 0;
+  color: #374151;
+}
+
+.add-project-content p {
+  margin: 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.quick-actions-panel, .recent-activity-panel {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quick-actions-panel h4, .recent-activity-panel h4 {
+  margin: 0 0 1rem 0;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.quick-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.quick-action-item {
+  padding: 1rem;
+  text-align: center;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #fafafa;
+}
+
+.quick-action-item:hover {
+  background: #f0f4ff;
+  border-color: #667eea;
+  color: #667eea;
+}
+
+.quick-action-item .os-icon-wrapper {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.quick-action-item span {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #f9fafb;
+}
+
+.activity-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+}
+
+.bharat-bg {
+  background: #667eea;
+}
+
+.organ-bg {
+  background: #f5576c;
+}
+
+.activity-content {
+  flex: 1;
+}
+
+.activity-title {
+  font-weight: 500;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+}
+
+.activity-meta {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .quick-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 </style>

@@ -37,6 +37,19 @@ const routes = [
       },
 
       {
+        path: 'projects/:projectId',
+        name: 'ProjectDashboard',
+        component: () => import(/* webpackChunkName: "projects" */ '../home/views/ProjectDashboard.vue'),
+        props: true
+      },
+
+      {
+        path: 'bharat/enrollment',
+        name: 'BharatEnrollment',
+        component: () => import(/* webpackChunkName: "bharat" */ '../home/views/BharatEnrollmentDashboard.vue')
+      },
+
+      {
         path: 'users/:userId',
         name: 'UsersList',
         // route level code-splitting

@@ -1,121 +1,478 @@
+# LIIMS Developer Guide & Change Log
 
-## The Longevity India LIMS: A Developer's Guide to Your Custom OpenSpecimen
+## Overview
+This document serves as a comprehensive guide for developers working on LIIMS (Longevity India Information Management System), a customized fork of OpenSpecimen for the BHARAT Study. It includes all context, changes made, development practices, and a detailed change log.
 
-### Part 1: How It All Works - The OpenSpecimen Ecosystem
-
-To develop effectively, it's crucial to understand the different components and how they interact. Think of it as a complete system with specialized parts.
-
-*   **The Application Server (`Apache Tomcat`):** This is the "engine" that runs your Java code. It's a container for your application, handling web requests, managing resources, and serving pages to users. We installed it at `/opt/tomcat9`.
-
-*   **The Database (`MySQL in Docker`):** This is the system's long-term memory. It stores every piece of data: participant details, specimen information, user accounts, etc.
-    *   **Why Docker?** We run MySQL in a Docker container to isolate it from the host operating system. This provides a perfectly configured, stable, and repeatable database environment, protecting us from the system-level package and configuration issues we encountered.
-
-*   **The Application Code (`openspecimen.war`):** This is the core product—the "brains" of the operation. It's a single file that contains:
-    *   **The Backend (Java):** All the server-side logic, business rules, and database interactions.
-    *   **The Frontend (JavaScript/HTML/CSS):** Everything the user sees and interacts with in their browser.
-
-*   **The Build System (`Gradle`):** This is your "factory." It takes all your source code (both Java and JavaScript), compiles it, packages it, and produces the final `openspecimen.war` file, ready for deployment. We always use the **Gradle Wrapper (`./gradlew`)** to ensure we use the exact version (7.5.1) the project requires.
-
-### Part 2: Understanding the Configuration
-
-Your entire system is controlled by a few key configuration files. Knowing their roles is critical for troubleshooting.
-
-| File Name                    | Location                                | Purpose                                                                                                                        |
-| :--------------------------- | :-------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------- |
-| **`build.properties`**       | `~/openspecimen/`                       | **Build-Time Config:** Tells Gradle where your Tomcat server is located. The `deploy` task uses this to know where to copy files. |
-| **`openspecimen.xml`**       | `/opt/tomcat9/conf/Catalina/localhost/` | **Tomcat Config:** Defines the database connection pool (URL, username, password) and gives it a JNDI name (`jdbc/openspecimen`). |
-| **`openspecimen.properties`**| `/opt/tomcat9/conf/`                    | **Application Config:** Tells the running OpenSpecimen application how to find its data directory and which JNDI name to use for the database. |
-| **`.vscode/settings.json`**  | `~/openspecimen/`                       | **IDE Config:** Forces VS Code to use the correct Java version (17) and the Gradle Wrapper for this specific project.          |
-
-### Part 3: The Core Development Workflow
-
-This is the cycle you will repeat every time you make changes.
-
-1.  **Make Your Code Changes:** Use VS Code to edit the Java, HTML, or other files in your `~/openspecimen` directory.
-
-2.  **Build the Application:** Use the integrated terminal in VS Code for this step. This compiles your code and creates the `.war` file.
-    ```bash
-    # Make sure you are in the project's root directory: ~/openspecimen
-    ./gradlew clean deploy
-    ```
-    Always wait for the **`BUILD SUCCESSFUL`** message. If it fails, the error message will tell you which file has a syntax error.
-
-3.  **Deploy the Application:** The `deploy` task does *not* automatically copy the file. You must do it manually.
-    ```bash
-    # This copies the newly built file to your server's webapps directory
-    sudo cp build/libs/openspecimen.war /opt/tomcat9/webapps/
-    ```
-
-4.  **Run the New Version:** Restart the Tomcat server to make it load your new code.
-    ```bash
-    sudo systemctl restart tomcat
-    ```
-    Wait about 30-60 seconds for the server to fully start.
-
-5.  **Test in Your Browser:**
-    *   Open `http://localhost:8082/openspecimen`.
-    *   Perform a **Hard Refresh** (**Ctrl+Shift+R** or **Cmd+Shift+R**) to ensure you are seeing the latest changes.
-
-### Part 4: Saving Your Work - The Git Workflow
-
-Your code lives in Git. Following this process ensures your work is safe, tracked, and shareable.
-
-1.  **Check the Status:** See which files you have changed.
-    ```bash
-    git status
-    ```
-
-2.  **Stage Your Changes:** Tell Git which changes you want to include in your next save point.
-    ```bash
-    # To add a specific file
-    git add path/to/your/file.java
-    
-    # To add all changed files (use with caution, but common)
-    git add .
-    ```
-
-3.  **Commit Your Changes:** Save your staged changes with a descriptive message. This creates a permanent save point in your local history.
-    ```bash
-    git commit -m "feat: Add custom field for BHARAT Study baseline"
-    # Or "fix: Corrected the title on the participant page"
-    ```
-
-4.  **Push Your Changes to GitHub:** Upload your new commits from your local machine to your GitHub fork (`origin`). This is your backup and how you share your work.
-    ```bash
-    # This pushes your 'longevity-india-dev' branch to your fork
-    git push origin longevity-india-dev
-    ```
-
-### Part 5: System Administration & Troubleshooting
-
-#### How to Start Everything After a System Reboot
-
-Our setup is designed to be resilient. Here's what happens on a reboot and how to manage it:
-
-1.  **Docker Service Starts:** The main Docker service starts automatically.
-2.  **MySQL Container Starts:** Because we created the `openspecimen-mysql` container with the `--restart unless-stopped` policy, the Docker service will automatically start it.
-3.  **Tomcat Service Starts:** Because we enabled the `tomcat.service` with `systemd`, it will also start automatically after the network and Docker are ready.
-
-**Manual Control:**
-*   **To check the status:** `docker ps` and `sudo systemctl status tomcat`
-*   **To start/stop the database:** `docker stop openspecimen-mysql` and `docker start openspecimen-mysql`
-*   **To start/stop the application:** `sudo systemctl stop tomcat` and `sudo systemctl start tomcat`
+**Last Updated**: 2025-07-16  
+**Version**: 1.0.0
 
 ---
 
-#### The Troubleshooting Bible
+## Table of Contents
+1. [Project Context](#project-context)
+2. [Technology Stack](#technology-stack)
+3. [Development Environment](#development-environment)
+4. [Architecture Overview](#architecture-overview)
+5. [Change Log](#change-log)
+6. [Development Guidelines](#development-guidelines)
+7. [Key Files and Directories](#key-files-and-directories)
+8. [API Documentation](#api-documentation)
+9. [Database Schema](#database-schema)
+10. [Future Development](#future-development)
 
-This covers every major error we encountered and how to solve it.
+---
 
-| Symptom / Error Message                                          | Diagnosis                                                                                                  | Solution                                                                                                           |
-| :--------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
-| **`BUILD FAILED` ... `Unable to find local grunt`**                | Front-end JavaScript libraries are not installed locally.                                                  | `cd www`, run `npm install` and `bower install`, then `cd ..` and retry the build.                                 |
-| **`BUILD FAILED`** with a Java syntax error                        | You have a typo or error in your custom Java code.                                                         | Read the error message to find the exact file and line number. Correct the code in your IDE and rebuild.         |
-| **Application is inaccessible (404)** after a successful build.  | The `.war` file was built but not copied to the Tomcat `webapps` directory.                                  | Manually copy the file: `sudo cp build/libs/openspecimen.war /opt/tomcat9/webapps/`                                |
-| **`SEVERE` ... `Address already in use`** on port **8005**         | A previous Tomcat process did not shut down correctly and is still running in the background.                | Find and stop the zombie process. The most direct way is `sudo killall -9 java`, then restart Tomcat.           |
-| **`ERROR` ... `Could not resolve placeholder 'plugin.dir'`**       | The `plugin.dir` property is missing from `openspecimen.properties`.                                       | Edit `/opt/tomcat9/conf/openspecimen.properties` and add the line `plugin.dir=/opt/tomcat9/os-data/plugins`. |
-| **`LOGIN FAILED` ... `AUTH_INVALID_CREDENTIALS`** on first login | The default `admin` user was not created correctly or is inactive in the database.                         | Log into the MySQL container and run the `INSERT ... ON DUPLICATE KEY UPDATE` command to reset the user and password. |
-| **VS Code shows errors** or uses the wrong Java/Gradle version     | The IDE's internal cache is stale or its configuration is wrong.                                           | 1. Ensure `.vscode/settings.json` is forcing Java 17 and the Gradle Wrapper. 2. Run `> Java: Clean Workspace`. |
-| **`./gradlew` command fails** for any reason                       | The Gradle cache might be corrupted by a different Java version.                                           | Close VS Code. Run `rm -rf ~/.gradle/caches` and `rm -rf .gradle`. Retry the command.                             |
+## Project Context
 
-This guide should serve as your primary reference for developing, deploying, and maintaining your custom LIMS solution for the Longevity India Initiative.
+### What is LIIMS?
+LIIMS (Longevity India Information Management System) is a customized biobank management system based on OpenSpecimen, specifically tailored for the BHARAT Study (Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions) conducted by Longevity India at IISc.
+
+### Key Requirements
+- **Participant Management**: 5,000 participants across 5 age groups (18-29, 30-44, 45-59, 60-74, 75+)
+- **Sample Tracking**: Blood, urine, hair, cheek swab, stool samples with hierarchical aliquoting
+- **Coding System**: `[CENTER]-[GROUP][GENDER]-[SERIAL]` format (e.g., RAM-1A-001)
+- **Visual Coding**: Cryocap colors by age group, label borders by gender
+- **Multi-center Support**: RAM (Ramaiah), VEL (Vellore), PGI (Chandigarh)
+- **Data Integration**: Epicollect, diagnostic labs (1MG, Healthians, Lal Path), flow cytometry
+
+---
+
+## Technology Stack
+
+### Backend
+- **Language**: Java 11+ (OpenSpecimen uses Java 8, but we're compatible)
+- **Framework**: Spring Framework 4.x
+- **Build Tool**: Gradle 7.5.1
+- **Application Server**: Apache Tomcat 9
+- **Database**: MySQL 5.7+ (Running in Docker)
+
+### Frontend
+- **Framework**: Vue.js 3 (New UI) + AngularJS (Legacy UI)
+- **Build Tool**: Vue CLI + Grunt (for legacy)
+- **CSS Framework**: PrimeVue + Custom styles
+- **State Management**: Vuex (for Vue components)
+
+### Development Tools
+- **IDE**: VS Code with Java extensions
+- **Version Control**: Git
+- **Container**: Docker for MySQL database
+
+---
+
+## Development Environment
+
+### Prerequisites
+```bash
+# Required software
+- Java 11 or higher
+- Node.js 16+
+- Gradle 7.5.1
+- Docker (for MySQL)
+- Git
+```
+
+### Setup Instructions
+1. Clone the repository
+2. Start MySQL container: `docker-compose up -d`
+3. Configure database connection in `build.properties`
+4. Build the application: `./gradlew clean deploy`
+5. Access at: `http://localhost:8080/openspecimen`
+
+### Important Configuration Files
+- `build.properties` - Database and deployment configuration
+- `gradle.properties` - Build settings
+- `ui/package.json` - Frontend dependencies
+
+---
+
+## Architecture Overview
+
+### Directory Structure
+```
+/home/adb/openspecimen/
+├── WEB-INF/
+│   ├── src/com/krishagni/catissueplus/
+│   │   ├── core/biospecimen/domain/      # Domain models
+│   │   ├── rest/controller/              # REST controllers
+│   │   └── core/biospecimen/services/   # Business logic
+│   └── resources/
+│       └── db/                           # SQL scripts
+├── ui/src/
+│   ├── home/views/                       # Vue components
+│   ├── common/services/                  # Shared services
+│   └── router/                           # Vue router config
+├── docs/                                 # Project documentation
+└── www/app/                             # Legacy AngularJS UI
+```
+
+### Key Design Patterns
+1. **Repository Pattern**: Data access through DAO classes
+2. **Service Layer**: Business logic in service classes
+3. **DTO Pattern**: Data transfer objects for API communication
+4. **Component-Based UI**: Reusable Vue components
+
+---
+
+## Change Log
+
+### Session 1: Initial Rebranding and UI Customization
+**Date**: 2025-07-16  
+**Developer**: adb3502  
+**Commit Identifier**: LIIMS-001
+
+#### Changes Made:
+1. **Rebranding from OpenSpecimen to LIIMS**
+   - Updated all logos to Longevity India logos
+   - Changed application name throughout codebase
+   - Updated README.md with LIIMS information
+
+2. **Login Page Customization**
+   - Changed background from blue to white
+   - Updated header from blue to black (#000000)
+   - Modified login message to "Welcome to LIIMS (Longevity India Information Management System)"
+   - Removed domain dropdown and hardcoded to 'openspecimen'
+   - Removed sign-up feature
+
+3. **Header Cleanup**
+   - Removed red "TEST" environment box
+   - Removed unnecessary icons (favorites, new stuff, feedback, notifications)
+   - Changed About icon from question-circle to info-circle
+   - Updated footer to "maintained by adb3502" with GitHub link
+
+#### Files Modified:
+- `/ui/src/users/views/FormCard.vue` - Login page styling
+- `/ui/src/users/views/LoginForm.vue` - Login form changes
+- `/ui/src/users/schemas/login.js` - Removed domain fields
+- `/ui/src/common/components/Navbar.vue` - Header styling
+- `/ui/src/common/components/About.vue` - About section updates
+- `/ui/src/NoLoginApp.vue` - Removed sign-up button
+
+#### Issues Resolved:
+- Fixed authentication issue after removing domain dropdown
+- Unlocked admin account via database
+- Reset password to 'Login@123'
+
+---
+
+### Session 2: Project-Centric UI and BHARAT Study Implementation
+**Date**: 2025-07-16  
+**Developer**: adb3502 (with Claude Opus 4)  
+**Commit Identifier**: LIIMS-002
+
+#### Major Features Implemented:
+
+1. **Project-Centric Home Page** (`/ui/src/home/views/Home.vue`)
+   - Replaced module-based cards with project cards
+   - Added BHARAT Study, Organ Aging Project, Cognitive Health Study
+   - Implemented real-time statistics display
+   - Added quick actions panel and recent activity feed
+
+2. **Project Dashboard Framework** (`/ui/src/home/views/ProjectDashboard.vue`)
+   - Created comprehensive dashboard with multiple widgets
+   - Sample statistics with visual indicators
+   - Placeholder charts for future data visualization
+   - Storage overview with capacity tracking
+   - Sample tracking with search functionality
+
+3. **Database Schema Extensions** (`/WEB-INF/resources/db/bharat-schema.sql`)
+   ```sql
+   - os_bharat_participants - Participant coding system
+   - os_bharat_data_integrations - External data tracking
+   - os_bharat_omics_batches - Multiomics batch management
+   - os_bharat_enrollment_stats - Enrollment tracking
+   - os_bharat_lab_results - Lab result storage
+   - os_bharat_timeline_events - Participant timeline
+   ```
+
+4. **Backend API Implementation**
+   - Created `BharatParticipant.java` domain model
+   - Implemented `BharatParticipantController.java` with REST endpoints:
+     - `POST /api/bharat/participants/enroll`
+     - `GET /api/bharat/participants/{code}`
+     - `GET /api/bharat/stats/enrollment`
+     - `GET /api/bharat/stats/inventory`
+     - `GET /api/bharat/stats/completeness`
+
+5. **BHARAT Enrollment Dashboard** (`/ui/src/home/views/BharatEnrollmentDashboard.vue`)
+   - Real-time enrollment statistics
+   - 5x2 age/gender matrix visualization
+   - Interactive heatmap showing enrollment balance
+   - Center-wise breakdown (RAM, VEL, PGI)
+   - Participant enrollment form with dynamic code generation
+
+6. **Routing Updates** (`/ui/src/router/index.js`)
+   - Added `/projects/:projectId` route
+   - Added `/bharat/enrollment` route
+   - Connected all new components
+
+#### Technical Implementation Details:
+
+**Participant Coding System**:
+```javascript
+Format: [CENTER]-[GROUP][GENDER]-[SERIAL]
+- CENTER: 3-letter code (RAM, VEL, PGI)
+- GROUP: Age group (1-5)
+- GENDER: A=Male, B=Female
+- SERIAL: 3-digit sequential (001-999)
+Example: RAM-1A-001 (Ramaiah, Age 18-29, Male, #001)
+```
+
+**Visual Coding Implementation**:
+```javascript
+Cryocap Colors:
+- Age Group 1 (18-29): Blue
+- Age Group 2 (30-44): Green
+- Age Group 3 (45-59): Yellow
+- Age Group 4 (60-74): Orange
+- Age Group 5 (75+): Red
+
+Label Borders:
+- Male: Blue
+- Female: Pink
+```
+
+#### Build Configuration Changes:
+- No changes to build configuration
+- Successfully builds with `./gradlew clean deploy`
+- Frontend builds with Vue CLI integration
+
+---
+
+## Development Guidelines
+
+### Code Style
+1. **Java**: Follow OpenSpecimen's existing patterns
+   - Use dependency injection via Spring
+   - Follow repository-service-controller pattern
+   - Use DTOs for API communication
+
+2. **Vue.js**: 
+   - Use Composition API for new components
+   - Follow single-file component structure
+   - Use PrimeVue components where possible
+
+3. **API Design**:
+   - RESTful endpoints under `/api/bharat/`
+   - Use proper HTTP status codes
+   - Return consistent JSON structures
+
+### Git Workflow
+1. Create feature branches from `longevity-india-dev`
+2. Commit with descriptive messages
+3. Update this document with changes
+4. Test thoroughly before merging
+
+### Testing
+1. Manual testing of all UI changes
+2. API testing with Postman/curl
+3. Database migration testing
+4. Cross-browser compatibility
+
+---
+
+## Key Files and Directories
+
+### Backend Files
+```
+/WEB-INF/src/com/krishagni/catissueplus/
+├── core/biospecimen/domain/
+│   └── BharatParticipant.java              # BHARAT participant model
+├── rest/controller/
+│   └── BharatParticipantController.java    # BHARAT API endpoints
+└── core/biospecimen/services/
+    └── (Various service classes)
+```
+
+### Frontend Files
+```
+/ui/src/
+├── home/views/
+│   ├── Home.vue                    # Project-centric home page
+│   ├── ProjectDashboard.vue        # Project dashboard
+│   └── BharatEnrollmentDashboard.vue # Enrollment tracking
+├── common/services/
+│   ├── HttpClient.js               # API communication
+│   └── Router.js                   # Navigation service
+└── router/
+    └── index.js                    # Route definitions
+```
+
+### Database Files
+```
+/WEB-INF/resources/db/
+└── bharat-schema.sql               # BHARAT study schema
+```
+
+### Documentation
+```
+/docs/
+├── bharat-study-context.md         # Study context and requirements
+├── bharat-lims-architecture.md     # Technical architecture
+└── dashboard-data-integration.md   # Integration specifications
+```
+
+---
+
+## API Documentation
+
+### Enrollment API
+```javascript
+POST /api/bharat/participants/enroll
+Body: {
+  "centerCode": "RAM",
+  "age": 25,
+  "gender": "M",
+  "cpId": 1,
+  "firstName": "John",
+  "lastName": "Doe",
+  "birthDate": "1999-01-01"
+}
+
+Response: {
+  "cprId": 123,
+  "participantId": 456,
+  "participantCode": "RAM-1A-001",
+  "visualCoding": {
+    "cryocapColor": "Blue",
+    "labelBorderColor": "Blue"
+  }
+}
+```
+
+### Statistics APIs
+```javascript
+GET /api/bharat/stats/enrollment
+Response: {
+  "total": 1247,
+  "byCenter": { "RAM": 450, "VEL": 397, "PGI": 400 },
+  "byAgeGroup": { ... },
+  "byGender": { "M": 623, "F": 624 }
+}
+
+GET /api/bharat/stats/inventory
+Response: {
+  "byType": { "Blood EDTA": 1247, ... },
+  "byStorage": { "-80C Freezer 1": "67%", ... }
+}
+```
+
+---
+
+## Database Schema
+
+### Core BHARAT Tables
+1. **os_bharat_participants**
+   - Links OpenSpecimen participants to BHARAT coding
+   - Stores center, age group, gender, sequential number
+
+2. **os_bharat_enrollment_stats**
+   - Real-time enrollment tracking by center/age/gender
+   - Pre-populated with targets
+
+3. **os_bharat_data_integrations**
+   - Tracks external data imports
+   - Stores raw and parsed JSON data
+
+4. **os_bharat_timeline_events**
+   - Participant journey tracking
+   - All events in chronological order
+
+---
+
+## Future Development
+
+### Immediate Priorities (Phase 1)
+1. **Sample Collection Workflow**
+   - Barcode generation and printing
+   - Sample hierarchy implementation
+   - Real-time collection tracking
+
+2. **Data Integration**
+   - Epicollect webhook receiver
+   - Lab API integrations (1MG, Healthians, Lal Path)
+   - Flow cytometry data import
+
+3. **Advanced Visualizations**
+   - Chart.js integration for statistics
+   - D3.js for India map visualization
+   - Real-time WebSocket updates
+
+### Medium-term Goals (Phase 2)
+1. **Participant Portal**
+   - Result access for participants
+   - Consent management
+   - Appointment scheduling
+
+2. **Advanced Analytics**
+   - Multiomics batch planning
+   - Quality control dashboards
+   - Data completeness tracking
+
+3. **Mobile App**
+   - Field collection app
+   - Offline capability
+   - Barcode scanning
+
+### Long-term Vision (Phase 3)
+1. **AI Integration**
+   - Predictive analytics
+   - Anomaly detection
+   - Automated quality checks
+
+2. **National Biobank Network**
+   - Inter-institution data sharing
+   - Standardized protocols
+   - Federated queries
+
+---
+
+## Troubleshooting
+
+### Common Issues
+1. **Build Failures**
+   - Check Java version (must be 11+)
+   - Verify database connection
+   - Clear gradle cache: `./gradlew clean`
+
+2. **Frontend Issues**
+   - Clear node_modules: `rm -rf ui/node_modules && cd ui && npm install`
+   - Check for conflicting routes
+   - Verify API endpoints
+
+3. **Database Issues**
+   - Ensure MySQL is running: `docker ps`
+   - Check credentials in build.properties
+   - Run migrations manually if needed
+
+---
+
+## Contact & Support
+- **Lead Developer**: adb3502
+- **GitHub**: https://github.com/adb3502
+- **Project**: BHARAT Study, Longevity India, IISc
+
+---
+
+## Appendix: Quick Commands
+
+```bash
+# Build and deploy
+./gradlew clean deploy
+
+# Start database
+docker-compose up -d
+
+# Watch logs
+tail -f tomcat/logs/catalina.out
+
+# Access application
+http://localhost:8080/openspecimen
+
+# Default credentials
+Username: admin
+Password: Login@123
+```
+
+---
+
+**Note**: This document should be updated after each development session with new changes, issues resolved, and lessons learned.
