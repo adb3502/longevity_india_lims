@@ -420,16 +420,25 @@ public class EpicollectDataCleaningService {
         Map<String, Map<String, Object>> deduplicated = new HashMap<>();
         
         for (Map<String, Object> entry : entries) {
-            String sampleId = (String) entry.get("sampleId");
-            if (sampleId == null) continue;
+            // Use the correct field name from Epicollect data
+            String participantId = (String) entry.get("84_ID_In_the_format_");
+            if (participantId == null) {
+                // Fallback to other possible ID fields
+                participantId = (String) entry.get("title");
+                if (participantId == null) {
+                    participantId = (String) entry.get("ec5_uuid");
+                }
+            }
             
-            if (deduplicated.containsKey(sampleId)) {
+            if (participantId == null) continue;
+            
+            if (deduplicated.containsKey(participantId)) {
                 // Merge with existing entry, keeping most complete data
-                Map<String, Object> existing = deduplicated.get(sampleId);
+                Map<String, Object> existing = deduplicated.get(participantId);
                 Map<String, Object> merged = mergeEntries(existing, entry);
-                deduplicated.put(sampleId, merged);
+                deduplicated.put(participantId, merged);
             } else {
-                deduplicated.put(sampleId, entry);
+                deduplicated.put(participantId, entry);
             }
         }
         

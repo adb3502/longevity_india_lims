@@ -162,7 +162,15 @@ public class BharatComprehensiveDataService {
      * Create or update participant record
      */
     private Long createOrUpdateParticipant(Map<String, Object> anonymizedData) throws Exception {
+        // Get participant ID from the cleaned/converted field
         String bharatCode = (String) anonymizedData.get("sampleId");
+        if (bharatCode == null) {
+            // Fallback to original field names
+            bharatCode = (String) anonymizedData.get("84_ID_In_the_format_");
+            if (bharatCode == null) {
+                bharatCode = (String) anonymizedData.get("title");
+            }
+        }
         String epicollectUuid = (String) anonymizedData.get("ec5_uuid");
         
         // Check if participant exists
