@@ -1,0 +1,18 @@
+# Epicollect5 API Configuration Template
+# Copy this file to epicollect-config.properties and fill in your credentials
+# IMPORTANT: Do not commit the actual config file to version control
+
+# Your Epicollect5 OAuth2 credentials
+epicollect.client.id=YOUR_CLIENT_ID_HERE
+epicollect.client.secret=YOUR_CLIENT_SECRET_HERE
+
+# Project configuration
+epicollect.project.slug=longevity
+epicollect.base.url=https://five.epicollect.net
+
+# Import schedule (cron expression)
+# Default: Every hour at minute 0
+epicollect.import.schedule=0 0 * * * ?
+
+# Enable/disable automatic imports
+epicollect.import.enabled=true

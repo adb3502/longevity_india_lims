@@ -36,9 +36,36 @@ public class EpicollectImportService {
     private static final String EPICOLLECT_BASE_URL = "https://five.epicollect.net";
     private static final String PROJECT_SLUG = "longevity";
     
-    // These would typically be in configuration
-    private static final String CLIENT_ID = System.getenv("EPICOLLECT_CLIENT_ID");
-    private static final String CLIENT_SECRET = System.getenv("EPICOLLECT_CLIENT_SECRET");
+    // Configuration - loaded from properties file
+    private String CLIENT_ID;
+    private String CLIENT_SECRET;
+    
+    public EpicollectImportService() {
+        loadConfiguration();
+    }
+    
+    private void loadConfiguration() {
+        try {
+            // First try to load from external config file
+            java.util.Properties props = new java.util.Properties();
+            java.io.File configFile = new java.io.File("epicollect-config.properties");
+            if (configFile.exists()) {
+                try (java.io.FileInputStream fis = new java.io.FileInputStream(configFile)) {
+                    props.load(fis);
+                    CLIENT_ID = props.getProperty("epicollect.client.id");
+                    CLIENT_SECRET = props.getProperty("epicollect.client.secret");
+                    logger.info("Loaded Epicollect configuration from file");
+                }
+            } else {
+                // Fall back to environment variables
+                CLIENT_ID = System.getenv("EPICOLLECT_CLIENT_ID");
+                CLIENT_SECRET = System.getenv("EPICOLLECT_CLIENT_SECRET");
+                logger.info("Using Epicollect configuration from environment");
+            }
+        } catch (Exception e) {
+            logger.error("Error loading Epicollect configuration", e);
+        }
+    }
     
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
     
