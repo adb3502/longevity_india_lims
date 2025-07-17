@@ -254,98 +254,52 @@ export default {
       projectInfo: {
         name: 'BHARAT Study',
         description: 'Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions',
-        lead: 'Dr. Ravi Kumar',
+        lead: 'Principal Investigator',
         status: 'Active'
       },
 
       projectStats: {
-        totalSamples: 3891,
-        totalParticipants: 1247,
-        storageBoxes: 156
+        totalSamples: 0,
+        totalParticipants: 0,
+        storageBoxes: 0
       },
 
       recentCollections: [
-        {
-          id: 1,
-          participantId: 'BHARAT-001234',
-          sampleType: 'Blood',
-          date: new Date(Date.now() - 2 * 60 * 60 * 1000),
-          status: 'Processed'
-        },
-        {
-          id: 2,
-          participantId: 'BHARAT-001235',
-          sampleType: 'Saliva',
-          date: new Date(Date.now() - 4 * 60 * 60 * 1000),
-          status: 'Collected'
-        },
-        {
-          id: 3,
-          participantId: 'BHARAT-001236',
-          sampleType: 'Urine',
-          date: new Date(Date.now() - 6 * 60 * 60 * 1000),
-          status: 'Processing'
-        }
+        // No collections yet - will be populated from Epicollect data
       ],
 
       storageLocations: [
         {
           id: 1,
           name: 'Freezer A (-80°C)',
-          used: 1250,
+          used: 0,
           total: 1500,
-          percentage: 83,
+          percentage: 0,
           temperature: '-80°C',
-          boxes: 45
+          boxes: 0
         },
         {
           id: 2,
           name: 'Freezer B (-20°C)', 
-          used: 890,
+          used: 0,
           total: 1200,
-          percentage: 74,
+          percentage: 0,
           temperature: '-20°C',
-          boxes: 32
+          boxes: 0
         },
         {
           id: 3,
           name: 'Refrigerator (4°C)',
-          used: 340,
+          used: 0,
           total: 500,
-          percentage: 68,
+          percentage: 0,
           temperature: '4°C',
-          boxes: 18
+          boxes: 0
         }
       ],
 
       sampleData: [
-        {
-          id: 1,
-          participantId: 'BHARAT-001234',
-          barcode: 'BH-001234-BL-001',
-          type: 'Blood',
-          aliquotNumber: '001',
-          boxNumber: 'B-156',
-          location: 'Freezer-A'
-        },
-        {
-          id: 2,
-          participantId: 'BHARAT-001235',
-          barcode: 'BH-001235-SA-002', 
-          type: 'Saliva',
-          aliquotNumber: '002',
-          boxNumber: 'S-089',
-          location: 'Freezer-B'
-        },
-        {
-          id: 3,
-          participantId: 'BHARAT-001236',
-          barcode: 'BH-001236-UR-003',
-          type: 'Urine',
-          aliquotNumber: '003',
-          boxNumber: 'U-045',
-          location: 'Refrigerator'
-        }
+        // No samples yet - will be populated from Epicollect data
       ],
 
       availableWidgets: [

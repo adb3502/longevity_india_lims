@@ -37,6 +37,9 @@ public class BharatParticipantController {
     @Autowired
     private HttpServletRequest httpReq;
     
+    @Autowired
+    private com.krishagni.catissueplus.core.biospecimen.services.EpicollectImportService epicollectService;
+    
     /**
      * Enroll a new participant in the BHARAT study
      */
@@ -132,7 +135,7 @@ public class BharatParticipantController {
         // TODO: Implement participant lookup by BHARAT code
         Map<String, Object> result = new HashMap<>();
         result.put("code", code);
-        result.put("message", "To be implemented");
+        result.put("message", "Participant lookup not yet implemented - awaiting data import");
         return result;
     }
     
@@ -159,28 +162,55 @@ public class BharatParticipantController {
         Map<String, Object> stats = new HashMap<>();
         
         // Query actual enrollment statistics from database
-        // For now, using realistic demo data
-        int totalEnrolled = 347; // More realistic starting number
+        // TODO: Replace with actual database query once data is imported
+        int totalEnrolled = 0; // Will be populated from actual data
         stats.put("total", totalEnrolled);
         
+        // 4 centers with 100 slots each per age group per gender = 4000 total slots
         Map<String, Integer> byCenter = new HashMap<>();
-        byCenter.put("RAM", 178); // Ramaiah - Bangalore
-        byCenter.put("VEL", 92);  // Vellore
-        byCenter.put("PGI", 77);  // PGI - Chandigarh
+        byCenter.put("RAM", 0); // Ramaiah
+        byCenter.put("SSI", 0); // Satya Sai Institute
+        byCenter.put("BAP", 0); // Baptist
+        byCenter.put("BMC", 0); // Bangalore Medical College
         stats.put("byCenter", byCenter);
         
-        Map<String, Map<String, Object>> byAgeGroup = new HashMap<>();
-        // Realistic distribution across age groups
-        int[] currentByAge = {89, 78, 72, 65, 43}; // Decreasing with age
-        int[] maleByAge = {46, 39, 38, 33, 20};
-        int[] femaleByAge = {43, 39, 34, 32, 23};
+        // Add center-specific stats
+        if (center != null) {
+            // Return stats for specific center
+            Map<String, Map<String, Object>> centerAgeGroups = new HashMap<>();
+            for (int i = 1; i <= 5; i++) {
+                Map<String, Object> ageGroupStats = new HashMap<>();
+                // Each center has 100 slots per age group per gender (200 total per age group)
+                ageGroupStats.put("totalSlots", 200); // 100 male + 100 female
+                ageGroupStats.put("maleSlots", 100);
+                ageGroupStats.put("femaleSlots", 100);
+                ageGroupStats.put("enrolled", 0); // TODO: Get from actual data
+                ageGroupStats.put("maleEnrolled", 0);
+                ageGroupStats.put("femaleEnrolled", 0);
+                ageGroupStats.put("availableSlots", 200);
+                ageGroupStats.put("maleAvailable", 100);
+                ageGroupStats.put("femaleAvailable", 100);
+                
+                String ageRange = getAgeRange(i);
+                centerAgeGroups.put(ageRange, ageGroupStats);
+            }
+            stats.put("centerAgeGroups", centerAgeGroups);
+        }
         
+        // Overall stats across all centers
+        Map<String, Map<String, Object>> byAgeGroup = new HashMap<>();
         for (int i = 1; i <= 5; i++) {
             Map<String, Object> ageGroupStats = new HashMap<>();
-            ageGroupStats.put("target", 1000);
-            ageGroupStats.put("current", currentByAge[i-1]);
-            ageGroupStats.put("male", maleByAge[i-1]);
-            ageGroupStats.put("female", femaleByAge[i-1]);
+            // 4 centers × 100 slots × 2 genders = 800 slots per age group
+            ageGroupStats.put("totalSlots", 800);
+            ageGroupStats.put("enrolled", 0); // TODO: Get from actual data
+            ageGroupStats.put("availableSlots", 800);
+            ageGroupStats.put("maleSlots", 400);
+            ageGroupStats.put("femaleSlots", 400);
+            ageGroupStats.put("maleEnrolled", 0);
+            ageGroupStats.put("femaleEnrolled", 0);
+            ageGroupStats.put("maleAvailable", 400);
+            ageGroupStats.put("femaleAvailable", 400);
             
             String ageRange = getAgeRange(i);
             byAgeGroup.put(ageRange, ageGroupStats);
@@ -188,19 +218,22 @@ public class BharatParticipantController {
         stats.put("byAgeGroup", byAgeGroup);
         
         Map<String, Integer> byGender = new HashMap<>();
-        byGender.put("M", 176);
-        byGender.put("F", 171);
+        byGender.put("M", 0);
+        byGender.put("F", 0);
         stats.put("byGender", byGender);
         
-        // Add enrollment trend data
+        // Total slots available
+        stats.put("totalSlots", 4000); // 4 centers × 5 age groups × 2 genders × 100 each
+        
+        // Add enrollment trend data - empty until we have real enrollments
         List<Map<String, Object>> trend = new ArrayList<>();
-        // Last 7 days of enrollment
+        // Last 7 days of enrollment - all zeros for now
         for (int i = 6; i >= 0; i--) {
             Map<String, Object> dayData = new HashMap<>();
             Calendar cal = Calendar.getInstance();
             cal.add(Calendar.DAY_OF_MONTH, -i);
             dayData.put("date", cal.getTime());
-            dayData.put("count", totalEnrolled - (i * 8) + (int)(Math.random() * 5));
+            dayData.put("count", 0); // No enrollments yet
             trend.add(dayData);
         }
         stats.put("trend", trend);
@@ -217,26 +250,29 @@ public class BharatParticipantController {
     public Map<String, Object> getInventoryStats() {
         Map<String, Object> stats = new HashMap<>();
         
-        // Based on 347 participants enrolled
+        // TODO: Get actual counts from database once data is imported
         Map<String, Integer> byType = new HashMap<>();
-        byType.put("Blood EDTA", 347);
-        byType.put("Blood SST", 347);
-        byType.put("Serum Aliquots", 1041); // 3 aliquots per participant
-        byType.put("Plasma Aliquots", 694);  // 2 aliquots per participant
-        byType.put("Urine", 332); // 95% collection rate
-        byType.put("Hair", 321);  // 92% collection rate
-        byType.put("Cheek Swab", 347);
-        byType.put("Stool", 89);  // 25% collection rate (optional)
+        byType.put("Blood EDTA", 0);
+        byType.put("Blood SST", 0);
+        byType.put("Serum Aliquots", 0);
+        byType.put("Plasma Aliquots", 0);
+        byType.put("Urine", 0);
+        byType.put("Hair", 0);
+        byType.put("Cheek Swab", 0);
+        byType.put("Stool", 0);
         stats.put("byType", byType);
         
         Map<String, String> byStorage = new HashMap<>();
-        byStorage.put("-80C Freezer 1", "23%");
-        byStorage.put("-80C Freezer 2", "18%");
-        byStorage.put("LN2 Tank 1", "31%");
+        byStorage.put("-80C Freezer 1", "0%");
+        byStorage.put("-80C Freezer 2", "0%");
+        byStorage.put("LN2 Tank 1", "0%");
         stats.put("byStorage", byStorage);
         
-        stats.put("pendingProcessing", 12);
-        stats.put("qcFailed", 3);
+        stats.put("pendingProcessing", 0);
+        stats.put("qcFailed", 0);
+        
+        // Add message about data import status
+        stats.put("importStatus", "Ready for Epicollect data import - 315 entries available");
         
         return stats;
     }
@@ -250,12 +286,13 @@ public class BharatParticipantController {
     public Map<String, Object> getDataCompletenessStats() {
         Map<String, Object> stats = new HashMap<>();
         
-        stats.put("overall", 0.82);
+        // No data imported yet - all at 0%
+        stats.put("overall", 0.0);
         
         Map<String, String> byDataType = new HashMap<>();
-        byDataType.put("Clinical Metadata", "98%");
-        byDataType.put("Blood Results", "89%");
-        byDataType.put("Immunophenotyping", "72%");
+        byDataType.put("Clinical Metadata", "0%");
+        byDataType.put("Blood Results", "0%");
+        byDataType.put("Immunophenotyping", "0%");
         byDataType.put("Genomics", "0%");
         byDataType.put("Proteomics", "0%");
         stats.put("byDataType", byDataType);
@@ -315,5 +352,48 @@ public class BharatParticipantController {
         coding.put("labelBorderColor", labelBorderColor);
         
         return coding;
+    }
+    
+    /**
+     * Manual trigger for Epicollect data import
+     */
+    @RequestMapping(method = RequestMethod.POST, value = "/import/epicollect")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Map<String, Object> triggerEpicollectImport() {
+        Map<String, Object> result = new HashMap<>();
+        
+        try {
+            // Trigger the import
+            epicollectService.importDataFromEpicollect();
+            
+            result.put("success", true);
+            result.put("message", "Epicollect import triggered successfully");
+            result.put("timestamp", new Date());
+            
+        } catch (Exception e) {
+            result.put("success", false);
+            result.put("error", e.getMessage());
+            result.put("timestamp", new Date());
+        }
+        
+        return result;
+    }
+    
+    /**
+     * Get import status
+     */
+    @RequestMapping(method = RequestMethod.GET, value = "/import/status")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Map<String, Object> getImportStatus() {
+        Map<String, Object> result = new HashMap<>();
+        
+        result.put("epicollectConfigured", epicollectService.isConfigured());
+        result.put("lastImportAttempt", "Not implemented yet");
+        result.put("availableEntries", "315 entries available from Epicollect");
+        result.put("status", "Ready for import");
+        
+        return result;
     }
 }

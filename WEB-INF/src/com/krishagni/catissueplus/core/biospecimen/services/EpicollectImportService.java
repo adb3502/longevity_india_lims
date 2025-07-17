@@ -21,6 +21,7 @@ import com.krishagni.catissueplus.core.common.events.RequestEvent;
 import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.biospecimen.events.CollectionProtocolRegistrationDetail;
 import com.krishagni.catissueplus.core.biospecimen.events.ParticipantDetail;
+import com.krishagni.catissueplus.core.biospecimen.services.EpicollectDataCleaningService;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -71,6 +72,9 @@ public class EpicollectImportService {
     
     @Autowired
     private CollectionProtocolRegistrationService cprService;
+    
+    @Autowired
+    private EpicollectDataCleaningService cleaningService;
     
     private ObjectMapper objectMapper = new ObjectMapper();
     
@@ -210,6 +214,13 @@ public class EpicollectImportService {
         }
         
         logger.info("Fetched " + allEntries.size() + " entries from Epicollect");
+        
+        // Use cleaning service to deduplicate entries
+        if (!allEntries.isEmpty()) {
+            allEntries = cleaningService.deduplicateEntries(allEntries);
+            logger.info("After deduplication: " + allEntries.size() + " entries");
+        }
+        
         return allEntries;
     }
     
@@ -222,6 +233,13 @@ public class EpicollectImportService {
         
         // Check if already imported
         if (isAlreadyImported(epicollectUuid)) {
+            return false;
+        }
+        
+        // Clean and validate the entry using the cleaning service
+        Map<String, Object> cleanedEntry = cleaningService.cleanEntry(entry);
+        if (cleanedEntry == null) {
+            logger.warn("Entry rejected during cleaning: " + epicollectUuid);
             return false;
         }
         
@@ -254,8 +272,11 @@ public class EpicollectImportService {
             participant.setBirthDate(DATE_FORMAT.parse("01/01/" + birthYear));
         }
         
-        // Determine center code (defaulting to RAM for now)
-        String centerCode = "RAM"; // TODO: Extract from location or other field
+        // Get center code from cleaned entry
+        String centerCode = (String) cleanedEntry.get("centerCode");
+        if (centerCode == null || "UNK".equals(centerCode)) {
+            centerCode = "RAM"; // Default to RAM if unknown
+        }
         
         // Create CPR registration
         CollectionProtocolRegistrationDetail cpr = new CollectionProtocolRegistrationDetail();
@@ -402,5 +423,13 @@ public class EpicollectImportService {
     private void storeIntegrationRecord(Long participantId, String epicollectUuid, Map<String, Object> rawData) {
         // TODO: Store in os_bharat_data_integrations table
         logger.info("Stored integration record for participant " + participantId + " with Epicollect UUID " + epicollectUuid);
+    }
+    
+    /**
+     * Check if Epicollect service is properly configured
+     */
+    public boolean isConfigured() {
+        return CLIENT_ID != null && CLIENT_SECRET != null && 
+               !CLIENT_ID.isEmpty() && !CLIENT_SECRET.isEmpty();
     }
 }

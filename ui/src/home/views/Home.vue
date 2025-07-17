@@ -32,33 +32,33 @@
               <p>Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions</p>
               <div class="project-stats">
                 <div class="stat">
-                  <span class="stat-value">347</span>
-                  <span class="stat-label">Participants</span>
+                  <span class="stat-value">0</span>
+                  <span class="stat-label">Enrolled</span>
                 </div>
                 <div class="stat">
-                  <span class="stat-value">3,172</span>
-                  <span class="stat-label">Samples</span>
+                  <span class="stat-value">4,000</span>
+                  <span class="stat-label">Slots Available</span>
                 </div>
                 <div class="stat">
-                  <span class="stat-value">32</span>
-                  <span class="stat-label">Active Boxes</span>
+                  <span class="stat-value">4</span>
+                  <span class="stat-label">Active Centers</span>
                 </div>
               </div>
               <div class="project-progress">
                 <div class="progress-bar">
-                  <div class="progress-fill" style="width: 34.7%"></div>
+                  <div class="progress-fill" style="width: 0%"></div>
                 </div>
-                <span class="progress-text">34.7% Complete</span>
+                <span class="progress-text">0% Enrolled</span>
               </div>
             </div>
             <div class="project-card-footer">
               <div class="last-activity">
                 <os-icon name="clock" />
-                Last updated 2 hours ago
+                Project initialized
               </div>
               <div class="project-lead">
                 <os-icon name="user" />
-                Dr. Ravi Kumar
+                Principal Investigator
               </div>
             </div>
           </div>
@@ -101,11 +101,11 @@
             <div class="project-card-footer">
               <div class="last-activity">
                 <os-icon name="clock" />
-                Last updated 1 day ago
+                Project initialized
               </div>
               <div class="project-lead">
                 <os-icon name="user" />
-                Dr. Priya Sharma
+                Principal Investigator
               </div>
             </div>
           </div>
@@ -148,11 +148,11 @@
             <div class="project-card-footer">
               <div class="last-activity">
                 <os-icon name="clock" />
-                Created 1 week ago
+                Project initialized
               </div>
               <div class="project-lead">
                 <os-icon name="user" />
-                Dr. Anil Reddy
+                Principal Investigator
               </div>
             </div>
           </div>
@@ -196,32 +196,10 @@
         <div class="recent-activity-panel">
           <h4>Recent Activity</h4>
           <div class="activity-list">
-            <div class="activity-item">
-              <div class="activity-icon bharat-bg">
-                <os-icon name="vial" />
-              </div>
-              <div class="activity-content">
-                <div class="activity-title">Blood sample collected - BHARAT-001234</div>
-                <div class="activity-meta">BHARAT Study • 2 hours ago • Dr. Kumar</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon organ-bg">
-                <os-icon name="user-plus" />
-              </div>
-              <div class="activity-content">
-                <div class="activity-title">New participant enrolled - OAP-000567</div>
-                <div class="activity-meta">Organ Aging Project • 5 hours ago • Dr. Sharma</div>
-              </div>
-            </div>
-            <div class="activity-item">
-              <div class="activity-icon bharat-bg">
-                <os-icon name="box" />
-              </div>
-              <div class="activity-content">
-                <div class="activity-title">Storage box B-156 moved to Freezer-A</div>
-                <div class="activity-meta">BHARAT Study • 1 day ago • Lab Tech</div>
-              </div>
+            <div class="empty-state" style="text-align: center; padding: 2rem; color: #6b7280;">
+              <os-icon name="clock" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;" />
+              <p>No recent activity</p>
+              <p style="font-size: 0.875rem;">Activity will appear here once data collection begins</p>
             </div>
           </div>
         </div>

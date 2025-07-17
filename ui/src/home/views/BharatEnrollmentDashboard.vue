@@ -23,12 +23,12 @@
               <os-icon name="users" />
             </div>
             <div class="stat-content">
-              <h2>{{ stats.total }}</h2>
-              <p>Total Enrolled</p>
+              <h2>{{ 4000 - stats.total }}</h2>
+              <p>Slots Available</p>
               <div class="progress">
                 <div class="progress-bar" :style="{ width: totalProgress + '%' }"></div>
               </div>
-              <span class="progress-text">{{ totalProgress }}% of 5,000 target</span>
+              <span class="progress-text">{{ 100 - totalProgress }}% slots available</span>
             </div>
           </div>
 
@@ -67,17 +67,17 @@
 
         <!-- Enrollment Matrix -->
         <div class="enrollment-matrix-container">
-          <h4>Enrollment by Age Group and Gender</h4>
+          <h4>Slots Available by Age Group and Gender</h4>
           <div class="enrollment-matrix">
             <table>
               <thead>
                 <tr>
                   <th>Age Group</th>
-                  <th>Male Target</th>
-                  <th>Male Enrolled</th>
-                  <th>Female Target</th>
-                  <th>Female Enrolled</th>
-                  <th>Total Progress</th>
+                  <th>Male Slots</th>
+                  <th>Male Available</th>
+                  <th>Female Slots</th>
+                  <th>Female Available</th>
+                  <th>Available Slots</th>
                 </tr>
               </thead>
               <tbody>
@@ -85,14 +85,14 @@
                   <td class="age-group">{{ group.name }}</td>
                   <td class="target">{{ group.maleTarget }}</td>
                   <td class="enrolled">
-                    <span :class="getEnrollmentClass(group.maleEnrolled, group.maleTarget)">
-                      {{ group.maleEnrolled }}
+                    <span :class="getAvailabilityClass(group.maleAvailable, group.maleTarget)">
+                      {{ group.maleAvailable }}
                     </span>
                   </td>
                   <td class="target">{{ group.femaleTarget }}</td>
                   <td class="enrolled">
-                    <span :class="getEnrollmentClass(group.femaleEnrolled, group.femaleTarget)">
-                      {{ group.femaleEnrolled }}
+                    <span :class="getAvailabilityClass(group.femaleAvailable, group.femaleTarget)">
+                      {{ group.femaleAvailable }}
                     </span>
                   </td>
                   <td>
@@ -110,30 +110,30 @@
 
           <!-- Visual Heatmap -->
           <div class="enrollment-heatmap">
-            <h5>Enrollment Heatmap</h5>
+            <h5>Slots Available Heatmap</h5>
             <div class="heatmap-grid">
               <div class="heatmap-row" v-for="group in ageGroups" :key="group.name">
                 <div class="age-label">{{ group.name }}</div>
                 <div 
                   class="heatmap-cell male" 
-                  :style="{ backgroundColor: getHeatmapColor(group.maleEnrolled, group.maleTarget) }"
+                  :style="{ backgroundColor: getAvailabilityHeatmapColor(group.maleAvailable, group.maleTarget) }"
                   @click="showDetails(group.name, 'M')"
                 >
-                  <span>M: {{ group.maleEnrolled }}</span>
+                  <span>M: {{ group.maleAvailable }}</span>
                 </div>
                 <div 
                   class="heatmap-cell female" 
-                  :style="{ backgroundColor: getHeatmapColor(group.femaleEnrolled, group.femaleTarget) }"
+                  :style="{ backgroundColor: getAvailabilityHeatmapColor(group.femaleAvailable, group.femaleTarget) }"
                   @click="showDetails(group.name, 'F')"
                 >
-                  <span>F: {{ group.femaleEnrolled }}</span>
+                  <span>F: {{ group.femaleAvailable }}</span>
                 </div>
               </div>
             </div>
             <div class="heatmap-legend">
-              <span>0%</span>
+              <span>No slots</span>
               <div class="gradient"></div>
-              <span>100%</span>
+              <span>All slots</span>
             </div>
           </div>
         </div>
@@ -153,7 +153,7 @@
                   <div class="progress-bar">
                     <div class="progress-fill" :style="{ width: center.progress + '%' }"></div>
                   </div>
-                  <span>{{ center.progress }}% of {{ center.target }}</span>
+                  <span>{{ center.target - center.enrolled }} slots available</span>
                 </div>
               </div>
               <div class="center-actions">
@@ -218,17 +218,18 @@ export default {
       },
 
       ageGroups: [
-        { name: '18-29', maleTarget: 500, maleEnrolled: 0, femaleTarget: 500, femaleEnrolled: 0, progress: 0 },
-        { name: '30-44', maleTarget: 500, maleEnrolled: 0, femaleTarget: 500, femaleEnrolled: 0, progress: 0 },
-        { name: '45-59', maleTarget: 500, maleEnrolled: 0, femaleTarget: 500, femaleEnrolled: 0, progress: 0 },
-        { name: '60-74', maleTarget: 500, maleEnrolled: 0, femaleTarget: 500, femaleEnrolled: 0, progress: 0 },
-        { name: '75+', maleTarget: 500, maleEnrolled: 0, femaleTarget: 500, femaleEnrolled: 0, progress: 0 }
+        { name: '18-29', maleTarget: 400, maleEnrolled: 0, femaleTarget: 400, femaleEnrolled: 0, maleAvailable: 400, femaleAvailable: 400, progress: 100 },
+        { name: '30-44', maleTarget: 400, maleEnrolled: 0, femaleTarget: 400, femaleEnrolled: 0, maleAvailable: 400, femaleAvailable: 400, progress: 100 },
+        { name: '45-59', maleTarget: 400, maleEnrolled: 0, femaleTarget: 400, femaleEnrolled: 0, maleAvailable: 400, femaleAvailable: 400, progress: 100 },
+        { name: '60-74', maleTarget: 400, maleEnrolled: 0, femaleTarget: 400, femaleEnrolled: 0, maleAvailable: 400, femaleAvailable: 400, progress: 100 },
+        { name: '75+', maleTarget: 400, maleEnrolled: 0, femaleTarget: 400, femaleEnrolled: 0, maleAvailable: 400, femaleAvailable: 400, progress: 100 }
       ],
 
       centers: [
-        { code: 'RAM', name: 'Ramaiah Hospital', target: 1667, enrolled: 0, progress: 0 },
-        { code: 'VEL', name: 'Vellore Hospital', target: 1667, enrolled: 0, progress: 0 },
-        { code: 'PGI', name: 'PGI Chandigarh', target: 1666, enrolled: 0, progress: 0 }
+        { code: 'RAM', name: 'Ramaiah', target: 1000, enrolled: 0, progress: 0 },
+        { code: 'SSI', name: 'Satya Sai Institute', target: 1000, enrolled: 0, progress: 0 },
+        { code: 'BAP', name: 'Baptist', target: 1000, enrolled: 0, progress: 0 },
+        { code: 'BMC', name: 'Bangalore Medical College', target: 1000, enrolled: 0, progress: 0 }
       ],
 
       recentEnrollments: [],
@@ -255,9 +256,10 @@ export default {
                   validations: { required: { message: 'Center is required' } },
                   listSource: {
                     options: [
-                      { value: 'RAM', label: 'Ramaiah Hospital' },
-                      { value: 'VEL', label: 'Vellore Hospital' },
-                      { value: 'PGI', label: 'PGI Chandigarh' }
+                      { value: 'RAM', label: 'Ramaiah' },
+                      { value: 'SSI', label: 'Satya Sai Institute' },
+                      { value: 'BAP', label: 'Baptist' },
+                      { value: 'BMC', label: 'Bangalore Medical College' }
                     ],
                     displayProp: 'label',
                     selectProp: 'value'
@@ -328,7 +330,7 @@ export default {
 
   computed: {
     totalProgress() {
-      return Math.round((this.stats.total / 5000) * 100);
+      return Math.round((this.stats.total / 4000) * 100);
     },
 
     genderBalance() {
@@ -366,14 +368,19 @@ export default {
         const stats = await http.get('bharat/stats/enrollment');
         this.stats = stats;
 
-        // Update age groups
+        // Update age groups to show available slots
         if (stats.byAgeGroup) {
           this.ageGroups.forEach(group => {
             const data = stats.byAgeGroup[group.name];
             if (data) {
-              group.maleEnrolled = data.male || 0;
-              group.femaleEnrolled = data.female || 0;
-              group.progress = Math.round(((group.maleEnrolled + group.femaleEnrolled) / (group.maleTarget + group.femaleTarget)) * 100);
+              group.maleEnrolled = data.maleEnrolled || 0;
+              group.femaleEnrolled = data.femaleEnrolled || 0;
+              group.maleAvailable = data.maleAvailable || group.maleTarget;
+              group.femaleAvailable = data.femaleAvailable || group.femaleTarget;
+              // Progress shows how many slots are available (100% = all available)
+              const totalAvailable = group.maleAvailable + group.femaleAvailable;
+              const totalSlots = group.maleTarget + group.femaleTarget;
+              group.progress = Math.round((totalAvailable / totalSlots) * 100);
             }
           });
         }
@@ -394,28 +401,23 @@ export default {
     },
 
     async loadRecentEnrollments() {
-      // TODO: Implement API call to get recent enrollments
-      // For now, use dummy data
-      this.recentEnrollments = [
-        { code: 'RAM-1A-001', ageGroup: '25', gender: 'Male', center: 'RAM', enrolledAt: new Date() },
-        { code: 'VEL-2B-045', ageGroup: '38', gender: 'Female', center: 'VEL', enrolledAt: new Date(Date.now() - 3600000) },
-        { code: 'PGI-3A-023', ageGroup: '52', gender: 'Male', center: 'PGI', enrolledAt: new Date(Date.now() - 7200000) }
-      ];
+      // No recent enrollments yet as we're just starting
+      this.recentEnrollments = [];
     },
 
-    getEnrollmentClass(enrolled, target) {
-      const percentage = (enrolled / target) * 100;
-      if (percentage >= 100) return 'over-enrolled';
-      if (percentage >= 90) return 'near-target';
-      if (percentage >= 70) return 'on-track';
-      if (percentage >= 50) return 'progressing';
-      return 'behind';
+    getAvailabilityClass(available, target) {
+      const percentage = (available / target) * 100;
+      if (percentage >= 90) return 'high-availability';
+      if (percentage >= 70) return 'good-availability';
+      if (percentage >= 50) return 'moderate-availability';
+      if (percentage >= 20) return 'low-availability';
+      return 'critical-availability';
     },
 
-    getHeatmapColor(enrolled, target) {
-      const percentage = Math.min((enrolled / target) * 100, 100);
-      // Generate color from red (0%) to green (100%)
-      const hue = (percentage * 120) / 100; // 0 = red, 120 = green
+    getAvailabilityHeatmapColor(available, target) {
+      const percentage = (available / target) * 100;
+      // Generate color from red (0% available) to green (100% available)
+      const hue = (percentage * 120) / 100; // 0 = red (no slots), 120 = green (all slots available)
       return `hsl(${hue}, 70%, 50%)`;
     },
 
@@ -682,29 +684,29 @@ export default {
   border-radius: 4px;
 }
 
-.enrolled .behind {
+.enrolled .critical-availability {
   color: #dc2626;
   background: #fee2e2;
 }
 
-.enrolled .progressing {
+.enrolled .low-availability {
   color: #f59e0b;
   background: #fef3c7;
 }
 
-.enrolled .on-track {
+.enrolled .moderate-availability {
   color: #3b82f6;
   background: #dbeafe;
 }
 
-.enrolled .near-target {
+.enrolled .good-availability {
   color: #10b981;
   background: #d1fae5;
 }
 
-.enrolled .over-enrolled {
-  color: #7c3aed;
-  background: #ede9fe;
+.enrolled .high-availability {
+  color: #059669;
+  background: #a7f3d0;
 }
 
 .progress-cell {
