@@ -1,6 +1,10 @@
 package com.krishagni.catissueplus.core.biospecimen.services;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +13,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +28,7 @@ import com.krishagni.catissueplus.core.common.events.ResponseEvent;
 import com.krishagni.catissueplus.core.biospecimen.events.CollectionProtocolRegistrationDetail;
 import com.krishagni.catissueplus.core.biospecimen.events.ParticipantDetail;
 import com.krishagni.catissueplus.core.biospecimen.services.EpicollectDataCleaningService;
+import com.krishagni.catissueplus.core.biospecimen.services.CollectionProtocolRegistrationService;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -76,6 +83,9 @@ public class EpicollectImportService {
     @Autowired
     private EpicollectDataCleaningService cleaningService;
     
+    @Autowired
+    private DataSource dataSource;
+    
     private ObjectMapper objectMapper = new ObjectMapper();
     
     private String accessToken;
@@ -98,24 +108,30 @@ public class EpicollectImportService {
             // Process each entry
             int imported = 0;
             int skipped = 0;
+            int errors = 0;
             
             for (Map<String, Object> entry : entries) {
                 try {
+                    String uuid = (String) entry.get("ec5_uuid");
                     if (processEntry(entry)) {
                         imported++;
+                        logger.debug("Successfully imported entry: " + uuid);
                     } else {
                         skipped++;
+                        logger.debug("Skipped entry: " + uuid);
                     }
                 } catch (Exception e) {
+                    errors++;
                     logger.error("Error processing entry: " + entry.get("ec5_uuid"), e);
-                    skipped++;
                 }
             }
             
-            logger.info(String.format("Epicollect import completed. Imported: %d, Skipped: %d", imported, skipped));
+            logger.info(String.format("Epicollect import completed. Imported: %d, Skipped: %d, Errors: %d", 
+                imported, skipped, errors));
             
         } catch (Exception e) {
-            logger.error("Error during Epicollect import", e);
+            logger.error("Fatal error during Epicollect import", e);
+            throw new RuntimeException("Epicollect import failed", e);
         }
     }
     
@@ -217,8 +233,10 @@ public class EpicollectImportService {
         
         // Use cleaning service to deduplicate entries
         if (!allEntries.isEmpty()) {
+            int originalSize = allEntries.size();
             allEntries = cleaningService.deduplicateEntries(allEntries);
-            logger.info("After deduplication: " + allEntries.size() + " entries");
+            logger.info(String.format("Deduplication: %d original entries -> %d unique entries", 
+                originalSize, allEntries.size()));
         }
         
         return allEntries;
@@ -276,7 +294,11 @@ public class EpicollectImportService {
         String centerCode = (String) cleanedEntry.get("centerCode");
         if (centerCode == null || "UNK".equals(centerCode)) {
             centerCode = "RAM"; // Default to RAM if unknown
+            logger.warn("No center code found for entry " + epicollectUuid + ", defaulting to RAM");
         }
+        
+        logger.info(String.format("Processing entry %s: center=%s, age=%s, gender=%s", 
+            epicollectUuid, centerCode, age, gender));
         
         // Create CPR registration
         CollectionProtocolRegistrationDetail cpr = new CollectionProtocolRegistrationDetail();
@@ -295,9 +317,6 @@ public class EpicollectImportService {
             customFields.putAll(vitals);
         }
         
-        // Store custom fields
-        // TODO: Set custom fields on participant or CPR
-        
         // Create participant through service
         RequestEvent<CollectionProtocolRegistrationDetail> req = new RequestEvent<>(cpr);
         ResponseEvent<CollectionProtocolRegistrationDetail> resp = cprService.createRegistration(req);
@@ -307,32 +326,54 @@ public class EpicollectImportService {
             return false;
         }
         
+        CollectionProtocolRegistrationDetail createdCpr = resp.getPayload();
+        
+        // Store clinical data (vitals) in custom table
+        storeClinicalData(createdCpr.getId(), customFields);
+        
         // Store integration record
-        storeIntegrationRecord(resp.getPayload().getId(), epicollectUuid, entry);
+        storeIntegrationRecord(createdCpr.getId(), epicollectUuid, entry);
         
         return true;
     }
     
     /**
-     * Extract personal information from entry
+     * Extract personal information from entry using actual Epicollect field references
      */
     private Map<String, Object> extractPersonalInfo(Map<String, Object> entry) {
-        // Personal information is stored in a branch
-        // The structure varies based on Epicollect form design
-        // This is a simplified extraction - adjust based on actual data structure
-        
         Map<String, Object> personalInfo = new HashMap<>();
         
-        // Try to extract from known fields
-        for (String key : entry.keySet()) {
-            if (key.contains("Name")) {
-                personalInfo.put("name", entry.get(key));
-            } else if (key.contains("Age")) {
-                personalInfo.put("age", entry.get(key));
-            } else if (key.contains("Gender")) {
-                personalInfo.put("gender", entry.get(key));
-            } else if (key.contains("Date_of_birth")) {
-                personalInfo.put("dob", entry.get(key));
+        // Based on the actual Epicollect structure from longevity.json
+        String nameRef = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_65d304321b916_65d3044f1b917";
+        String ageRef = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_65d304321b916_66f4e4eab428d";
+        String genderRef = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_65d304321b916_65d3049e1b919";
+        String birthDateRef = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_65d304321b916_66fe666d6315a";
+        
+        if (entry.containsKey(nameRef)) {
+            personalInfo.put("name", entry.get(nameRef));
+        }
+        if (entry.containsKey(ageRef)) {
+            personalInfo.put("age", entry.get(ageRef));
+        }
+        if (entry.containsKey(genderRef)) {
+            personalInfo.put("gender", entry.get(genderRef));
+        }
+        if (entry.containsKey(birthDateRef)) {
+            personalInfo.put("dob", entry.get(birthDateRef));
+        }
+        
+        // Also try the generic field names as fallback
+        if (personalInfo.isEmpty()) {
+            for (String key : entry.keySet()) {
+                if (key.contains("Name")) {
+                    personalInfo.put("name", entry.get(key));
+                } else if (key.contains("Age")) {
+                    personalInfo.put("age", entry.get(key));
+                } else if (key.contains("Gender")) {
+                    personalInfo.put("gender", entry.get(key));
+                } else if (key.contains("Date_of_birth")) {
+                    personalInfo.put("dob", entry.get(key));
+                }
             }
         }
         
@@ -340,21 +381,46 @@ public class EpicollectImportService {
     }
     
     /**
-     * Extract vitals information
+     * Extract vitals information using actual Epicollect field references
      */
     private Map<String, Object> extractVitals(Map<String, Object> entry) {
         Map<String, Object> vitals = new HashMap<>();
         
-        // Extract vital signs
-        for (String key : entry.keySet()) {
-            if (key.contains("BP")) {
-                vitals.put("blood_pressure", entry.get(key));
-            } else if (key.contains("Pulse")) {
-                vitals.put("pulse", entry.get(key));
-            } else if (key.contains("Temperature")) {
-                vitals.put("temperature", entry.get(key));
-            } else if (key.contains("SPo2")) {
-                vitals.put("spo2", entry.get(key));
+        // Based on the actual Epicollect structure from longevity.json
+        String pulseRef = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_668b942e4c43f_66fe62f7e9559";
+        String bpRef = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_668b942e4c43f_668b94554c441";
+        String rrRef = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_668b942e4c43f_66fe633ce955a";
+        String spo2Ref = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_668b942e4c43f_66fe6360e955b";
+        String tempRef = "c0520922d953469fadd93baa4ec6e69e_65c06eff6c2b0_668b942e4c43f_66fe6380e955c";
+        
+        if (entry.containsKey(pulseRef)) {
+            vitals.put("pulse", entry.get(pulseRef));
+        }
+        if (entry.containsKey(bpRef)) {
+            vitals.put("blood_pressure", entry.get(bpRef));
+        }
+        if (entry.containsKey(rrRef)) {
+            vitals.put("respiratory_rate", entry.get(rrRef));
+        }
+        if (entry.containsKey(spo2Ref)) {
+            vitals.put("spo2", entry.get(spo2Ref));
+        }
+        if (entry.containsKey(tempRef)) {
+            vitals.put("temperature", entry.get(tempRef));
+        }
+        
+        // Also try the generic field names as fallback
+        if (vitals.isEmpty()) {
+            for (String key : entry.keySet()) {
+                if (key.contains("BP")) {
+                    vitals.put("blood_pressure", entry.get(key));
+                } else if (key.contains("Pulse")) {
+                    vitals.put("pulse", entry.get(key));
+                } else if (key.contains("Temperature")) {
+                    vitals.put("temperature", entry.get(key));
+                } else if (key.contains("SPo2")) {
+                    vitals.put("spo2", entry.get(key));
+                }
             }
         }
         
@@ -412,8 +478,21 @@ public class EpicollectImportService {
      * Check if entry was already imported
      */
     private boolean isAlreadyImported(String epicollectUuid) {
-        // TODO: Query database to check if this UUID was already imported
-        // For now, return false
+        String sql = "SELECT COUNT(*) FROM os_bharat_data_integrations WHERE epicollect_uuid = ?";
+        
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setString(1, epicollectUuid);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            logger.error("Error checking if entry already imported: " + epicollectUuid, e);
+        }
+        
         return false;
     }
     
@@ -421,8 +500,60 @@ public class EpicollectImportService {
      * Store integration record in database
      */
     private void storeIntegrationRecord(Long participantId, String epicollectUuid, Map<String, Object> rawData) {
-        // TODO: Store in os_bharat_data_integrations table
-        logger.info("Stored integration record for participant " + participantId + " with Epicollect UUID " + epicollectUuid);
+        String sql = "INSERT INTO os_bharat_data_integrations (participant_id, epicollect_uuid, raw_data, imported_at) VALUES (?, ?, ?, ?)";
+        
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setLong(1, participantId);
+            stmt.setString(2, epicollectUuid);
+            stmt.setString(3, objectMapper.writeValueAsString(rawData));
+            stmt.setTimestamp(4, new java.sql.Timestamp(System.currentTimeMillis()));
+            
+            stmt.executeUpdate();
+            logger.info("Stored integration record for participant " + participantId + " with Epicollect UUID " + epicollectUuid);
+            
+        } catch (SQLException | IOException e) {
+            logger.error("Error storing integration record for " + epicollectUuid, e);
+        }
+    }
+    
+    /**
+     * Store clinical data (vitals) in custom table
+     */
+    private void storeClinicalData(Long cprId, Map<String, Object> clinicalData) {
+        if (clinicalData == null || clinicalData.isEmpty()) {
+            return;
+        }
+        
+        String sql = "INSERT INTO os_bharat_clinical_data (cpr_id, field_name, field_value, recorded_at) VALUES (?, ?, ?, ?)";
+        
+        try (Connection conn = dataSource.getConnection()) {
+            conn.setAutoCommit(false);
+            
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                for (Map.Entry<String, Object> entry : clinicalData.entrySet()) {
+                    if (entry.getValue() != null) {
+                        stmt.setLong(1, cprId);
+                        stmt.setString(2, entry.getKey());
+                        stmt.setString(3, entry.getValue().toString());
+                        stmt.setTimestamp(4, new java.sql.Timestamp(System.currentTimeMillis()));
+                        stmt.addBatch();
+                    }
+                }
+                
+                stmt.executeBatch();
+                conn.commit();
+                
+                logger.info("Stored " + clinicalData.size() + " clinical data fields for CPR " + cprId);
+                
+            } catch (SQLException e) {
+                conn.rollback();
+                throw e;
+            }
+        } catch (SQLException e) {
+            logger.error("Error storing clinical data for CPR " + cprId, e);
+        }
     }
     
     /**
