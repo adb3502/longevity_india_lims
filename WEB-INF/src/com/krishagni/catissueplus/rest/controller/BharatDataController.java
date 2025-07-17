@@ -127,7 +127,7 @@ public class BharatDataController {
     @GetMapping("/anonymization/stats")
     public ResponseEntity<Map<String, Object>> getAnonymizationStats() {
         try {
-            Map<String, Object> stats = anonymizationService.getAnonymizationStats();
+            Map<String, Integer> stats = anonymizationService.getAnonymizationStats();
             Map<String, Object> report = anonymizationService.generateAnonymizationReport();
             
             Map<String, Object> result = new HashMap<>();

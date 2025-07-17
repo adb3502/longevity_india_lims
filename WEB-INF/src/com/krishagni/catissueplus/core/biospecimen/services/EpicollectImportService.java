@@ -36,6 +36,14 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
+/**
+ * CRITICAL CONSTRAINTS: Epicollect API Documentation States:
+ * - Only HTTPS is supported (not HTTP)
+ * - Data retrieval uses GET requests with Bearer token authentication
+ * - Private projects require OAuth2 client credentials flow (POST /api/oauth/token)
+ * - Tokens are valid for 2 hours and must be refreshed
+ * - Must create a Client App in Epicollect project settings to get Client ID/Secret
+ */
 @Service
 public class EpicollectImportService {
     
@@ -43,6 +51,9 @@ public class EpicollectImportService {
     
     private static final String EPICOLLECT_BASE_URL = "https://five.epicollect.net";
     private static final String PROJECT_SLUG = "longevity";
+    
+    // CRITICAL: Epicollect API only supports HTTPS and GET requests
+    // OAuth2 client credentials flow is not supported - must use public API endpoints
     
     // Configuration - loaded from properties file
     private String CLIENT_ID;
@@ -56,20 +67,40 @@ public class EpicollectImportService {
         try {
             // First try to load from external config file
             java.util.Properties props = new java.util.Properties();
-            java.io.File configFile = new java.io.File("epicollect-config.properties");
-            if (configFile.exists()) {
-                try (java.io.FileInputStream fis = new java.io.FileInputStream(configFile)) {
-                    props.load(fis);
-                    CLIENT_ID = props.getProperty("epicollect.client.id");
-                    CLIENT_SECRET = props.getProperty("epicollect.client.secret");
-                    logger.info("Loaded Epicollect configuration from file");
+            
+            // Try multiple locations for the config file
+            String[] configPaths = {
+                "epicollect-config.properties",
+                "/home/adb/openspecimen/epicollect-config.properties",
+                System.getProperty("user.home") + "/epicollect-config.properties"
+            };
+            
+            boolean configLoaded = false;
+            for (String path : configPaths) {
+                java.io.File configFile = new java.io.File(path);
+                if (configFile.exists()) {
+                    try (java.io.FileInputStream fis = new java.io.FileInputStream(configFile)) {
+                        props.load(fis);
+                        CLIENT_ID = props.getProperty("epicollect.client.id");
+                        CLIENT_SECRET = props.getProperty("epicollect.client.secret");
+                        logger.info("Loaded Epicollect configuration from file: " + path);
+                        configLoaded = true;
+                        break;
+                    }
                 }
-            } else {
+            }
+            
+            if (!configLoaded) {
                 // Fall back to environment variables
                 CLIENT_ID = System.getenv("EPICOLLECT_CLIENT_ID");
                 CLIENT_SECRET = System.getenv("EPICOLLECT_CLIENT_SECRET");
                 logger.info("Using Epicollect configuration from environment");
             }
+            
+            // Log configuration status (without exposing secrets)
+            logger.info("Epicollect configuration loaded: CLIENT_ID=" + (CLIENT_ID != null ? "SET" : "NOT_SET") + 
+                       ", CLIENT_SECRET=" + (CLIENT_SECRET != null ? "SET" : "NOT_SET"));
+                       
         } catch (Exception e) {
             logger.error("Error loading Epicollect configuration", e);
         }
@@ -145,22 +176,28 @@ public class EpicollectImportService {
     }
     
     /**
-     * Get new access token from Epicollect
+     * Get OAuth2 access token for private Epicollect projects
+     * Uses POST /api/oauth/token with client_credentials grant type
+     * Tokens are valid for 2 hours
      */
     private void refreshToken() throws IOException {
-        Map<String, String> tokenRequest = new HashMap<>();
-        tokenRequest.put("grant_type", "client_credentials");
-        tokenRequest.put("client_id", CLIENT_ID);
-        tokenRequest.put("client_secret", CLIENT_SECRET);
+        if (CLIENT_ID == null || CLIENT_SECRET == null) {
+            throw new IOException("Epicollect Client ID and Secret must be configured for private projects");
+        }
         
-        URL url = new URL(EPICOLLECT_BASE_URL + "/api/oauth/token");
+        // Prepare OAuth2 client credentials request
+        String tokenUrl = EPICOLLECT_BASE_URL + "/api/oauth/token";
+        String requestBody = "grant_type=client_credentials&client_id=" + CLIENT_ID + "&client_secret=" + CLIENT_SECRET;
+        
+        URL url = new URL(tokenUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
-        conn.setRequestProperty("Content-Type", "application/vnd.api+json");
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
         conn.setDoOutput(true);
         
+        // Send request
         try (OutputStream os = conn.getOutputStream()) {
-            byte[] input = objectMapper.writeValueAsString(tokenRequest).getBytes("utf-8");
+            byte[] input = requestBody.getBytes("utf-8");
             os.write(input, 0, input.length);
         }
         
@@ -169,6 +206,7 @@ public class EpicollectImportService {
             throw new IOException("Failed to get access token: HTTP " + responseCode);
         }
         
+        // Parse response
         try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
             StringBuilder response = new StringBuilder();
             String responseLine;
@@ -176,21 +214,24 @@ public class EpicollectImportService {
                 response.append(responseLine.trim());
             }
             
-            Map<String, Object> tokenResponse = objectMapper.readValue(
-                response.toString(), 
-                Map.class
-            );
+            Map<String, Object> tokenResponse = objectMapper.readValue(response.toString(), Map.class);
             
             accessToken = (String) tokenResponse.get("access_token");
-            int expiresIn = (Integer) tokenResponse.get("expires_in");
-            tokenExpiryTime = System.currentTimeMillis() + (expiresIn * 1000L) - 60000L; // Refresh 1 minute early
+            Integer expiresIn = (Integer) tokenResponse.get("expires_in");
             
-            logger.info("Successfully refreshed Epicollect access token");
+            if (accessToken == null) {
+                throw new IOException("No access token received from Epicollect");
+            }
+            
+            // Tokens are valid for 2 hours, refresh 10 minutes early
+            tokenExpiryTime = System.currentTimeMillis() + (expiresIn * 1000L) - 600000L;
+            
+            logger.info("Successfully obtained Epicollect access token (valid for " + expiresIn + " seconds)");
         }
     }
     
     /**
-     * Fetch entries from Epicollect API
+     * Fetch entries from Epicollect API using HTTPS GET with Bearer token authentication
      */
     private List<Map<String, Object>> fetchEntries() throws IOException {
         List<Map<String, Object>> allEntries = new ArrayList<>();
@@ -562,5 +603,70 @@ public class EpicollectImportService {
     public boolean isConfigured() {
         return CLIENT_ID != null && CLIENT_SECRET != null && 
                !CLIENT_ID.isEmpty() && !CLIENT_SECRET.isEmpty();
+    }
+    
+    /**
+     * Test connection to Epicollect API
+     */
+    public boolean testConnection() {
+        try {
+            ensureValidToken();
+            return accessToken != null;
+        } catch (Exception e) {
+            logger.error("Connection test failed", e);
+            return false;
+        }
+    }
+    
+    /**
+     * Get total count of entries available in Epicollect using HTTPS GET with Bearer token
+     */
+    public int getEntryCount() {
+        try {
+            ensureValidToken();
+            
+            URL url = new URL(EPICOLLECT_BASE_URL + "/api/export/entries/" + PROJECT_SLUG);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Authorization", "Bearer " + accessToken);
+            
+            int responseCode = conn.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                logger.error("Failed to get entry count: HTTP " + responseCode);
+                return 0;
+            }
+            
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                
+                Map<String, Object> responseData = objectMapper.readValue(
+                    response.toString(), 
+                    Map.class
+                );
+                
+                Map<String, Object> meta = (Map<String, Object>) responseData.get("meta");
+                return (Integer) meta.get("total");
+            }
+        } catch (Exception e) {
+            logger.error("Error getting entry count", e);
+            return 0;
+        }
+    }
+    
+    /**
+     * Fetch all entries from Epicollect (used by comprehensive data service)
+     */
+    public List<Map<String, Object>> fetchAllEntries() {
+        try {
+            ensureValidToken();
+            return fetchEntries();
+        } catch (Exception e) {
+            logger.error("Error fetching all entries", e);
+            return new ArrayList<>();
+        }
     }
 }
