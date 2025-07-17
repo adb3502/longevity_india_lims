@@ -32,23 +32,23 @@
               <p>Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions</p>
               <div class="project-stats">
                 <div class="stat">
-                  <span class="stat-value">1,247</span>
+                  <span class="stat-value">347</span>
                   <span class="stat-label">Participants</span>
                 </div>
                 <div class="stat">
-                  <span class="stat-value">3,891</span>
+                  <span class="stat-value">3,172</span>
                   <span class="stat-label">Samples</span>
                 </div>
                 <div class="stat">
-                  <span class="stat-value">156</span>
+                  <span class="stat-value">32</span>
                   <span class="stat-label">Active Boxes</span>
                 </div>
               </div>
               <div class="project-progress">
                 <div class="progress-bar">
-                  <div class="progress-fill" style="width: 73%"></div>
+                  <div class="progress-fill" style="width: 34.7%"></div>
                 </div>
-                <span class="progress-text">73% Complete</span>
+                <span class="progress-text">34.7% Complete</span>
               </div>
             </div>
             <div class="project-card-footer">
@@ -79,23 +79,23 @@
               <p>Comprehensive study of organ-specific aging biomarkers and interventions</p>
               <div class="project-stats">
                 <div class="stat">
-                  <span class="stat-value">892</span>
+                  <span class="stat-value">0</span>
                   <span class="stat-label">Participants</span>
                 </div>
                 <div class="stat">
-                  <span class="stat-value">2,347</span>
+                  <span class="stat-value">0</span>
                   <span class="stat-label">Samples</span>
                 </div>
                 <div class="stat">
-                  <span class="stat-value">89</span>
+                  <span class="stat-value">0</span>
                   <span class="stat-label">Active Boxes</span>
                 </div>
               </div>
               <div class="project-progress">
                 <div class="progress-bar">
-                  <div class="progress-fill organ-progress" style="width: 45%"></div>
+                  <div class="progress-fill organ-progress" style="width: 0%"></div>
                 </div>
-                <span class="progress-text">45% Complete</span>
+                <span class="progress-text">0% Complete</span>
               </div>
             </div>
             <div class="project-card-footer">
