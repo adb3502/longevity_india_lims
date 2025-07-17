@@ -32,23 +32,23 @@
               <p>Biomarkers of Healthy Aging, Resilience, Adversity, and Transitions</p>
               <div class="project-stats">
                 <div class="stat">
-                  <span class="stat-value">0</span>
-                  <span class="stat-label">Enrolled</span>
+                  <span class="stat-value">{{ bharatStats.samplesCollected }}</span>
+                  <span class="stat-label">Samples Collected</span>
                 </div>
                 <div class="stat">
-                  <span class="stat-value">4,000</span>
-                  <span class="stat-label">Slots Available</span>
+                  <span class="stat-value">{{ bharatStats.totalSlots }}</span>
+                  <span class="stat-label">Total Slots</span>
                 </div>
                 <div class="stat">
-                  <span class="stat-value">4</span>
+                  <span class="stat-value">{{ bharatStats.activeCenters }}</span>
                   <span class="stat-label">Active Centers</span>
                 </div>
               </div>
               <div class="project-progress">
                 <div class="progress-bar">
-                  <div class="progress-fill" style="width: 0%"></div>
+                  <div class="progress-fill" :style="{ width: bharatStats.completionPercentage + '%' }"></div>
                 </div>
-                <span class="progress-text">0% Enrolled</span>
+                <span class="progress-text">{{ bharatStats.completionPercentage }}% Complete</span>
               </div>
             </div>
             <div class="project-card-footer">
@@ -232,6 +232,13 @@ export default {
 
   data() {
     return {
+      bharatStats: {
+        samplesCollected: 0,
+        totalSlots: 4000,
+        activeCenters: 2,
+        completionPercentage: 0
+      },
+      
       newProjectData: {
         name: '',
         description: '',
@@ -299,49 +306,44 @@ export default {
 
   async created() {
     // Load real statistics from API
-    await this.loadEnrollmentStats();
-    await this.loadInventoryStats();
+    await this.loadBharatStats();
   },
 
   methods: {
-    async loadEnrollmentStats() {
+    async loadBharatStats() {
       try {
-        const stats = await http.get('bharat/stats/enrollment');
-        // Update project stats based on API response
-        if (stats && stats.total) {
-          // Update BHARAT Study stats
-          const bharatProject = this.projects.find(p => p.id === 'bharat-study');
-          if (bharatProject) {
-            bharatProject.stats.participants = stats.total;
-            // Update age group stats if available
-            if (stats.byAgeGroup) {
-              bharatProject.stats.byAgeGroup = stats.byAgeGroup;
-            }
-          }
+        // Load sample collection stats
+        const inventoryStats = await http.get('bharat/stats/inventory');
+        
+        // Update samples collected count
+        let samplesCollected = 0;
+        if (inventoryStats && inventoryStats.byType) {
+          samplesCollected = Object.values(inventoryStats.byType).reduce((sum, count) => sum + count, 0);
         }
+        
+        // Calculate completion percentage
+        const completionPercentage = Math.round((samplesCollected / this.bharatStats.totalSlots) * 100);
+        
+        // Update reactive data
+        this.bharatStats = {
+          samplesCollected,
+          totalSlots: 4000,
+          activeCenters: 2, // RAM and SSI currently active
+          completionPercentage
+        };
+        
       } catch (error) {
-        console.error('Failed to load enrollment stats:', error);
-      }
-    },
-
-    async loadInventoryStats() {
-      try {
-        const stats = await http.get('bharat/stats/inventory');
-        // Update inventory stats
-        if (stats && stats.byType) {
-          const bharatProject = this.projects.find(p => p.id === 'bharat-study');
-          if (bharatProject && stats.byType['Blood EDTA']) {
-            bharatProject.stats.samples = Object.values(stats.byType).reduce((sum, count) => sum + count, 0);
-            bharatProject.stats.boxes = Math.ceil(bharatProject.stats.samples / 100); // Estimate boxes
-          }
-        }
-      } catch (error) {
-        console.error('Failed to load inventory stats:', error);
+        console.error('Failed to load BHARAT stats:', error);
+        // Keep default values on error
       }
     },
     navigateToProject(projectId) {
       // Navigate to project-specific dashboard
-      routerSvc.goto('ProjectDashboard', { projectId });
+      if (projectId === 'bharat-study') {
+        routerSvc.goto('BharatDashboard');
+      } else {
+        routerSvc.goto('ProjectDashboard', { projectId });
+      }
     },
 
     showNewProjectDialog() {

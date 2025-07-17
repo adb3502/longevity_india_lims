@@ -14,23 +14,31 @@ public class EpicollectDataCleaningService {
     
     private static final Log logger = LogFactory.getLog(EpicollectDataCleaningService.class);
     
-    // Valid center codes
+    // Valid center codes - Updated with real active centers
     private static final Map<String, String> CENTER_MAPPINGS = new HashMap<>();
     static {
+        // Ramaiah Memorial Hospital (Active)
         CENTER_MAPPINGS.put("ramaiah", "RAM");
         CENTER_MAPPINGS.put("ram", "RAM");
         CENTER_MAPPINGS.put("rmc", "RAM");
         CENTER_MAPPINGS.put("ms ramaiah", "RAM");
+        CENTER_MAPPINGS.put("ramaiah memorial hospital", "RAM");
         
+        // Sri Madhusudan Sai Institute of Medical Sciences and Research (Active)
+        CENTER_MAPPINGS.put("smsimsr", "SSI");
+        CENTER_MAPPINGS.put("sri madhusudan sai", "SSI");
         CENTER_MAPPINGS.put("satya sai", "SSI");
         CENTER_MAPPINGS.put("satyasai", "SSI");
         CENTER_MAPPINGS.put("ssi", "SSI");
         CENTER_MAPPINGS.put("sri sathya sai", "SSI");
+        CENTER_MAPPINGS.put("chikkaballapur", "SSI");
         
+        // Baptist Hospital (Future)
         CENTER_MAPPINGS.put("baptist", "BAP");
         CENTER_MAPPINGS.put("bap", "BAP");
         CENTER_MAPPINGS.put("baptist hospital", "BAP");
         
+        // Bangalore Medical College (Future)
         CENTER_MAPPINGS.put("bangalore medical", "BMC");
         CENTER_MAPPINGS.put("bmc", "BMC");
         CENTER_MAPPINGS.put("bangalore medical college", "BMC");
@@ -51,11 +59,21 @@ public class EpicollectDataCleaningService {
         }
         cleaned.put("sampleId", sampleId);
         
+        // Extract age group and gender from the new format sample ID
+        String[] parts = sampleId.split("-");
+        if (parts.length == 3) {
+            String ageGenderCode = parts[1]; // e.g., "2A" or "5B"
+            if (ageGenderCode.length() == 2) {
+                cleaned.put("ageGroup", Integer.parseInt(ageGenderCode.substring(0, 1)));
+                cleaned.put("gender", ageGenderCode.substring(1, 2));
+            }
+        }
+        
         // Clean personal information
         cleaned.putAll(cleanPersonalInfo(rawEntry));
         
-        // Clean center information
-        String center = cleanCenterCode(rawEntry);
+        // Clean center information (now determined during sampleId cleaning)
+        String center = determineCenterCode(rawEntry);
         cleaned.put("centerCode", center);
         
         // Clean clinical data
@@ -72,25 +90,101 @@ public class EpicollectDataCleaningService {
     }
     
     /**
-     * Clean sample ID - remove spaces, standardize format
+     * Clean sample ID - convert from old format to new format
      */
     private String cleanSampleId(Map<String, Object> entry) {
-        String sampleId = getStringValue(entry, "sample_id", "sampleId", "Sample_ID");
+        // Try multiple field names for the sample ID
+        String sampleId = getStringValue(entry, "84_ID_In_the_format_", "title", "sample_id", "sampleId", "Sample_ID");
         if (sampleId == null) {
             return null;
         }
         
-        // Remove spaces and convert to uppercase
-        sampleId = sampleId.replaceAll("\\s+", "").toUpperCase();
-        
-        // Validate format (expecting something like RAM-1A-001)
-        if (!Pattern.matches("[A-Z]{3}-\\d[A-B]-\\d{3}", sampleId)) {
-            logger.warn("Invalid sample ID format: " + sampleId);
-            // Try to fix common issues
-            sampleId = fixSampleIdFormat(sampleId);
+        // Convert from old format to new format
+        return convertOldToNewFormat(sampleId, entry);
+    }
+    
+    /**
+     * Convert old format (5B-003, 2a-013) to new format (RAM-5B-003, RAM-2A-013)
+     */
+    private String convertOldToNewFormat(String oldId, Map<String, Object> entry) {
+        if (oldId == null) {
+            return null;
         }
         
-        return sampleId;
+        // Clean the old ID
+        oldId = oldId.replaceAll("\\s+", "").toUpperCase();
+        
+        // Extract center code from the entry
+        String centerCode = determineCenterCode(entry);
+        
+        // Check if it's already in new format
+        if (Pattern.matches("[A-Z]{3}-\\d[A-B]-\\d{3}", oldId)) {
+            return oldId; // Already in new format
+        }
+        
+        // Handle old format conversion (e.g., "5B-003" → "RAM-5B-003")
+        if (Pattern.matches("\\d[A-B]-\\d{3}", oldId)) {
+            return centerCode + "-" + oldId;
+        }
+        
+        // Handle variations with different separators or formats
+        if (Pattern.matches("\\d[A-B]\\d{3}", oldId)) {
+            // Insert hyphen: "5B003" → "5B-003"
+            String formatted = oldId.substring(0, 2) + "-" + oldId.substring(2);
+            return centerCode + "-" + formatted;
+        }
+        
+        logger.warn("Cannot convert old format to new format: " + oldId);
+        return centerCode + "-" + oldId; // Best effort
+    }
+    
+    /**
+     * Determine center code from entry data
+     */
+    private String determineCenterCode(Map<String, Object> entry) {
+        String centerName = getStringValue(entry, "86_Collection_Centre", "center", "collection_center");
+        if (centerName != null) {
+            String normalized = centerName.toLowerCase().trim();
+            
+            // Check for Ramaiah variations
+            if (normalized.contains("ramaiah")) {
+                return "RAM";
+            }
+            
+            // Check for SMSIMSR/Satya Sai variations
+            if (normalized.contains("smsimsr") || normalized.contains("sri madhusudan sai") || 
+                normalized.contains("satya") || normalized.contains("sai") || 
+                normalized.contains("chikkaballapur")) {
+                return "SSI";
+            }
+            
+            // Check for Baptist variations
+            if (normalized.contains("baptist")) {
+                return "BAP";
+            }
+            
+            // Check for Bangalore Medical variations
+            if (normalized.contains("bangalore medical") || normalized.contains("bmcri")) {
+                return "BMC";
+            }
+        }
+        
+        // Default to RAM since most current data is from Ramaiah
+        logger.warn("Cannot determine center code, defaulting to RAM for entry: " + entry);
+        return "RAM";
+    }
+    
+    /**
+     * Helper method to get string value from entry using multiple possible field names
+     */
+    private String getStringValue(Map<String, Object> entry, String... fieldNames) {
+        for (String fieldName : fieldNames) {
+            Object value = entry.get(fieldName);
+            if (value != null && !value.toString().trim().isEmpty()) {
+                return value.toString().trim();
+            }
+        }
+        return null;
     }
     
     /**
@@ -212,29 +306,10 @@ public class EpicollectDataCleaningService {
         return clinical;
     }
     
-    /**
-     * Get string value from multiple possible field names
-     */
-    private String getStringValue(Map<String, Object> entry, String... possibleKeys) {
-        for (String key : possibleKeys) {
-            // Try exact match
-            Object value = entry.get(key);
-            if (value != null && StringUtils.isNotBlank(value.toString())) {
-                return value.toString().trim();
-            }
-            
-            // Try case-insensitive match
-            for (String entryKey : entry.keySet()) {
-                if (entryKey.equalsIgnoreCase(key)) {
-                    value = entry.get(entryKey);
-                    if (value != null && StringUtils.isNotBlank(value.toString())) {
-                        return value.toString().trim();
-                    }
-                }
-            }
-        }
-        return null;
-    }
+    
+    // Removed duplicate method - using implementation below
+    
+    // Removed duplicate methods - using implementations below
     
     /**
      * Clean integer value
@@ -285,19 +360,9 @@ public class EpicollectDataCleaningService {
     /**
      * Clean date value
      */
-    private Date cleanDate(Object dateValue) {
+    private String cleanDate(Object dateValue) {
         if (dateValue == null) return null;
-        
-        try {
-            if (dateValue instanceof Date) {
-                return (Date) dateValue;
-            }
-            // Parse ISO format or other common formats
-            // Implementation depends on actual date formats in data
-            return new Date(); // Placeholder
-        } catch (Exception e) {
-            return null;
-        }
+        return dateValue.toString(); // ISO format from Epicollect
     }
     
     /**
